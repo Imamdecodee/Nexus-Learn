@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Student Project Dashboard</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/remixicon/fonts/remixicon.css">
+<script>
+  // Protect dashboard
+  if (localStorage.getItem("student_logged_in") !== "yes") {
+    window.location.href = "login.html";
+  }
+
+  // Logout function
+  function logout() {
+    localStorage.removeItem("student_logged_in");
+    window.location.href = "login.html";
+  }
+</script>
+
+<script>
+  // Auth guard
+  if (localStorage.getItem("student_logged_in") !== "yes") {
+    window.location.href = "login.html";
+  }
+
+  // Toggle user dropdown
+  function toggleDropdown() {
+    const menu = document.getElementById("dropdownMenu");
+    menu.style.display = menu.style.display === "block" ? "none" : "block";
+  }
+
+  // Confirm before logout
+  function confirmLogout() {
+    const confirmed = confirm("Are you sure you want to logout?");
+    if (confirmed) {
+      localStorage.removeItem("student_logged_in");
+      window.location.href = "login.html";
+    }
+  }
+
+
+</script>
+
+<script>
+  // Check if user is logged in
+  if (localStorage.getItem("student_logged_in") !== "yes") {
+    window.location.href = "login.html";
+  }
+
+
+  function toggleDropdown() {
+    const menu = document.getElementById("dropdownMenu");
+    menu.style.display = menu.style.display === "block" ? "none" : "block";
+  }
+
+  function confirmLogout() {
+    const confirmed = confirm("Are you sure you want to logout?");
+    if (confirmed) {
+      localStorage.removeItem("student_logged_in");
+      localStorage.removeItem("student_data");
+      window.location.href = "login.html";
+    }
+  }
+
+  // Close dropdown when clicking outside
+  document.addEventListener("click", function (e) {
+    const dropdown = document.getElementById("dropdownMenu");
+    const icon = document.querySelector(".user-icon");
+    if (!dropdown.contains(e.target) && !icon.contains(e.target)) {
+      dropdown.style.display = "none";
+    }
+  });
+</script>
+
+
+
+  <style>
+    :root {
+      --primary: #0073e6;
+      --bg: #f5f7fa;
+      --text: #222;
+      --muted: #555;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: var(--bg);
+    }
+
+    .navbar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 60px;
+      background: white;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 20px;
+      z-index: 10;
+    }
+
+    .navbar .logo {
+      font-size: 20px;
+      font-weight: 600;
+      color: var(--primary);
+    }
+
+    .navbar input {
+      width: 300px;
+      padding: 8px 16px;
+      border-radius: 20px;
+      border: 1px solid #ccc;
+      outline: none;
+    }
+
+    .user-menu {
+  position: relative;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+.user-icon {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  margin-left: 20px;
+  border: 2px solid #0073e6;
+  transition: transform 0.2s;
+}
+
+.user-icon:hover {
+  transform: scale(1.05);
+}
+
+.dropdown {
+  display: none;
+  position: absolute;
+  top: 50px;
+  right: 0;
+  background: white;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+  border-radius: 8px;
+  overflow: hidden;
+  width: 150px;
+  z-index: 1000;
+}
+
+.dropdown a {
+  display: block;
+  padding: 10px 16px;
+  text-decoration: none;
+  color: #333;
+  font-size: 14px;
+}
+
+.dropdown a:hover {
+  background: #f0f0f0;
+}
+
+
+    .sidebar {
+      position: fixed;
+      top: 60px;
+      left: 0;
+      bottom: 0;
+      width: 200px;
+      background: white;
+      border-right: 1px solid #eee;
+      padding-top: 20px;
+    }
+
+    .sidebar a {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 12px 20px;
+      color: var(--muted);
+      text-decoration: none;
+      transition: all 0.3s;
+    }
+
+    .sidebar a:hover {
+      background: #f0f0f0;
+      color: var(--primary);
+    }
+
+    .main {
+      margin-left: 220px;
+      padding: 80px 30px 30px;
+    }
+
+    h2 {
+      margin-bottom: 20px;
+      color: var(--text);
+    }
+
+    .videos {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 20px;
+    }
+
+    .video-card {
+      background: white;
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+      transition: transform 0.2s ease;
+    }
+
+    .video-card:hover {
+      transform: scale(1.01);
+    }
+
+    .video-card iframe {
+      width: 100%;
+      height: 180px;
+      border: none;
+    }
+
+    .video-title {
+      padding: 12px 16px;
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--text);
+    }
+
+    @media (max-width: 768px) {
+      .sidebar {
+        display: none;
+      }
+       .navbar{
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        height: 90px;
+        padding: 10px;
+      } 
+      .main {
+        margin-left: 0;
+        padding-top: 90px;
+      }
+      .navbar input {
+        width: 100%;
+        margin-top: 10px;
+      }
+    }
+
+
+    @media (max-width: 768px) {
+  .sidebar {
+    display: none;
+    position: fixed;
+    top: 60px;
+    left: 0;
+    width: 200px;
+    height: calc(100vh - 60px);
+    background: white;
+    border-right: 1px solid #eee;
+    z-index: 999;
+    padding-top: 20px;
+  }
+
+  .sidebar.show {
+    display: block;
+  }
+
+  #sidebarToggle {
+    display: inline-block;
+  }
+.search-bar{
+  display: none;
+}
+  .main {
+    margin-left: 0;
+    padding-top: 90px;
+  }
+
+  .navbar input {
+    width: 100%;
+    margin-top: 10px;
+  }
+}
+
+
+
+  </style>
+</head>
+<body>
+
+  <!-- Navbar -->
+  <div class="navbar">
+    <div class="logo"><img style="width: 100px;" src="./image/Ilm_Nexus Logo.png" alt=""></div>
+    <input type="text" id="searchInput" class="search-bar" placeholder="Search videos...">
+   <div class="user-menu">
+      <span id="studentName" style="margin-right: 10px; font-weight: 500;"></span>
+     <img id="userAvatar" src="" class="user-icon" onclick="toggleDropdown()" />
+     <div class="dropdown" id="dropdownMenu">
+         <a href="profile.html">My Profile</a>
+         <a href="index.html">Courses</a>
+         <a href="#" onclick="confirmLogout()">Logout</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Sidebar -->
+   <!-- <button id="sidebarToggle" class="toggle-btn">☰</button> -->
+  <div class="sidebar">
+    <a href="#"><i class="ri-video-line"></i> All Videos</a>
+    <a href="#"><i class="ri-book-line"></i> Assignments</a>
+    <a href="#"><i class="ri-folder-line"></i> Resources</a>
+    <a href="#"><i class="ri-user-line"></i> My Account</a>
+  </div>
+
+  <!-- Main Content -->
+  <div class="main">
+    <h2>Course Videos</h2>
+    <div class="videos" id="videoList">
+      <!-- Videos injected by JavaScript -->
+    </div>
+  </div>
+
+  <script>
+    const videos = [
+      { title: "HTML Introduction", url: "https://www.youtube.com/embed/UB1O30fR-EE" },
+      { title: "CSS Flexbox Guide", url: "https://www.youtube.com/embed/JJSoEo8JSnc" },
+      { title: "JavaScript Basics", url: "https://www.youtube.com/embed/hdI2bqOjy3c" },
+      { title: "Responsive Design", url: "https://www.youtube.com/embed/srvUrASNj0s" },
+      { title: "React JS Intro", url: "https://www.youtube.com/embed/bMknfKXIFA8" },
+      { title: "Git & GitHub", url: "https://www.youtube.com/embed/SWYqp7iY_Tc" },
+      { title: "Python for Beginners", url: "https://www.youtube.com/embed/_uQrJ0TkZlc" },
+      { title: "Firebase Login", url: "https://www.youtube.com/embed/1h0g3V3nUpk" },
+      { title: "Portfolio Build", url: "https://www.youtube.com/embed/27JtRAI3QO8" }
+    ];
+
+    const videoList = document.getElementById('videoList');
+
+    function renderVideos(list) {
+      videoList.innerHTML = '';
+      list.forEach(video => {
+        const card = document.createElement('div');
+        card.className = 'video-card';
+        card.innerHTML = `
+          <iframe src="${video.url}" allowfullscreen></iframe>
+          <div class="video-title">${video.title}</div>
+        `;
+        videoList.appendChild(card);
+      });
+    }
+
+    document.getElementById('searchInput').addEventListener('input', function() {
+      const keyword = this.value.toLowerCase();
+      const filtered = videos.filter(v => v.title.toLowerCase().includes(keyword));
+      renderVideos(filtered);
+    });
+
+    renderVideos(videos);
+  </script>
+
+
+<script>
+  if (localStorage.getItem("student_logged_in") !== "yes") {
+    window.location.href = "login.html";
+  }
+
+  const student = JSON.parse(localStorage.getItem("student_data"));
+  if (student) {
+    document.getElementById("userAvatar").src = student.avatar;
+    document.getElementById("studentName").textContent = student.name;
+  }
+
+  function toggleDropdown() {
+    const menu = document.getElementById("dropdownMenu");
+    menu.style.display = menu.style.display === "block" ? "none" : "block";
+  }
+
+  function confirmLogout() {
+    const confirmed = confirm("Are you sure you want to logout?");
+    if (confirmed) {
+      localStorage.removeItem("student_logged_in");
+      localStorage.removeItem("student_data");
+      window.location.href = "login.html";
+    }
+  }
+
+  document.addEventListener("click", function (e) {
+    const dropdown = document.getElementById("dropdownMenu");
+    const icon = document.querySelector(".user-icon");
+    if (!dropdown.contains(e.target) && !icon.contains(e.target)) {
+      dropdown.style.display = "none";
+    }
+  });
+
+  const sidebar = document.querySelector(".sidebar");
+  const toggleBtn = document.getElementById("sidebarToggle");
+
+  toggleBtn.addEventListener("click", () => {
+    sidebar.classList.toggle("show");
+  });
+
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Student Login - NexusLearn</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #f5f7fa;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+
+    .login-box {
+      background: white;
+      padding: 40px 30px;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      width: 100%;
+      max-width: 400px;
+    }
+
+    .login-box h2 {
+      margin-bottom: 25px;
+      text-align: center;
+      color: #0073e6;
+    }
+
+    .login-box input {
+      width: 100%;
+      padding: 12px 15px;
+      margin: 10px 0;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      outline: none;
+    }
+
+    .login-box button {
+      width: 100%;
+      padding: 12px;
+      background: #0073e6;
+      color: white;
+      font-weight: bold;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: 0.3s ease;
+    }
+
+    .login-box button:hover {
+      background: #005bb5;
+    }
+
+    .error {
+      color: red;
+      font-size: 14px;
+      margin-top: 5px;
+    }
+  </style>
+</head>
+<body>
+
+<div class="login-box">
+  <h2>Student Login</h2>
+  <input type="text" id="username" placeholder="Enter username" required />
+  <input type="password" id="password" placeholder="Enter password" required />
+  <button onclick="login()">Login</button>
+  <p class="error" id="errorMsg"></p>
+</div>
+
+<script>
+  // Replace with real student credentials (in production use backend)
+  const students = [
+  {
+    username: "student1",
+    password: "pass123",
+    name: "Aisha Bello",
+    course: "Frontend Development",
+    avatar: "https://i.pravatar.cc/150?img=1"
+  },
+  {
+    username: "student2",
+    password: "abc456",
+    name: "Musa Ibrahim",
+    course: "Video Editing",
+    avatar: "https://i.pravatar.cc/150?img=2"
+  }
+];
+
+
+  function login() {
+    const user = document.getElementById('username').value.trim();
+    const pass = document.getElementById('password').value.trim();
+    const errorMsg = document.getElementById('errorMsg');
+
+    const matched = students.find(s => s.username === user && s.password === pass);
+
+    if (matched) {
+  localStorage.setItem("student_logged_in", "yes");
+  localStorage.setItem("student_data", JSON.stringify(matched));
+  window.location.href = "dashboard.html";
+}
+
+
+    if (matched) {
+      localStorage.setItem("student_logged_in", "yes");
+      window.location.href = "dashboard.html";
+    } else {
+      errorMsg.textContent = "Invalid username or password.";
+    }
+  }
+</script>
+
+</body>
+</html>
