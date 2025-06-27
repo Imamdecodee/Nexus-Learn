@@ -9,6 +9,58 @@
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"/>
       <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"/>
 </head>
+
+<style>
+    .chat-cont{
+    position: fixed;
+    width: 11rem;
+    height: 3.2rem;
+    bottom: 0;
+    right: 0;
+    margin-bottom: 2rem;
+    margin-right: 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.25rem;
+}
+.rectangle{
+    width: 7.5rem;
+    height: 60%;
+    border-radius: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: green;
+    background-color: white;
+    box-shadow: 0px 2px 3.5px rgba(0, 0, 0, 0.253);
+
+}
+.circle{
+    height: 3.2rem;
+    width: 3.2rem;
+    background-color: blue;
+    border-radius: 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    /* box-shadow: 0px 0px 4px rgba(11, 11, 59, 0.363); */
+}
+.circle:hover{
+    background-color: rgb(194, 90, 4);
+    color: white;
+    cursor: pointer;
+    transition: 0.5s ease;
+}
+.icon{
+    color: white;
+    width: 3.1rem;
+}
+.icon:hover{
+    color: white;
+}
+
+</style>
 <body>
     <!-- Home Section -->
 
@@ -283,38 +335,53 @@
                 <div class="contact-info-list">
                     <div class="contact-info">
                         <i class="fa-solid fa-location-crosshairs"></i>
-                        <p>123 Campsite Avenue, Wilderness, CA 98765</p>
+                        <p>8, Varsity Avenue Ilorin Kwara State</p>
                     </div>
                     <div class="contact-info">
                         <i class="fa-solid fa-envelope"></i>
-                        <p>info@cofeeshopwebsite.com</p>
+                        <p>theilmnexus@gmail.com</p>
                     </div>
                     <div class="contact-info">
                         <i class="fa-solid fa-phone"></i>
-                        <p>(123) 456-78989</p>
+                        <p>(+234) 90479-57855</p>
                     </div>
                     <div class="contact-info">
                         <i class="fa-solid fa-clock"></i>
-                        <p>Monday - Friday: 9:00 AM - 5:00 PM</p>
+                        <p>Saturday - Sunday: 10:00 AM - 4:00 PM</p>
                     </div>
                     <div class="contact-info">
                         <i class="fa-solid fa-clock"></i>
-                        <p>Sunday: Closed</p>
+                        <p> friday - evening (physical)</p>
                     </div>
-                    <div class="contact-info">
-                        <i class="fa-solid fa-globe"></i>
-                        <p>www.ezecoding.com</p>
+                     <div class="contact-info">
+                        <i class="fa-solid fa-clock"></i>
+                        <p>Active Online on all days</p>
                     </div>
                 </div>
 
-                <form action="https://formsubmit.co/theilmnexus@gmail.com" method="POST" class="contact-form">
-                    <input type="text" placeholder="Your name" class="form-input" name="name" required>
-                    <input type="email" placeholder="Your email" class="form-input" name="email" required>
-                    <textarea placeholder="Your message" class="form-input" name="message" required></textarea>
-                    <button class="submit-button">Submit</button>
-                </form>
+               <form action="https://formsubmit.co/theilmnexus@gmail.com" method="POST"  class="contact-form">
+  <input type="text" class="form-input" name="name" placeholder="Your Name" required>
+  <input type="email" class="form-input" name="email" placeholder="Your Email" required>
+  <textarea name="message"class="form-input"  placeholder="Your Message" required></textarea>
+
+  <!-- Extra settings -->
+  <input type="hidden" name="_captcha" value="false">
+  <input type="hidden" name="_subject" value="New Contact Form Message from Ilm Nexus!">
+  <input type="hidden" name="_next" value="thank-you.html">
+
+  <button  class="submit-button" type="submit">Send Message</button>
+</form>
+
             </div>
           </section>
+
+
+ <main class="chat-cont">
+        <div class="rectangle">Chat Mentor</div>
+        <botton class="circle">
+           <a href="./dashboard.html"> <img src="./image/chat.png" alt=""  class="icon"></a>
+        </botton>
+    </main>
 
 
            <div class='promise-tag' id="guarantee">
@@ -326,6 +393,7 @@
       <button class='submit-btn'> <a href="" style="text-decoration: none; color: aliceblue;">Start Now!</a></button>
   </Link>
   </div>
+
 
           <!-- footer section -->
           <footer class="footer-section">
