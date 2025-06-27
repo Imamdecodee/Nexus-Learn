@@ -389,30 +389,45 @@
 <!-- <div id="chat-trigger" style="position: fixed; bottom: 20px; right: 20px; background: #0073e6; color: white; padding: 10px 15px; border-radius: 30px; cursor: pointer; box-shadow: 0 2px 6px rgba(0,0,0,0.2); font-family: sans-serif;">
   💬 Chat Online
 </div> -->
+<!-- 
+Chat Trigger Button
+<div id="chat-trigger" style="position: fixed; bottom: 25px; right: 25px; z-index: 9999; cursor: pointer;">
+  <img src="https://img.icons8.com/color/96/000000/chat--v1.png" alt="Chat" style="width: 60px; height: 60px; border-radius: 50%; box-shadow: 0 4px 10px rgba(0,0,0,0.3);">
+</div> -->
 
-<!-- Chat Popup -->
-<div id="chat-popup" style="display: none; position: fixed; bottom: 80px; right: 20px; width: 300px; background: white; border-radius: 10px; box-shadow: 0 0 12px rgba(0,0,0,0.2); font-family: sans-serif;">
-  <div style="background: #0073e6; color: white; padding: 10px 15px; border-top-left-radius: 10px; border-top-right-radius: 10px;">
-    Student Chat
-    <span style="float:right; cursor: pointer;" onclick="document.getElementById('chat-popup').style.display='none'">✖</span>
+<!-- Chat Popup Container -->
+<div id="chat-popup" style="display: none; position: fixed; bottom: 100px; right: 25px; width: 320px; max-width: 90%; background: #fff; border-radius: 16px; box-shadow: 0 8px 24px rgba(0,0,0,0.2); overflow: hidden; font-family: 'Poppins', sans-serif; z-index: 9999;">
+  
+  <!-- Header -->
+  <div style="background: #0073e6; color: white; padding: 15px; font-size: 16px; font-weight: bold; display: flex; justify-content: space-between; align-items: center;">
+    🧑‍💻 Chat with Ilm Nexus
+    <span style="cursor: pointer;" onclick="document.getElementById('chat-popup').style.display='none'">✖</span>
   </div>
-
+  
+  <!-- Form Content -->
   <form action="https://formsubmit.co/theilmnexus@gmail.com" method="POST" style="padding: 15px;">
-    <input type="text" name="name" placeholder="Your name" required style="width: 100%; padding: 8px; margin-bottom: 10px; border-radius: 5px; border: 1px solid #ccc;">
-    <input type="email" name="email" placeholder="Your email" required style="width: 100%; padding: 8px; margin-bottom: 10px; border-radius: 5px; border: 1px solid #ccc;">
-    <textarea name="message" placeholder="Type your message..." required style="width: 100%; height: 80px; padding: 8px; border-radius: 5px; border: 1px solid #ccc;"></textarea>
-    
+    <input type="text" name="name" placeholder="Your name" required style="width: 100%; padding: 10px; margin-bottom: 10px; border-radius: 8px; border: 1px solid #ccc; font-size: 14px;">
+
+    <input type="email" name="email" placeholder="Your email" required style="width: 100%; padding: 10px; margin-bottom: 10px; border-radius: 8px; border: 1px solid #ccc; font-size: 14px;">
+
+    <textarea name="message" placeholder="Type your question or request..." required style="width: 100%; height: 100px; padding: 10px; border-radius: 8px; border: 1px solid #ccc; font-size: 14px;"></textarea>
+
+    <!-- Hidden config for FormSubmit -->
     <input type="hidden" name="_captcha" value="false">
     <input type="hidden" name="_subject" value="Student Chat Message">
-    <input type="hidden" name="_next" value="https://ilmnexus.netlify.app/chat-success.html">
+    <input type="hidden" name="_next" value="https://nexus-learn.netlify.app//chat-success.html">
 
-    <button type="submit" style="margin-top: 10px; width: 100%; padding: 10px; background: #0073e6; color: white; border: none; border-radius: 5px;">Send</button>
+    <button type="submit" style="margin-top: 12px; width: 100%; padding: 12px; background: #0073e6; color: white; font-size: 15px; border: none; border-radius: 8px; cursor: pointer;">
+      Send Message
+    </button>
   </form>
 </div>
 
+<!-- JS to toggle chat -->
 <script>
   document.getElementById('chat-trigger').onclick = function () {
-    document.getElementById('chat-popup').style.display = 'block';
+    var chatBox = document.getElementById('chat-popup');
+    chatBox.style.display = (chatBox.style.display === 'block') ? 'none' : 'block';
   };
 </script>
 
