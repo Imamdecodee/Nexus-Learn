@@ -378,11 +378,44 @@
 
 
  <main class="chat-cont">
-        <div class="rectangle">Chat Mentor</div>
+        <div class="rectangle"  id="chat-trigger" >Chat Mentor</div>
         <botton class="circle">
-           <a href="./dashboard.html"> <img src="./image/chat.png" alt=""  class="icon"></a>
+        <img src="./image/chat.png" alt=""  class="icon">
         </botton>
     </main>
+
+
+    <!-- Chat Trigger -->
+<!-- <div id="chat-trigger" style="position: fixed; bottom: 20px; right: 20px; background: #0073e6; color: white; padding: 10px 15px; border-radius: 30px; cursor: pointer; box-shadow: 0 2px 6px rgba(0,0,0,0.2); font-family: sans-serif;">
+  💬 Chat Online
+</div> -->
+
+<!-- Chat Popup -->
+<div id="chat-popup" style="display: none; position: fixed; bottom: 80px; right: 20px; width: 300px; background: white; border-radius: 10px; box-shadow: 0 0 12px rgba(0,0,0,0.2); font-family: sans-serif;">
+  <div style="background: #0073e6; color: white; padding: 10px 15px; border-top-left-radius: 10px; border-top-right-radius: 10px;">
+    Student Chat
+    <span style="float:right; cursor: pointer;" onclick="document.getElementById('chat-popup').style.display='none'">✖</span>
+  </div>
+
+  <form action="https://formsubmit.co/theilmnexus@gmail.com" method="POST" style="padding: 15px;">
+    <input type="text" name="name" placeholder="Your name" required style="width: 100%; padding: 8px; margin-bottom: 10px; border-radius: 5px; border: 1px solid #ccc;">
+    <input type="email" name="email" placeholder="Your email" required style="width: 100%; padding: 8px; margin-bottom: 10px; border-radius: 5px; border: 1px solid #ccc;">
+    <textarea name="message" placeholder="Type your message..." required style="width: 100%; height: 80px; padding: 8px; border-radius: 5px; border: 1px solid #ccc;"></textarea>
+    
+    <input type="hidden" name="_captcha" value="false">
+    <input type="hidden" name="_subject" value="Student Chat Message">
+    <input type="hidden" name="_next" value="https://ilmnexus.netlify.app/chat-success.html">
+
+    <button type="submit" style="margin-top: 10px; width: 100%; padding: 10px; background: #0073e6; color: white; border: none; border-radius: 5px;">Send</button>
+  </form>
+</div>
+
+<script>
+  document.getElementById('chat-trigger').onclick = function () {
+    document.getElementById('chat-popup').style.display = 'block';
+  };
+</script>
+
 
 
            <div class='promise-tag' id="guarantee">
