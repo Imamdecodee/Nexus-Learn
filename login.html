@@ -3,118 +3,141 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Student Login - NexusLearn</title>
+  <title>Student Login | NexusLearn</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;600&display=swap" rel="stylesheet">
   <style>
+    * {
+      box-sizing: border-box;
+    }
+
     body {
-      font-family: 'Segoe UI', sans-serif;
-      background: #f5f7fa;
+      margin: 0;
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(135deg, #dbeafe, #eff6ff);
       display: flex;
       justify-content: center;
       align-items: center;
       height: 100vh;
-      margin: 0;
     }
 
-    .login-box {
-      background: white;
-      padding: 40px 30px;
-      border-radius: 10px;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    .login-card {
+      background: #ffffff;
+      padding: 40px;
+      border-radius: 16px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
       width: 100%;
       max-width: 400px;
-    }
-
-    .login-box h2 {
-      margin-bottom: 25px;
       text-align: center;
-      color: #0073e6;
     }
 
-    .login-box input {
+    .login-card h2 {
+      color: #1e40af;
+      margin-bottom: 25px;
+    }
+
+    .login-card input {
       width: 100%;
-      padding: 12px 15px;
+      padding: 14px 16px;
       margin: 10px 0;
+      font-size: 15px;
       border: 1px solid #ccc;
-      border-radius: 6px;
-      outline: none;
+      border-radius: 8px;
+      transition: 0.2s;
     }
 
-    .login-box button {
+    .login-card input:focus {
+      border-color: #0073e6;
+      outline: none;
+      box-shadow: 0 0 5px rgba(0, 115, 230, 0.3);
+    }
+
+    .login-card button {
       width: 100%;
-      padding: 12px;
+      padding: 14px;
       background: #0073e6;
       color: white;
-      font-weight: bold;
+      font-weight: 600;
+      font-size: 16px;
       border: none;
-      border-radius: 6px;
+      border-radius: 8px;
       cursor: pointer;
-      transition: 0.3s ease;
+      transition: background 0.3s ease;
+      margin-top: 15px;
     }
 
-    .login-box button:hover {
+    .login-card button:hover {
       background: #005bb5;
     }
 
     .error {
-      color: red;
+      color: #d32f2f;
       font-size: 14px;
-      margin-top: 5px;
+      margin-top: 10px;
+    }
+
+    .helper-links {
+      margin-top: 20px;
+      font-size: 14px;
+    }
+
+    .helper-links a {
+      color: #0073e6;
+      text-decoration: none;
+    }
+
+    .helper-links a:hover {
+      text-decoration: underline;
     }
   </style>
 </head>
 <body>
 
-<div class="login-box">
-  <h2>Student Login</h2>
-  <input type="text" id="username" placeholder="Enter username" required />
-  <input type="password" id="password" placeholder="Enter password" required />
-  <button onclick="login()">Login</button>
-  <p class="error" id="errorMsg"></p>
-</div>
+  <div class="login-card">
+    <h2>Student Login</h2>
+    <input type="text" id="username" placeholder="Username" required />
+    <input type="password" id="password" placeholder="Password" required />
+    <button onclick="login()">Login</button>
+    <p class="error" id="errorMsg"></p>
 
-<script>
-  // Replace with real student credentials (in production use backend)
-  const students = [
-  {
-    username: "student1",
-    password: "pass123",
-    name: "Aisha Bello",
-    course: "Frontend Development",
-    avatar: "https://i.pravatar.cc/150?img=1"
-  },
-  {
-    username: "student2",
-    password: "abc456",
-    name: "Musa Ibrahim",
-    course: "Video Editing",
-    avatar: "https://i.pravatar.cc/150?img=2"
-  }
-];
+    <div class="helper-links">
+      <p>Don’t have access? <a href="get-access.html">Get Access</a></p>
+    </div>
+  </div>
 
+  <script>
+    const students = [
+      {
+        username: "student1",
+        password: "pass123",
+        name: "Aisha Bello",
+        course: "Frontend Development",
+        avatar: "https://i.pravatar.cc/150?img=1"
+      },
+      {
+        username: "student2",
+        password: "abc456",
+        name: "Musa Ibrahim",
+        course: "Video Editing",
+        avatar: "https://i.pravatar.cc/150?img=2"
+      }
+    ];
 
-  function login() {
-    const user = document.getElementById('username').value.trim();
-    const pass = document.getElementById('password').value.trim();
-    const errorMsg = document.getElementById('errorMsg');
+    function login() {
+      const user = document.getElementById('username').value.trim();
+      const pass = document.getElementById('password').value.trim();
+      const errorMsg = document.getElementById('errorMsg');
 
-    const matched = students.find(s => s.username === user && s.password === pass);
+      const matched = students.find(s => s.username === user && s.password === pass);
 
-    if (matched) {
-  localStorage.setItem("student_logged_in", "yes");
-  localStorage.setItem("student_data", JSON.stringify(matched));
-  window.location.href = "dashboard.html";
-}
-
-
-    if (matched) {
-      localStorage.setItem("student_logged_in", "yes");
-      window.location.href = "dashboard.html";
-    } else {
-      errorMsg.textContent = "Invalid username or password.";
+      if (matched) {
+        localStorage.setItem("student_logged_in", "yes");
+        localStorage.setItem("student_data", JSON.stringify(matched));
+        window.location.href = "dashboard.html";
+      } else {
+        errorMsg.textContent = "❌ Invalid username or password.";
+      }
     }
-  }
-</script>
+  </script>
 
 </body>
 </html>
- 
