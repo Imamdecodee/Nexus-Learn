@@ -5,6 +5,57 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Student Project Dashboard</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/remixicon/fonts/remixicon.css">
+  <style>
+  /* === Progress Bar Styles === */
+.progress-section {
+  margin-top: 30px;
+  margin-bottom: 25px;
+}
+
+.progress-header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 8px;
+  font-size: 15px;
+  color: #333;
+}
+
+.progress-bar-container {
+  width: 100%;
+  height: 18px;
+  background: linear-gradient(135deg, #e9ecf1, #d0d6df);
+  border-radius: 30px;
+  overflow: hidden;
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.15);
+}
+
+.progress-bar {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, #0073e6, #00c6ff);
+  border-radius: 30px;
+  transition: width 0.4s ease-in-out;
+  box-shadow: 0 0 8px rgba(0, 115, 230, 0.6);
+}
+
+/* === Mark as Completed Button === */
+.complete-btn {
+  margin: 10px 16px 16px;
+  padding: 8px 12px;
+  background: #0073e6;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: 0.2s ease;
+  font-size: 14px;
+}
+
+.complete-btn:disabled {
+  background: #28a745;
+  cursor: default;
+}
+</style>
 <script>
   // Protect dashboard
   if (localStorage.getItem("student_logged_in") !== "yes") {
@@ -330,70 +381,142 @@
       <!-- Videos injected by JavaScript -->
     </div>
   </div>
-
-  <script>
-    const videos = [
-      { title: "HTML Introduction", url: "https://www.youtube.com/embed/UB1O30fR-EE" },
-      { title: "CSS Flexbox Guide", url: "https://www.youtube.com/embed/JJSoEo8JSnc" },
-      { title: "JavaScript Basics", url: "https://www.youtube.com/embed/hdI2bqOjy3c" },
-      { title: "Responsive Design", url: "https://www.youtube.com/embed/srvUrASNj0s" },
-      { title: "React JS Intro", url: "https://www.youtube.com/embed/bMknfKXIFA8" },
-      { title: "Git & GitHub", url: "https://www.youtube.com/embed/SWYqp7iY_Tc" },
-      { title: "Python for Beginners", url: "https://www.youtube.com/embed/_uQrJ0TkZlc" },
-      { title: "Firebase Login", url: "https://www.youtube.com/embed/1h0g3V3nUpk" },
-      { title: "Portfolio Build", url: "https://www.youtube.com/embed/27JtRAI3QO8" }
-    ];
-
-    const videoList = document.getElementById('videoList');
-
-    function renderVideos(list) {
-      videoList.innerHTML = '';
-      list.forEach(video => {
-        const card = document.createElement('div');
-        card.className = 'video-card';
-        card.innerHTML = `
-          <iframe src="${video.url}" allowfullscreen></iframe>
-          <div class="video-title">${video.title}</div>
-        `;
-        videoList.appendChild(card);
-      });
-    }
-
-    document.getElementById('searchInput').addEventListener('input', function() {
-      const keyword = this.value.toLowerCase();
-      const filtered = videos.filter(v => v.title.toLowerCase().includes(keyword));
-      renderVideos(filtered);
-    });
-
-    renderVideos(videos);
-  </script>
-
-
 <script>
-  if (localStorage.getItem("student_logged_in") !== "yes") {
+  // Sample video data
+  const videos = [
+    { title: "HTML Introduction", url: "https://www.youtube.com/embed/UB1O30fR-EE" },
+    { title: "CSS Flexbox Guide", url: "https://www.youtube.com/embed/JJSoEo8JSnc" },
+    { title: "JavaScript Basics", url: "https://www.youtube.com/embed/hdI2bqOjy3c" },
+    { title: "Responsive Design", url: "https://www.youtube.com/embed/srvUrASNj0s" },
+    { title: "React JS Intro", url: "https://www.youtube.com/embed/bMknfKXIFA8" },
+    { title: "Git & GitHub", url: "https://www.youtube.com/embed/SWYqp7iY_Tc" },
+    { title: "Python for Beginners", url: "https://www.youtube.com/embed/_uQrJ0TkZlc" },
+    { title: "Firebase Login", url: "https://www.youtube.com/embed/1h0g3V3nUpk" },
+    { title: "Portfolio Build", url: "https://www.youtube.com/embed/27JtRAI3QO8" }
+  ];
+
+  // Get student info
+  const student = JSON.parse(localStorage.getItem("student_data"));
+  if (!student || !student.name) {
     window.location.href = "login.html";
   }
 
-  const student = JSON.parse(localStorage.getItem("student_data"));
-  if (student) {
-    document.getElementById("userAvatar").src = student.avatar;
-    document.getElementById("studentName").textContent = student.name;
+  const studentKey = "completed_videos_" + student.name;
+  const videoList = document.getElementById("videoList");
+
+  function renderVideos(list) {
+    videoList.innerHTML = "";
+    const completed = JSON.parse(localStorage.getItem(studentKey) || "[]");
+
+    list.forEach(video => {
+      const isCompleted = completed.includes(video.title);
+
+      const card = document.createElement("div");
+      card.className = "video-card";
+      card.innerHTML = `
+        <iframe src="${video.url}" allowfullscreen></iframe>
+        <div class="video-title">${video.title}</div>
+        <button class="complete-btn" onclick="markCompleted('${video.title}', this)" ${isCompleted ? "disabled" : ""}>
+          ${isCompleted ? "✅ Completed" : "Mark as Completed"}
+        </button>
+      `;
+      videoList.appendChild(card);
+    });
+
+    updateProgressBar();
   }
 
+  function markCompleted(title, btn) {
+    let completed = JSON.parse(localStorage.getItem(studentKey) || "[]");
+    if (!completed.includes(title)) {
+      completed.push(title);
+      localStorage.setItem(studentKey, JSON.stringify(completed));
+      btn.textContent = "✅ Completed";
+      btn.disabled = true;
+      updateProgressBar();
+    }
+  }
+
+  function updateProgressBar() {
+    const completed = JSON.parse(localStorage.getItem(studentKey) || "[]");
+    const percent = Math.round((completed.length / videos.length) * 100);
+    const progressText = `${completed.length} of ${videos.length} completed`;
+
+    if (!document.getElementById("progressBar")) {
+      const section = document.createElement("div");
+      section.className = "progress-section";
+      section.innerHTML = `
+        <div class="progress-header">
+          <strong>📊 Course Progress</strong>
+          <span id="progressText">${progressText}</span>
+        </div>
+        <div class="progress-bar-container">
+          <div class="progress-bar" id="progressBar" style="width: ${percent}%"></div>
+        </div>
+        <div id="certificateSection" style="display:none; margin-top:15px; text-align:center;">
+          <button onclick="getCertificate()" style="
+            padding: 10px 25px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            font-size: 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+          ">
+            🎓 Get Your Certificate
+          </button>
+        </div>
+      `;
+      document.querySelector(".main").appendChild(section);
+    } else {
+      document.getElementById("progressBar").style.width = `${percent}%`;
+      document.getElementById("progressText").textContent = progressText;
+    }
+
+    const certSection = document.getElementById("certificateSection");
+    if (completed.length === videos.length && certSection) {
+      certSection.style.display = "block";
+    } else if (certSection) {
+      certSection.style.display = "none";
+    }
+  }
+
+  function getCertificate() {
+    alert(`🎉 Congratulations, ${student.name}! Your certificate is ready.`);
+    // Optional redirect:
+    window.location.href = "certificate.html";
+  }
+
+  document.getElementById("searchInput").addEventListener("input", function () {
+    const keyword = this.value.toLowerCase();
+    const filtered = videos.filter(v => v.title.toLowerCase().includes(keyword));
+    renderVideos(filtered);
+  });
+
+  // Render on page load
+  renderVideos(videos);
+
+  // Set student name and avatar
+  document.getElementById("studentName").textContent = student.name;
+  document.getElementById("userAvatar").src = student.avatar;
+
+  // Dropdown toggle
   function toggleDropdown() {
     const menu = document.getElementById("dropdownMenu");
     menu.style.display = menu.style.display === "block" ? "none" : "block";
   }
 
+  // Logout function
   function confirmLogout() {
-    const confirmed = confirm("Are you sure you want to logout?");
-    if (confirmed) {
+    if (confirm("Are you sure you want to logout?")) {
       localStorage.removeItem("student_logged_in");
       localStorage.removeItem("student_data");
       window.location.href = "login.html";
     }
   }
 
+  // Close dropdown when clicking outside
   document.addEventListener("click", function (e) {
     const dropdown = document.getElementById("dropdownMenu");
     const icon = document.querySelector(".user-icon");
@@ -401,16 +524,9 @@
       dropdown.style.display = "none";
     }
   });
-
-  const sidebar = document.querySelector(".sidebar");
-  const toggleBtn = document.getElementById("sidebarToggle");
-
-  toggleBtn.addEventListener("click", () => {
-    sidebar.classList.toggle("show");
-  });
-
-
 </script>
+
+
 
 </body>
 </html>

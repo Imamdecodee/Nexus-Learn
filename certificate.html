@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Certificate of Completion</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #f4f8fb;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      padding: 20px;
+    }
+
+    .certificate {
+      background: white;
+      border: 6px double #0073e6;
+      padding: 40px;
+      width: 100%;
+      max-width: 700px;
+      text-align: center;
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+    }
+
+    .certificate h1 {
+      font-size: 36px;
+      color: #0073e6;
+    }
+
+    .certificate h2 {
+      margin: 20px 0 10px;
+      font-size: 28px;
+      color: #222;
+    }
+
+    .certificate p {
+      font-size: 18px;
+      color: #444;
+    }
+
+    .student-name {
+      font-size: 24px;
+      font-weight: bold;
+      color: #333;
+      margin: 15px 0;
+    }
+
+    .print-btn {
+      margin-top: 30px;
+      padding: 10px 20px;
+      background-color: #0073e6;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    .logo {
+      margin-bottom: 20px;
+    }
+
+    .logo img {
+      width: 100px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="certificate" id="cert">
+    <div class="logo">
+      <img src="./image/Ilm_Nexus Logo.png" alt="NexusLearn Logo" />
+    </div>
+    <h1>Certificate of Completion</h1>
+    <p>This certifies that</p>
+    <div class="student-name" id="studentName">[Student Name]</div>
+    <p>has successfully completed all lessons of the Digital Skills Training Program on NexusLearn.</p>
+    <h2>🎉 Congratulations! 🎉</h2>
+    <button class="print-btn" onclick="window.print()">Print / Download</button>
+  </div>
+
+  <script>
+    // Load student name
+    const student = JSON.parse(localStorage.getItem("student_data"));
+    if (!student || !student.name) {
+      window.location.href = "login.html";
+    } else {
+      document.getElementById("studentName").textContent = student.name;
+    }
+  </script>
+
+</body>
+</html>
+
