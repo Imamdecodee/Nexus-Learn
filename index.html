@@ -64,25 +64,27 @@
 <body>
     <!-- Home Section -->
 
-    
-      
-    <header class="header">
-        <nav class="navbar">
-        <a class="nav-logo">
-              <img src="./image/nexus-learn logo.png" alt="" style="width: 200px;">
-        </a>
-        <div class="nav-link">
-            <div class="open-menu"><i class="fa-solid fa-xmark"></i></div>
-        <a href="#home" class="my-link">Home</a>
-        <a href="#about" class="my-link">About</a>
-        <a href="#menu" class="my-link">Benefits</a>
-        <a href="#story" class="my-link">Our Story</a>
-        <a href="#course" class="my-link">Course</a>
-        <a href="#contact" class="my-link">Contact</a>
-        </div>
-        <div class="close-menu"><i class="fa-solid fa-bars"></i></div>
-        </nav>
-    </header>
+   <header class="header">
+  <nav class="navbar">
+    <a href="#" class="nav-logo">
+      <img src="./image/nexus-learn logo.png" alt="Ilm Nexus Logo">
+    </a>
+
+    <ul class="nav-links" id="navLinks">
+      <li><a href="#home" class="my-link">Home</a></li>
+      <li><a href="#about" class="my-link">About</a></li>
+      <li><a href="#menu" class="my-link">Benefits</a></li>
+      <li><a href="./uniilorin.html" class="my-link">Event</a></li>
+      <li><a href="#course" class="my-link">Courses</a></li>
+      <li><a href="#contact" class="my-link">Contact</a></li>
+    </ul>
+
+    <div class="menu-toggle" id="menuToggle">
+      <i class="fa-solid fa-bars"></i>
+    </div>
+  </nav>
+</header>
+
 
 
 
@@ -113,9 +115,11 @@
           <h4 class="learn">LEARN THE SKILLS THAT GET YOU HIREO</h4>
           <h1 class="even">Even Before  Graduation</h1>
          <!-- <p>Igniting Brands, Sparking Growth</p> -->
-          <Link to="https://t.me/ilmNexus_bootcamp"> 
-           <button class="request-btn-hero">Join Us Now</button>
-          </Link>
+        <a href="./uniilorin.html">
+             <button class="request-btn-hero">Register for the Event</button>
+        </a>
+
+          
         </div>
 
       </div>
@@ -123,10 +127,10 @@
         <!-- about us -->
          <section class="about-section" id="about">
             <div class="about-section-content">
-                <div class="about-image-wrapper">
+                <!-- <div class="about-image-wrapper">
                     <!-- <video src="./ilm-nexus-video.mp4"></video> -->
-                    <img src="./image/about.png" alt="about-image" class="about-image" />
-                </div>
+                    <!-- <img src="./image/about.png" alt="about-image" class="about-image" /> -->
+                </div> -->
                 <div class="about-details">
                     <h2 class="section-title">About Us</h2>
                     <p class="text">Ilm Nexus is a youth-driven initiative dedicated to empowering students and young people to learn, grow, and earn with purpose.
@@ -242,38 +246,44 @@
 
           
   <section class="course-section" id="course">
-    <h2>Our Courses</h2>
-    <p>Choose any course to start your learning journey with Ilm Nexus.</p>
+  <div class="container">
+    <h2 class="section-title">Our Courses</h2>
+    <p class="section-subtitle">Choose any course to start your learning journey with Ilm Nexus.</p>
 
-    <div class="course-list">
-      <div class="course-item">
+    <div class="course-grid">
+      <div class="course-card">
         <h4>🌐 Web Design</h4>
         <p>Learn how to design and build beautiful websites from scratch.</p>
         <a class="start-btn" href="web-design.html">Start the Course</a>
       </div>
-      <div class="course-item">
+
+      <div class="course-card">
         <h4>🎥 Video Editing</h4>
         <p>Master the tools to cut, edit, and produce engaging videos.</p>
         <a class="start-btn" href="not-avail.html">Start the Course</a>
       </div>
-      <div class="course-item">
+
+      <div class="course-card">
         <h4>📱 Social Media Marketing</h4>
         <p>Grow brands online and run successful digital campaigns.</p>
         <a class="start-btn" href="not-avail.html">Start the Course</a>
       </div>
-      <div class="course-item">
+
+      <div class="course-card">
         <h4>🎨 Graphics Design</h4>
         <p>Design eye-catching graphics for both print and digital platforms.</p>
         <a class="start-btn" href="not-avail.html">Start the Course</a>
       </div>
-      <div class="course-item">
+
+      <div class="course-card">
         <h4>💼 Entrepreneurship</h4>
         <p>Develop your business ideas and gain startup knowledge.</p>
         <a class="start-btn" href="not-avail.html">Start the Course</a>
-        <!-- <button class="start-btn">Start the Course</button> -->
       </div>
     </div>
-  </section>
+  </div>
+</section>
+
 <!-- 
 <div class="container">
     <h1>🚧 Service Not Available Yet</h1>
@@ -547,4 +557,16 @@ s0.parentNode.insertBefore(s1,s0);
 </script>
 <!--End of Tawk.to Script-->
 </body>
+<script>
+  const menuToggle = document.getElementById('menuToggle');
+  const navLinks = document.getElementById('navLinks');
+
+  menuToggle.addEventListener('click', () => {
+    navLinks.classList.toggle('open');
+    menuToggle.innerHTML = navLinks.classList.contains('open')
+      ? '<i class="fa-solid fa-xmark"></i>'
+      : '<i class="fa-solid fa-bars"></i>';
+  });
+</script>
+
 </html>
