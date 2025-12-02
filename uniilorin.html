@@ -4,11 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Register - Ilm Nexus Conference 3.0</title>
-    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
         * {
@@ -18,208 +15,267 @@
             font-family: 'Poppins', sans-serif;
         }
         
-        .form-input {
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+        }
+        
+        .card {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            width: 100%;
+            max-width: 900px;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #4f46e5, #4338ca);
+            color: white;
+            padding: 2.5rem;
+            text-align: center;
+        }
+        
+        .logo-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1.5rem;
+        }
+        
+        .logo {
+            width: 70px;
+            height: 70px;
+            background: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 1rem;
+        }
+        
+        .conference-title {
+            font-size: 2.2rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+        
+        .form-container {
+            padding: 2.5rem;
+        }
+        
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-label {
+            display: block;
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+            color: #374151;
+        }
+        
+        .form-input, .form-select, .form-textarea {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 2px solid #e5e7eb;
+            border-radius: 10px;
+            font-size: 1rem;
             transition: all 0.3s ease;
         }
         
-        .form-input:focus {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 6px -1px rgba(59, 130, 246, 0.1), 0 2px 4px -1px rgba(59, 130, 246, 0.06);
+        .form-input:focus, .form-select:focus, .form-textarea:focus {
+            border-color: #4f46e5;
+            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+            outline: none;
         }
         
-        .btn-pulse:hover {
-            animation: pulse 1s infinite;
-        }
-        
-        @keyframes pulse {
-            0% {
-                transform: scale(1);
-            }
-            50% {
-                transform: scale(1.05);
-            }
-            100% {
-                transform: scale(1);
-            }
-        }
-        
-        .fade-in {
-            opacity: 0;
-            transform: translateY(20px);
-            animation: fadeIn 0.6s ease forwards;
-        }
-        
-        @keyframes fadeIn {
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-        
-        .success-message {
-            max-height: 0;
-            opacity: 0;
-            overflow: hidden;
-            transition: all 0.5s ease;
-        }
-        
-        .success-message.show {
-            max-height: 200px;
-            opacity: 1;
+        .form-textarea {
+            min-height: 120px;
+            resize: vertical;
         }
         
         .error-message {
-            max-height: 0;
-            opacity: 0;
-            overflow: hidden;
-            transition: all 0.5s ease;
+            color: #ef4444;
+            font-size: 0.875rem;
+            margin-top: 0.5rem;
+            display: none;
         }
         
-        .error-message.show {
-            max-height: 200px;
-            opacity: 1;
+        .submit-btn {
+            background: linear-gradient(135deg, #4f46e5, #4338ca);
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            font-size: 1.1rem;
+            font-weight: 600;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+        
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 7px 14px rgba(79, 70, 229, 0.3);
+        }
+        
+        .submit-btn:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .message {
+            padding: 1rem 1.5rem;
+            border-radius: 10px;
+            margin-bottom: 1.5rem;
+            display: none;
+        }
+        
+        .success-message {
+            background: #f0fdf4;
+            border-left: 4px solid #10b981;
+            color: #065f46;
+        }
+        
+        .error-message-box {
+            background: #fef2f2;
+            border-left: 4px solid #ef4444;
+            color: #991b1b;
+        }
+        
+        @media (max-width: 768px) {
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .header, .form-container {
+                padding: 2rem 1.5rem;
+            }
+            
+            .conference-title {
+                font-size: 1.8rem;
+            }
         }
     </style>
 </head>
-<body class="bg-gradient-to-br from-blue-50 to-indigo-100 min-h-screen flex items-center justify-center p-4">
-    <div class="max-w-2xl w-full bg-white rounded-2xl shadow-xl overflow-hidden">
-        <!-- Header -->
-        <div class="bg-blue-800 text-white p-6 text-center">
-            <div class="flex items-center justify-center mb-4">
-                <div class="w-12 h-12 rounded-full bg-white flex items-center justify-center mr-3">
-                  <img src="./ilm logo.png" alt="">
-                    <!-- <span class="text-blue-800 font-bold text-xl">IN</span> -->
+<body>
+    <div class="card">
+        <div class="header">
+            <div class="logo-container">
+                <div class="logo">
+                    <span style="color: #4f46e5; font-weight: 700; font-size: 1.5rem;">IN</span>
                 </div>
-                <h1 class="text-2xl font-bold">Ilm Nexus</h1>
+                <div style="font-size: 2rem; font-weight: 700;">Ilm Nexus</div>
             </div>
-            <h2 class="text-3xl font-bold mb-2">Conference 3.0 Registration</h2>
-            <p class="text-blue-200">University of Ilorin | December 11, 2025</p>
+            <h1 class="conference-title">Conference 3.0 Registration</h1>
+            <p>University of Ilorin | December 11, 2025</p>
         </div>
         
-        <!-- Success Message (Initially Hidden) -->
-        <div id="success-message" class="success-message bg-green-50 border-l-4 border-green-500 p-4 mx-6 mt-6">
-            <div class="flex">
-                <div class="flex-shrink-0">
-                    <i class="fas fa-check-circle text-green-500 text-xl"></i>
-                </div>
-                <div class="ml-3">
-                    <h3 class="text-green-800 font-medium">Registration Successful!</h3>
-                    <p class="text-green-700 mt-1">Thank you for registering for Ilm Nexus Conference 3.0. We've sent a confirmation to your email.</p>
-                </div>
-            </div>
+        <div id="success-message" class="message success-message">
+            <i class="fas fa-check-circle mr-2"></i>
+            <strong>Registration Successful!</strong> Thank you for registering. We've sent a confirmation to your email.
         </div>
         
-        <!-- Error Message (Initially Hidden) -->
-        <div id="error-message" class="error-message bg-red-50 border-l-4 border-red-500 p-4 mx-6 mt-6">
-            <div class="flex">
-                <div class="flex-shrink-0">
-                    <i class="fas fa-exclamation-circle text-red-500 text-xl"></i>
-                </div>
-                <div class="ml-3">
-                    <h3 class="text-red-800 font-medium">Registration Failed!</h3>
-                    <p class="text-red-700 mt-1" id="error-text">There was an error submitting your registration. Please try again or contact us directly.</p>
-                </div>
-            </div>
+        <div id="error-message" class="message error-message-box">
+            <i class="fas fa-exclamation-circle mr-2"></i>
+            <strong>Registration Failed!</strong> <span id="error-text">There was an error submitting your registration.</span>
         </div>
         
-        <!-- Registration Form -->
-        <form id="registration-form" class="p-6 md:p-8">
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <!-- Full Name -->
-                <div class="fade-in" style="animation-delay: 0.1s">
-                    <label for="full_name" class="block text-gray-700 font-medium mb-2">Full Name</label>
-                    <input type="text" id="full_name" name="full_name" placeholder="Enter your full name" 
-                           class="form-input w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" required>
-                    <div class="text-red-500 text-sm mt-1 hidden" id="name-error">Please enter your full name</div>
+        <div class="form-container">
+            <form id="registration-form">
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="full_name" class="form-label">Full Name</label>
+                        <input type="text" id="full_name" name="full_name" class="form-input" required>
+                        <div class="error-message" id="name-error">Please enter your full name</div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="email" class="form-label">Email Address</label>
+                        <input type="email" id="email" name="email" class="form-input" required>
+                        <div class="error-message" id="email-error">Please enter a valid email address</div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="phone" class="form-label">WhatsApp Number</label>
+                        <input type="text" id="phone" name="phone" class="form-input" required>
+                        <div class="error-message" id="phone-error">Please enter a valid phone number</div>
+                    </div>
+¦¬
+                    <div class="form-group">
+                        <label for="phone" class="form-label">Referal Code</label>
+                        <input type="text" id="phone" name="phone" class="form-input" required>
+                        <div class="error-message" id="phone-error">Put the referal code given by your friend</div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="institution" class="form-label">Institution</label>
+                        <input type="text" id="institution" name="institution" class="form-input" required>
+                        <div class="error-message" id="institution-error">Please enter your institution</div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="department" class="form-label">Department</label>
+                        <input type="text" id="department" name="department" class="form-input" required>
+                        <div class="error-message" id="department-error">Please enter your department</div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="year" class="form-label">Year of Study</label>
+                        <input type="text" id="year" name="year" class="form-input" required>
+                        <div class="error-message" id="year-error">Please enter your year of study</div>
+                    </div>
                 </div>
                 
-                <!-- Email Address -->
-                <div class="fade-in" style="animation-delay: 0.2s">
-                    <label for="email" class="block text-gray-700 font-medium mb-2">Email Address</label>
-                    <input type="email" id="email" name="email" placeholder="Enter your email address" 
-                           class="form-input w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" required>
-                    <div class="text-red-500 text-sm mt-1 hidden" id="email-error">Please enter a valid email address</div>
+                <div class="form-group">
+                    <label for="skills_interest" class="form-label">Skill Interest</label>
+                    <select id="skills_interest" name="skills_interest" class="form-select" required>
+                        <option value="">Select Skill Interest</option>
+                        <option>Frontend Development</option>
+                        <option>Graphics Design</option>
+                        <option>Digital Marketing</option>
+                        <option>Video Editing</option>
+                        <option>Communication Skills</option>
+                    </select>
+                    <div class="error-message" id="skills-error">Please select a skill interest</div>
                 </div>
                 
-                <!-- WhatsApp Number -->
-                <div class="fade-in" style="animation-delay: 0.3s">
-                    <label for="phone" class="block text-gray-700 font-medium mb-2">WhatsApp Number</label>
-                    <input type="text" id="phone" name="phone" placeholder="Enter your WhatsApp number" 
-                           class="form-input w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" required>
-                    <div class="text-red-500 text-sm mt-1 hidden" id="phone-error">Please enter a valid phone number</div>
+                <div class="form-group">
+                    <label for="note" class="form-label">Message or Course Interested In</label>
+                    <textarea id="note" name="note" class="form-textarea" required></textarea>
+                    <div class="error-message" id="note-error">Please enter a message or course interest</div>
                 </div>
                 
-                <!-- Institution -->
-                <div class="fade-in" style="animation-delay: 0.4s">
-                    <label for="institution" class="block text-gray-700 font-medium mb-2">Institution</label>
-                    <input type="text" id="institution" name="institution" placeholder="Enter your institution" 
-                           class="form-input w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" required>
-                    <div class="text-red-500 text-sm mt-1 hidden" id="institution-error">Please enter your institution</div>
+                <div class="form-group">
+                    <button type="submit" id="submit-btn" class="submit-btn">
+                        <i class="fas fa-paper-plane mr-2"></i>
+                        Submit Registration
+                    </button>
                 </div>
                 
-                <!-- Department -->
-                <div class="fade-in" style="animation-delay: 0.5s">
-                    <label for="department" class="block text-gray-700 font-medium mb-2">Department</label>
-                    <input type="text" id="department" name="department" placeholder="Enter your department" 
-                           class="form-input w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" required>
-                    <div class="text-red-500 text-sm mt-1 hidden" id="department-error">Please enter your department</div>
+                <div style="text-align: center; margin-top: 2rem; color: #64748b;">
+                    <p>If you continue having issues, please contact us directly:</p>
+                    <p class="font-medium mt-2">
+                        <i class="fas fa-envelope mr-2"></i>theilmnexus@gmail.com
+                    </p>
                 </div>
-                
-                <!-- Year of Study -->
-                <div class="fade-in" style="animation-delay: 0.6s">
-                    <label for="year" class="block text-gray-700 font-medium mb-2">Year of Study</label>
-                    <input type="text" id="year" name="year" placeholder="Enter your year of study" 
-                           class="form-input w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" required>
-                    <div class="text-red-500 text-sm mt-1 hidden" id="year-error">Please enter your year of study</div>
-                </div>
-            </div>
-            
-            <!-- Skill Interest -->
-            <div class="mt-6 fade-in" style="animation-delay: 0.7s">
-                <label for="skills_interest" class="block text-gray-700 font-medium mb-2">Skill Interest</label>
-                <select id="skills_interest" name="skills_interest" 
-                        class="form-input w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" required>
-                    <option value="">Select Skill Interest</option>
-                    <option>Frontend Development</option>
-                    <option>Graphics Design</option>
-                    <option>Digital Marketing</option>
-                    <option>Video Editing</option>
-                    <option>Communication Skills</option>
-                </select>
-                <div class="text-red-500 text-sm mt-1 hidden" id="skills-error">Please select a skill interest</div>
-            </div>
-            
-            <!-- Message -->
-            <div class="mt-6 fade-in" style="animation-delay: 0.8s">
-                <label for="note" class="block text-gray-700 font-medium mb-2">Message or Course Interested In</label>
-                <textarea id="note" name="note" rows="4" placeholder="Enter any additional message or specific course you're interested in" 
-                          class="form-input w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" required></textarea>
-                <div class="text-red-500 text-sm mt-1 hidden" id="note-error">Please enter a message or course interest</div>
-            </div>
-            
-            <!-- Submit Button -->
-            <div class="mt-8 fade-in" style="animation-delay: 0.9s">
-                <button type="submit" id="submit-btn" class="btn-pulse w-full bg-blue-700 hover:bg-blue-800 text-white font-bold py-4 px-6 rounded-lg transition-all duration-300 flex items-center justify-center">
-                    <i class="fas fa-paper-plane mr-2"></i>
-                    Submit Registration
-                </button>
-            </div>
-            
-            <!-- Alternative Contact Info -->
-            <div class="mt-6 text-center text-gray-600 fade-in" style="animation-delay: 1s">
-                <p class="mb-2">If you continue having issues, please contact us directly:</p>
-                <p class="font-medium"><i class="fas fa-envelope mr-2"></i>theilmnexus@gmail.com</p>
-            </div>
-            
-            <!-- Form Footer -->
-            <div class="mt-6 text-center text-gray-600 fade-in" style="animation-delay: 1s">
-                <p>By registering, you agree to our <a href="#" class="text-blue-600 hover:underline">Terms of Service</a> and <a href="#" class="text-blue-600 hover:underline">Privacy Policy</a>.</p>
-            </div>
-        </form>
+            </form>
+        </div>
         
-        <!-- Back to Home -->
-        <div class="bg-gray-50 px-6 py-4 text-center border-t border-gray-200">
-            <a href="index.html" class="text-blue-600 hover:text-blue-800 font-medium inline-flex items-center">
+        <div style="background: #f8fafc; padding: 1.5rem; text-align: center; border-top: 1px solid #e5e7eb;">
+            <a href="index.html" style="color: #4f46e5; font-weight: 500;">
                 <i class="fas fa-arrow-left mr-2"></i>
                 Back to Homepage
             </a>
@@ -233,175 +289,104 @@
             const errorMessage = document.getElementById('error-message');
             const errorText = document.getElementById('error-text');
             
-            // Form validation function
             function validateForm() {
                 let isValid = true;
                 
-                // Reset error messages
-                document.querySelectorAll('.text-red-500').forEach(el => {
-                    el.classList.add('hidden');
+                document.querySelectorAll('.error-message').forEach(el => {
+                    el.style.display = 'none';
                 });
                 
-                // Validate Full Name
                 const fullName = document.getElementById('full_name').value.trim();
                 if (fullName === '') {
-                    document.getElementById('name-error').classList.remove('hidden');
+                    document.getElementById('name-error').style.display = 'block';
                     isValid = false;
                 }
                 
-                // Validate Email
                 const email = document.getElementById('email').value.trim();
                 const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
                 if (!emailRegex.test(email)) {
-                    document.getElementById('email-error').classList.remove('hidden');
+                    document.getElementById('email-error').style.display = 'block';
                     isValid = false;
                 }
                 
-                // Validate Phone
                 const phone = document.getElementById('phone').value.trim();
-                const phoneRegex = /^[\+]?[0-9]{10,15}$/;
-                if (!phoneRegex.test(phone)) {
-                    document.getElementById('phone-error').classList.remove('hidden');
+                const phoneRegex = /^[\+]?[0-9\s\-\(\)]{10,15}$/;
+                if (!phoneRegex.test(phone.replace(/\s/g, ''))) {
+                    document.getElementById('phone-error').style.display = 'block';
                     isValid = false;
                 }
                 
-                // Validate Institution
-                const institution = document.getElementById('institution').value.trim();
-                if (institution === '') {
-                    document.getElementById('institution-error').classList.remove('hidden');
-                    isValid = false;
-                }
-                
-                // Validate Department
-                const department = document.getElementById('department').value.trim();
-                if (department === '') {
-                    document.getElementById('department-error').classList.remove('hidden');
-                    isValid = false;
-                }
-                
-                // Validate Year of Study
-                const year = document.getElementById('year').value.trim();
-                if (year === '') {
-                    document.getElementById('year-error').classList.remove('hidden');
-                    isValid = false;
-                }
-                
-                // Validate Skills Interest
-                const skillsInterest = document.getElementById('skills_interest').value;
-                if (skillsInterest === '') {
-                    document.getElementById('skills-error').classList.remove('hidden');
-                    isValid = false;
-                }
-                
-                // Validate Note
-                const note = document.getElementById('note').value.trim();
-                if (note === '') {
-                    document.getElementById('note-error').classList.remove('hidden');
-                    isValid = false;
-                }
+                const requiredFields = ['institution', 'department', 'year', 'skills_interest', 'note'];
+                requiredFields.forEach(field => {
+                    const value = document.getElementById(field).value.trim();
+                    if (value === '') {
+                        document.getElementById(`${field}-error`).style.display = 'block';
+                        isValid = false;
+                    }
+                });
                 
                 return isValid;
             }
             
-            // Form submission handler
-            form.addEventListener('submit', function(e) {
+            form.addEventListener('submit', async function(e) {
                 e.preventDefault();
                 
                 if (validateForm()) {
-                    // Show loading state on button
                     const submitBtn = document.getElementById('submit-btn');
                     const originalText = submitBtn.innerHTML;
                     submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i> Processing...';
                     submitBtn.disabled = true;
                     
-                    // Hide any previous messages
-                    successMessage.classList.remove('show');
-                    errorMessage.classList.remove('show');
+                    successMessage.style.display = 'none';
+                    errorMessage.style.display = 'none';
                     
-                    // Prepare form data
-                    const formData = new FormData();
-                    formData.append('full_name', document.getElementById('full_name').value);
-                    formData.append('email', document.getElementById('email').value);
-                    formData.append('phone', document.getElementById('phone').value);
-                    formData.append('institution', document.getElementById('institution').value);
-                    formData.append('department', document.getElementById('department').value);
-                    formData.append('year', document.getElementById('year').value);
-                    formData.append('skills_interest', document.getElementById('skills_interest').value);
-                    formData.append('note', document.getElementById('note').value);
-                    formData.append('_subject', 'Uniilorin Conference Registration – Ilm Nexus');
-                    formData.append('_captcha', 'false');
-                    formData.append('_template', 'table');
-                    
-                    // Submit to FormSubmit
-                    fetch('https://formsubmit.co/ajax/theilmnexus@gmail.com', {
-                        method: 'POST',
-                        body: formData
-                    })
-                    .then(response => response.json())
-                    .then(data => {
+                    try {
+                        const formData = {
+                            full_name: document.getElementById('full_name').value,
+                            email: document.getElementById('email').value,
+                            phone: document.getElementById('phone').value,
+                            institution: document.getElementById('institution').value,
+                            department: document.getElementById('department').value,
+                            year: document.getElementById('year').value,
+                            skills_interest: document.getElementById('skills_interest').value,
+                            note: document.getElementById('note').value
+                        };
+                        
+                        const response = await fetch('/.netlify/functions/submitForm', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                            },
+                            body: JSON.stringify(formData)
+                        });
+                        
+                        if (!response.ok) {
+                            throw new Error(`HTTP error! status: ${response.status}`);
+                        }
+                        
+                        const data = await response.json();
+                        
                         if (data.success) {
-                            // Show success message
-                            successMessage.classList.add('show');
-                            
-                            // Reset form
+                            successMessage.style.display = 'flex';
                             form.reset();
+                            successMessage.scrollIntoView({ behavior: 'smooth' });
                             
-                            // Scroll to success message
-                            successMessage.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                            
-                            // Hide success message after 5 seconds
                             setTimeout(function() {
-                                successMessage.classList.remove('show');
+                                successMessage.style.display = 'none';
                             }, 5000);
                         } else {
-                            throw new Error('Form submission failed');
+                            throw new Error(data.message || 'Form submission failed');
                         }
-                    })
-                    .catch(error => {
+                        
+                    } catch (error) {
                         console.error('Error:', error);
                         errorText.textContent = 'There was an error submitting your registration. Please try again or contact us directly at theilmnexus@gmail.com.';
-                        errorMessage.classList.add('show');
-                        errorMessage.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                    })
-                    .finally(() => {
-                        // Reset button
+                        errorMessage.style.display = 'flex';
+                        errorMessage.scrollIntoView({ behavior: 'smooth' });
+                    } finally {
                         submitBtn.innerHTML = originalText;
                         submitBtn.disabled = false;
-                    });
-                }
-            });
-            
-            // Real-time validation for email field
-            document.getElementById('email').addEventListener('blur', function() {
-                const email = this.value.trim();
-                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-                const errorElement = document.getElementById('email-error');
-                
-                if (email === '') {
-                    errorElement.textContent = 'Please enter your email address';
-                    errorElement.classList.remove('hidden');
-                } else if (!emailRegex.test(email)) {
-                    errorElement.textContent = 'Please enter a valid email address';
-                    errorElement.classList.remove('hidden');
-                } else {
-                    errorElement.classList.add('hidden');
-                }
-            });
-            
-            // Real-time validation for phone field
-            document.getElementById('phone').addEventListener('blur', function() {
-                const phone = this.value.trim();
-                const phoneRegex = /^[\+]?[0-9]{10,15}$/;
-                const errorElement = document.getElementById('phone-error');
-                
-                if (phone === '') {
-                    errorElement.textContent = 'Please enter your WhatsApp number';
-                    errorElement.classList.remove('hidden');
-                } else if (!phoneRegex.test(phone)) {
-                    errorElement.textContent = 'Please enter a valid phone number';
-                    errorElement.classList.remove('hidden');
-                } else {
-                    errorElement.classList.add('hidden');
+                    }
                 }
             });
         });
