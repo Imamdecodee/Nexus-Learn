@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ILM Nexus Academy Programs | Digital, Creative & Business Skills</title>
+    <meta name="description" content="Explore ILM Nexus Academy programs in Digital & Tech Skills, Creative & Media Skills, and Business & Career Skills. Register now for training.">
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Poppins:wght@600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+    
+    <style>
+        :root {
+            --ilm-blue: #3A82FA;
+            --ilm-blue-dark: #1E40AF;
+            --ilm-gold: #EF9C18;
+            --ilm-black: #000000;
+            --ilm-white: #FFFFFF;
+            --gray-50: #F9FAFB;
+            --gray-100: #F3F4F6;
+            --gray-200: #E5E7EB;
+            --gray-300: #D1D5DB;
+            --gray-600: #4B5563;
+            --gray-800: #1F2937;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            line-height: 1.6;
+            color: var(--gray-800);
+            background: var(--ilm-white);
+            overflow-x: hidden;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 0 1.5rem;
+        }
+
+        /* HEADER */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--gray-100);
+            z-index: 1000;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+        }
+
+        nav {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 70px;
+        }
+
+        .logo {
+            height: 32px;
+            width: auto;
+            display: flex;
+            align-items: center;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2.5rem;
+            list-style: none;
+            align-items: center;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--gray-800);
+            font-weight: 500;
+            font-size: 0.95rem;
+            transition: color 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: var(--ilm-blue);
+        }
+
+        .btn-gold {
+            background: linear-gradient(135deg, var(--ilm-gold) 0%, #D97706 100%);
+            color: var(--ilm-white);
+            padding: 0.75rem 1.75rem;
+            border-radius: 0.5rem;
+            border: none;
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: none;
+            font-size: 0.95rem;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            display: inline-block;
+        }
+
+        .btn-gold:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(239, 156, 24, 0.3);
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--ilm-blue) 0%, var(--ilm-blue-dark) 100%);
+            color: var(--ilm-white);
+            padding: 0.75rem 1.75rem;
+            border-radius: 0.5rem;
+            border: none;
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: none;
+            font-size: 0.95rem;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            display: inline-block;
+            text-align: center;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(58, 130, 250, 0.3);
+        }
+
+        /* PAGE CONTENT */
+        .page-hero {
+            padding-top: 120px;
+            padding-bottom: 4rem;
+            background: linear-gradient(135deg, rgba(58, 130, 250, 0.08) 0%, rgba(239, 156, 24, 0.05) 100%);
+        }
+
+        .page-hero h1 {
+            font-family: 'Poppins', sans-serif;
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+            color: var(--ilm-black);
+        }
+
+        .page-hero p {
+            font-size: 1.1rem;
+            color: var(--gray-600);
+            max-width: 700px;
+        }
+
+        /* PROGRAM SECTIONS */
+        .program-section {
+            padding: 4rem 0;
+        }
+
+        .program-section h2 {
+            font-family: 'Poppins', sans-serif;
+            font-size: 2rem;
+            font-weight: 800;
+            margin-bottom: 0.5rem;
+            color: var(--ilm-black);
+        }
+
+        .program-section h2 .emoji {
+            margin-right: 0.5rem;
+        }
+
+        .program-section .subtitle {
+            font-size: 1rem;
+            color: var(--gray-600);
+            margin-bottom: 2rem;
+        }
+
+        .courses-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+        }
+
+        .course-item {
+            background: var(--ilm-white);
+            padding: 2rem;
+            border-radius: 1rem;
+            border: 1px solid var(--gray-100);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .course-item:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.12);
+            border-color: var(--ilm-blue);
+        }
+
+        .course-item h3 {
+            font-size: 1.2rem;
+            color: var(--ilm-blue);
+            margin-bottom: 0.5rem;
+        }
+
+        .course-item p {
+            color: var(--gray-600);
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+
+        /* FOOTER */
+        footer {
+            background: var(--ilm-black);
+            color: var(--ilm-white);
+            padding: 3rem 0 1.5rem;
+            margin-top: 4rem;
+        }
+
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 2rem;
+        }
+
+        .footer-text p {
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+        }
+
+        .footer-link {
+            color: var(--ilm-gold);
+            text-decoration: none;
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-bottom: 2rem;
+            color: var(--ilm-blue);
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .back-link:hover {
+            text-decoration: underline;
+        }
+
+        .cta-box {
+            background: linear-gradient(135deg, var(--ilm-blue) 0%, var(--ilm-blue-dark) 100%);
+            color: var(--ilm-white);
+            padding: 2rem;
+            border-radius: 1rem;
+            text-align: center;
+            margin: 3rem 0;
+        }
+
+        .cta-box h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .cta-box p {
+            margin-bottom: 1.5rem;
+            font-size: 1.05rem;
+        }
+
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+
+            .page-hero h1 {
+                font-size: 1.75rem;
+            }
+
+            .program-section h2 {
+                font-size: 1.5rem;
+            }
+
+            .courses-list {
+                grid-template-columns: 1fr;
+            }
+
+            .footer-content {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- HEADER -->
+    <header>
+        <div class="container">
+            <nav>
+                <a href="index.html" class="logo">
+                    <img src="./image/nexus-learn logo.png" alt="ILM Nexus Logo" height="32">
+                </a>
+                <ul class="nav-links">
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="index.html#what-we-offer">Academy</a></li>
+                    <li><a href="programs.html">Programs</a></li>
+                    <li><a href="news.html">News</a></li>
+                </ul>
+                <a href="https://bit.ly/IlmNexustraining" class="btn-gold">Register Now</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- PAGE CONTENT -->
+    <div class="container">
+        <div class="page-hero">
+            <a href="index.html" class="back-link">← Back to Home</a>
+            <h1>ILM Nexus Academy Programs</h1>
+            <p>Explore our comprehensive programs designed to help you master in-demand skills across digital, creative, and business domains.</p>
+        </div>
+
+        <!-- DIGITAL & TECH SKILLS -->
+        <div class="program-section">
+            <h2><span class="emoji">💻</span>Digital & Tech Skills</h2>
+            <p class="subtitle">Master cutting-edge technology and build a strong foundation in digital expertise</p>
+            <div class="courses-list">
+                <div class="course-item">
+                    <h3>Frontend Web Development</h3>
+                    <p>Learn HTML, CSS, JavaScript, and modern frameworks like React to build beautiful, interactive web interfaces.</p>
+                </div>
+                <div class="course-item">
+                    <h3>Backend Development</h3>
+                    <p>Master server-side programming with Node.js, Python, and databases to build powerful web applications.</p>
+                </div>
+                <div class="course-item">
+                    <h3>Full-Stack Web Development</h3>
+                    <p>Become a complete web developer with expertise in both frontend and backend technologies.</p>
+                </div>
+                <div class="course-item">
+                    <h3>Data Science</h3>
+                    <p>Analyze data, build predictive models, and extract insights using Python, pandas, and machine learning.</p>
+                </div>
+                <div class="course-item">
+                    <h3>Artificial Intelligence & AI Automation</h3>
+                    <p>Explore AI concepts, build intelligent systems, and automate workflows with cutting-edge AI technologies.</p>
+                </div>
+                <div class="course-item">
+                    <h3>Prompt Engineering</h3>
+                    <p>Master the art of crafting effective prompts for AI models to get better results and productivity.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- CREATIVE & MEDIA SKILLS -->
+        <div class="program-section">
+            <h2><span class="emoji">🎨</span>Creative & Media Skills</h2>
+            <p class="subtitle">Express your creativity and build a professional portfolio in visual and content creation</p>
+            <div class="courses-list">
+                <div class="course-item">
+                    <h3>Graphics Design</h3>
+                    <p>Create stunning visuals using Photoshop, Illustrator, Figma, and design thinking principles.</p>
+                </div>
+                <div class="course-item">
+                    <h3>Video Editing</h3>
+                    <p>Master video production with Adobe Premiere Pro, After Effects, and DaVinci Resolve for professional content.</p>
+                </div>
+                <div class="course-item">
+                    <h3>Content Creation</h3>
+                    <p>Learn storytelling, scriptwriting, and content strategy to create engaging material for any platform.</p>
+                </div>
+                <div class="course-item">
+                    <h3>Social Media Management</h3>
+                    <p>Grow audiences, manage communities, and create viral content strategies across all major platforms.</p>
+                </div>
+                <div class="course-item">
+                    <h3>Personal Branding</h3>
+                    <p>Build your unique personal brand, create a strong online presence, and stand out in your industry.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- BUSINESS & CAREER SKILLS -->
+        <div class="program-section">
+            <h2><span class="emoji">📈</span>Business & Career Skills</h2>
+            <p class="subtitle">Develop professional skills to advance your career and launch your business ideas</p>
+            <div class="courses-list">
+                <div class="course-item">
+                    <h3>Digital Marketing</h3>
+                    <p>Learn SEO, social media marketing, Google Ads, email marketing, and data analytics to drive business growth.</p>
+                </div>
+                <div class="course-item">
+                    <h3>Business Idea Development</h3>
+                    <p>Transform your ideas into viable business plans with market research, financial modeling, and pitch skills.</p>
+                </div>
+                <div class="course-item">
+                    <h3>Career Development</h3>
+                    <p>Navigate career transitions, develop professional skills, and create a strategic career roadmap.</p>
+                </div>
+                <div class="course-item">
+                    <h3>Programme Management</h3>
+                    <p>Master project and program management methodologies to lead teams and deliver results effectively.</p>
+                </div>
+                <div class="course-item">
+                    <h3>Portfolio Development</h3>
+                    <p>Build a professional portfolio that showcases your skills and attracts employers and clients.</p>
+                </div>
+                <div class="course-item">
+                    <h3>LinkedIn Optimization & Visibility</h3>
+                    <p>Master LinkedIn to build your professional network, attract opportunities, and establish thought leadership.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- CTA SECTION -->
+        <div class="cta-box">
+            <h3>Ready to Start Learning?</h3>
+            <p>Join thousands of students building their future with ILM Nexus Academy</p>
+            <a href="https://bit.ly/IlmNexustraining" class="btn-gold">Register for Training</a>
+        </div>
+    </div>
+
+    <!-- FOOTER -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-text">
+                    <p><strong>ILM Nexus Academy</strong></p>
+                    <p>Empowering Nigerian students with digital skills</p>
+                    <p>Email: info@ilmnexus.org</p>
+                </div>
+                <div class="footer-text">
+                    <p>&copy; 2026 ILM Nexus. All rights reserved.</p>
+                    <p><a href="index.html" class="footer-link">Back to Home</a></p>
+                </div>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>

@@ -1,0 +1,139 @@
+   <!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Get Access – Ilm Nexus</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #f8faff;
+      margin: 0;
+      padding: 20px;
+    }
+    .container {
+      max-width: 600px;
+      margin: auto;
+      background: #fff;
+      border-radius: 10px;
+      padding: 30px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    }
+    h1 {
+      text-align: center;
+      color: #0073e6;
+    }
+    .btn {
+      display: block;
+      width: 100%;
+      padding: 14px;
+      margin: 15px 0;
+      font-size: 16px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+    .btn-primary {
+      background-color: #0073e6;
+      color: white;
+    }
+    .btn-secondary {
+      background-color: #28a745;
+      color: white;
+    }
+    .or-divider {
+      text-align: center;
+      margin: 20px 0;
+      font-weight: bold;
+      color: #888;
+    }
+    form {
+      margin-top: 20px;
+    }
+    input, textarea {
+      width: 100%;
+      padding: 12px;
+      margin: 10px 0;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+    }
+    .note {
+      font-size: 14px;
+      color: #777;
+      text-align: center;
+    }
+    .login-link {
+      text-align: center;
+      margin-top: 20px;
+    }
+    .login-link a {
+      color: #0073e6;
+      text-decoration: none;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <h1>Get Access to Start Learning</h1>
+
+  <!-- Paystack Option -->
+  <button class="btn btn-primary" onclick="payWithPaystack()">💳 Pay ₦1000 with Paystack</button>
+
+  <div class="or-divider">OR</div>
+
+  <!-- Chat with Admin Option -->
+  <a href="#" class="btn btn-secondary" onclick="Tawk_API.maximize(); return false;">💬 Chat with Admin to Get Ticket</a>
+  <p class="note">After payment, please return to this page to complete the form below.</p>
+
+  <!-- Access Form -->
+  <form action="https://formsubmit.co/theilmnexus@gmail.com" method="POST">
+    <input type="text" name="full_name" placeholder="Your Full Name" required />
+    <input type="email" name="email" placeholder="Your Email Address" required />
+    <input type="text" name="whatsapp" placeholder="Your WhatsApp Number" required />
+    <textarea name="note" placeholder="Message or Course Interested In" required></textarea>
+
+    <!-- Hidden fields -->
+    <input type="hidden" name="_captcha" value="false" />
+    <input type="hidden" name="_subject" value="New Ticket Request – Ilm Nexus" />
+    <input type="hidden" name="_next" value="https://nexus-learn.netlify.app/thank-you.html" />
+
+    <button type="submit" class="btn btn-primary">📩 Submit Request</button>
+  </form>
+
+
+   <div class="login-link">
+      <p>🔐 Already booked a ticket?</p>
+      <p><a href="login.html">Click here to login</a> with your username and password.</p>
+    </div>
+  </div>
+
+</div>
+
+<!-- Tawk.to Live Chat -->
+<script type="text/javascript">
+  var Tawk_API = Tawk_API || {}, Tawk_LoadStart = new Date();
+  (function(){
+    var s1 = document.createElement("script"), s0 = document.getElementsByTagName("script")[0];
+    s1.async = true;
+    s1.src = 'https://embed.tawk.to/6862a0b58f8fd61908e314cc/1iv0k7i7r';
+    s1.charset = 'UTF-8';
+    s1.setAttribute('crossorigin', '*');
+    s0.parentNode.insertBefore(s1, s0);
+  })();
+</script>
+
+<!-- Optional: Paystack Handler -->
+<script>
+  function payWithPaystack() {
+    alert("Paystack integration coming soon. For now, chat with admin to pay manually.");
+    // In future: Integrate Paystack Inline here
+  }
+</script>
+
+</body>
+</html>
+
+   
+  

@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register - Ilm Nexus Digital Skills Bootcamp 2.0</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            position: relative;
+            overflow-x: hidden;
+        }
+        
+        .glass-effect {
+            background: rgba(255, 255, 255, 0.25);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+        }
+        
+        .neon-glow {
+            box-shadow: 0 0 20px rgba(59, 130, 246, 0.5), 0 0 40px rgba(59, 130, 246, 0.3);
+        }
+        
+        .form-input {
+            transition: all 0.3s ease;
+            background: rgba(255, 255, 255, 0.9);
+            border: 2px solid transparent;
+        }
+        
+        .form-input:focus {
+            transform: translateY(-3px);
+            border-color: #3b82f6;
+            box-shadow: 0 10px 20px -5px rgba(59, 130, 246, 0.3);
+            background: rgba(255, 255, 255, 1);
+        }
+        
+        .floating {
+            animation: floating 3s ease-in-out infinite;
+        }
+        
+        @keyframes floating {
+            0% { transform: translate(0, 0px); }
+            50% { transform: translate(0, -15px); }
+            100% { transform: translate(0, 0px); }
+        }
+        
+        .pulse-glow {
+            animation: pulse-glow 2s infinite;
+        }
+        
+        @keyframes pulse-glow {
+            0% {
+                box-shadow: 0 0 5px rgba(59, 130, 246, 0.5);
+            }
+            50% {
+                box-shadow: 0 0 20px rgba(59, 130, 246, 0.8), 0 0 30px rgba(59, 130, 246, 0.6);
+            }
+            100% {
+                box-shadow: 0 0 5px rgba(59, 130, 246, 0.5);
+            }
+        }
+        
+        .btn-gradient {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            transition: all 0.3s ease;
+        }
+        
+        .btn-gradient:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 30px -5px rgba(102, 126, 234, 0.5);
+        }
+        
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            animation: fadeInUp 0.8s ease forwards;
+        }
+        
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .success-message, .error-message {
+            max-height: 0;
+            opacity: 0;
+            overflow: hidden;
+            transition: all 0.5s ease;
+        }
+        
+        .success-message.show, .error-message.show {
+            max-height: 200px;
+            opacity: 1;
+        }
+        
+        .floating-shapes {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: -1;
+        }
+        
+        .shape {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            animation: float 20s infinite linear;
+        }
+        
+        @keyframes float {
+            0% {
+                transform: translateY(0) rotate(0deg);
+            }
+            100% {
+                transform: translateY(-1000px) rotate(720deg);
+            }
+        }
+        
+        .gradient-text {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .input-icon {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #6b7280;
+            transition: color 0.3s ease;
+        }
+        
+        .form-input:focus + .input-icon {
+            color: #3b82f6;
+        }
+        
+        .input-wrapper {
+            position: relative;
+        }
+        
+        .input-wrapper input, .input-wrapper select, .input-wrapper textarea {
+            padding-left: 45px;
+        }
+        
+        .countdown-item {
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 10px;
+            padding: 10px;
+            min-width: 60px;
+            backdrop-filter: blur(10px);
+        }
+    </style>
+</head>
+<body class="min-h-screen flex items-center justify-center p-4">
+    <!-- Floating Background Shapes -->
+    <div class="floating-shapes">
+        <div class="shape w-20 h-20 top-1/4 left-10" style="animation-delay: 0s; animation-duration: 25s;"></div>
+        <div class="shape w-32 h-32 top-1/3 right-10" style="animation-delay: 5s; animation-duration: 30s;"></div>
+        <div class="shape w-16 h-16 bottom-1/4 left-20" style="animation-delay: 10s; animation-duration: 20s;"></div>
+        <div class="shape w-24 h-24 bottom-1/3 right-20" style="animation-delay: 15s; animation-duration: 35s;"></div>
+        <div class="shape w-28 h-28 top-10 left-1/2" style="animation-delay: 2s; animation-duration: 28s;"></div>
+    </div>
+    
+    <div class="max-w-4xl w-full glass-effect rounded-3xl overflow-hidden neon-glow">
+        <!-- Header -->
+        <div class="bg-gradient-to-r from-blue-800 to-purple-700 text-white p-8 text-center relative overflow-hidden">
+            <div class="absolute inset-0 bg-black opacity-10"></div>
+            <div class="relative z-10">
+                <div class="flex items-center justify-center mb-6">
+                    <div class="w-16 h-16 rounded-full bg-white flex items-center justify-center mr-4 pulse-glow">
+                        <span class="text-blue-800 font-bold text-2xl">IN</span>
+                    </div>
+                    <h1 class="text-3xl font-bold">Ilm Nexus</h1>
+                </div>
+                <h2 class="text-4xl font-bold mb-4">Digital Skills Bootcamp 2.0</h2>
+                <p class="text-xl font-medium mb-4 bg-white/20 inline-block px-4 py-2 rounded-full">LEVERAGING ON AI - BUILDING THE NEXT GENERATION OF DIGITAL CREATORS</p>
+                <div class="flex flex-wrap justify-center gap-4 mt-6">
+                    <div class="countdown-item">
+                        <div class="text-2xl font-bold">SAT. 8TH</div>
+                        <div class="text-sm">NOV, 2025</div>
+                    </div>
+                    <div class="countdown-item">
+                        <div class="text-2xl font-bold">10:00AM</div>
+                        <div class="text-sm">PROMPT START</div>
+                    </div>
+                    <div class="countdown-item">
+                        <div class="text-sm">CIBN BANKER'S HALL</div>
+                        <div class="text-sm">KWASU, MALETE</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Success Message (Initially Hidden) -->
+        <div id="success-message" class="success-message bg-green-50 border-l-4 border-green-500 p-4 mx-6 mt-6 rounded-lg">
+            <div class="flex">
+                <div class="flex-shrink-0">
+                    <i class="fas fa-check-circle text-green-500 text-xl"></i>
+                </div>
+                <div class="ml-3">
+                    <h3 class="text-green-800 font-medium">Registration Successful!</h3>
+                    <p class="text-green-700 mt-1">Thank you for registering for Ilm Nexus Digital Skills Bootcamp 2.0. We've sent a confirmation to your email.</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Error Message (Initially Hidden) -->
+        <div id="error-message" class="error-message bg-red-50 border-l-4 border-red-500 p-4 mx-6 mt-6 rounded-lg">
+            <div class="flex">
+                <div class="flex-shrink-0">
+                    <i class="fas fa-exclamation-circle text-red-500 text-xl"></i>
+                </div>
+                <div class="ml-3">
+                    <h3 class="text-red-800 font-medium">Registration Failed!</h3>
+                    <p class="text-red-700 mt-1" id="error-text">There was an error submitting your registration. Please try again or contact us directly.</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Registration Form -->
+        <form id="registration-form" class="p-8">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- Full Name -->
+                <div class="fade-in" style="animation-delay: 0.1s">
+                    <label for="full_name" class="block text-gray-700 font-medium mb-2">Full Name</label>
+                    <div class="input-wrapper">
+                        <input type="text" id="full_name" name="full_name" placeholder="Enter your full name" 
+                               class="form-input w-full px-4 py-4 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" required>
+                        <i class="fas fa-user input-icon"></i>
+                    </div>
+                    <div class="text-red-500 text-sm mt-1 hidden" id="name-error">Please enter your full name</div>
+                </div>
+                
+                <!-- Email Address -->
+                <div class="fade-in" style="animation-delay: 0.2s">
+                    <label for="email" class="block text-gray-700 font-medium mb-2">Email Address</label>
+                    <div class="input-wrapper">
+                        <input type="email" id="email" name="email" placeholder="Enter your email address" 
+                               class="form-input w-full px-4 py-4 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" required>
+                        <i class="fas fa-envelope input-icon"></i>
+                    </div>
+                    <div class="text-red-500 text-sm mt-1 hidden" id="email-error">Please enter a valid email address</div>
+                </div>
+                
+                <!-- WhatsApp Number -->
+                <div class="fade-in" style="animation-delay: 0.3s">
+                    <label for="phone" class="block text-gray-700 font-medium mb-2">WhatsApp Number</label>
+                    <div class="input-wrapper">
+                        <input type="text" id="phone" name="phone" placeholder="Enter your WhatsApp number" 
+                               class="form-input w-full px-4 py-4 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" required>
+                        <i class="fas fa-phone input-icon"></i>
+                    </div>
+                    <div class="text-red-500 text-sm mt-1 hidden" id="phone-error">Please enter a valid phone number</div>
+                </div>
+                
+                <!-- Institution -->
+                <div class="fade-in" style="animation-delay: 0.4s">
+                    <label for="institution" class="block text-gray-700 font-medium mb-2">Institution/Organization</label>
+                    <div class="input-wrapper">
+                        <input type="text" id="institution" name="institution" placeholder="Enter your institution or organization" 
+                               class="form-input w-full px-4 py-4 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" required>
+                        <i class="fas fa-university input-icon"></i>
+                    </div>
+                    <div class="text-red-500 text-sm mt-1 hidden" id="institution-error">Please enter your institution</div>
+                </div>
+                
+                <!-- Profession/Field of Study -->
+                <div class="fade-in" style="animation-delay: 0.5s">
+                    <label for="profession" class="block text-gray-700 font-medium mb-2">Profession/Field of Study</label>
+                    <div class="input-wrapper">
+                        <input type="text" id="profession" name="profession" placeholder="Enter your profession or field of study" 
+                               class="form-input w-full px-4 py-4 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" required>
+                        <i class="fas fa-briefcase input-icon"></i>
+                    </div>
+                    <div class="text-red-500 text-sm mt-1 hidden" id="profession-error">Please enter your profession or field of study</div>
+                </div>
+                
+                <!-- Current Skill Level -->
+                <div class="fade-in" style="animation-delay: 0.6s">
+                    <label for="skill_level" class="block text-gray-700 font-medium mb-2">Current Digital Skills Level</label>
+                    <div class="input-wrapper">
+                        <select id="skill_level" name="skill_level" 
+                                class="form-input w-full px-4 py-4 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent appearance-none" required>
+                            <option value="">Select your skill level</option>
+                            <option>Beginner</option>
+                            <option>Intermediate</option>
+                            <option>Advanced</option>
+                        </select>
+                        <i class="fas fa-chart-line input-icon"></i>
+                        <i class="fas fa-chevron-down absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-400 pointer-events-none"></i>
+                    </div>
+                    <div class="text-red-500 text-sm mt-1 hidden" id="skill-level-error">Please select your skill level</div>
+                </div>
+            </div>
+            
+            <!-- AI Interest Area -->
+            <div class="mt-6 fade-in" style="animation-delay: 0.7s">
+                <label for="ai_interest" class="block text-gray-700 font-medium mb-2">Primary AI/Digital Skill Interest</label>
+                <div class="input-wrapper">
+                    <select id="ai_interest" name="ai_interest" 
+                            class="form-input w-full px-4 py-4 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent appearance-none" required>
+                        <option value="">Select your primary interest</option>
+                        <option>AI Content Creation</option>
+                        <option>AI-Powered Design</option>
+                        <option>Digital Marketing with AI</option>
+                        <option>AI Development Tools</option>
+                        <option>Data Analysis with AI</option>
+                        <option>Other AI Applications</option>
+                    </select>
+                    <i class="fas fa-robot input-icon"></i>
+                    <i class="fas fa-chevron-down absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-400 pointer-events-none"></i>
+                </div>
+                <div class="text-red-500 text-sm mt-1 hidden" id="ai-interest-error">Please select an AI interest area</div>
+            </div>
+            
+            <!-- Expectations -->
+            <div class="mt-6 fade-in" style="animation-delay: 0.8s">
+                <label for="expectations" class="block text-gray-700 font-medium mb-2">What do you hope to achieve from this bootcamp?</label>
+                <div class="input-wrapper">
+                    <textarea id="expectations" name="expectations" rows="4" placeholder="Tell us about your expectations and what you hope to learn..." 
+                              class="form-input w-full px-4 py-4 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" required></textarea>
+                    <i class="fas fa-bullseye input-icon top-6"></i>
+                </div>
+                <div class="text-red-500 text-sm mt-1 hidden" id="expectations-error">Please tell us about your expectations</div>
+            </div>
+            
+            <!-- How did you hear about us -->
+            <div class="mt-6 fade-in" style="animation-delay: 0.9s">
+                <label for="referral" class="block text-gray-700 font-medium mb-2">How did you hear about this bootcamp?</label>
+                <div class="input-wrapper">
+                    <select id="referral" name="referral" 
+                            class="form-input w-full px-4 py-4 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent appearance-none" required>
+                        <option value="">Select an option</option>
+                        <option>Social Media</option>
+                        <option>Friend/Colleague</option>
+                        <option>University Notice</option>
+                        <option>Email</option>
+                        <option>Other</option>
+                    </select>
+                    <i class="fas fa-share-nodes input-icon"></i>
+                    <i class="fas fa-chevron-down absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-400 pointer-events-none"></i>
+                </div>
+                <div class="text-red-500 text-sm mt-1 hidden" id="referral-error">Please select how you heard about us</div>
+            </div>
+            
+            <!-- Submit Button -->
+            <div class="mt-8 fade-in" style="animation-delay: 1s">
+                <button type="submit" id="submit-btn" class="btn-gradient w-full text-white font-bold py-5 px-6 rounded-xl transition-all duration-300 flex items-center justify-center text-lg">
+                    <i class="fas fa-rocket mr-3"></i>
+                    Register for Bootcamp
+                </button>
+            </div>
+            
+            <!-- Alternative Contact Info -->
+            <div class="mt-6 text-center text-gray-600 fade-in" style="animation-delay: 1.1s">
+                <p class="mb-2">If you continue having issues, please contact us directly:</p>
+                <p class="font-medium"><i class="fas fa-envelope mr-2"></i>theilmnexus@gmail.com</p>
+            </div>
+            
+            <!-- Form Footer -->
+            <div class="mt-6 text-center text-gray-600 fade-in" style="animation-delay: 1.2s">
+                <p>By registering, you agree to our <a href="#" class="text-blue-600 hover:underline">Terms of Service</a> and <a href="#" class="text-blue-600 hover:underline">Privacy Policy</a>.</p>
+            </div>
+        </form>
+        
+        <!-- Back to Home -->
+        <div class="bg-gray-50/80 px-6 py-4 text-center border-t border-gray-200/50">
+            <a href="index.html" class="text-blue-600 hover:text-blue-800 font-medium inline-flex items-center">
+                <i class="fas fa-arrow-left mr-2"></i>
+                Back to Homepage
+            </a>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const form = document.getElementById('registration-form');
+            const successMessage = document.getElementById('success-message');
+            const errorMessage = document.getElementById('error-message');
+            const errorText = document.getElementById('error-text');
+            
+            // Form validation function
+            function validateForm() {
+                let isValid = true;
+                
+                // Reset error messages
+                document.querySelectorAll('.text-red-500').forEach(el => {
+                    el.classList.add('hidden');
+                });
+                
+                // Validate Full Name
+                const fullName = document.getElementById('full_name').value.trim();
+                if (fullName === '') {
+                    document.getElementById('name-error').classList.remove('hidden');
+                    isValid = false;
+                }
+                
+                // Validate Email
+                const email = document.getElementById('email').value.trim();
+                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                if (!emailRegex.test(email)) {
+                    document.getElementById('email-error').classList.remove('hidden');
+                    isValid = false;
+                }
+                
+                // Validate Phone
+                const phone = document.getElementById('phone').value.trim();
+                const phoneRegex = /^[\+]?[0-9]{10,15}$/;
+                if (!phoneRegex.test(phone)) {
+                    document.getElementById('phone-error').classList.remove('hidden');
+                    isValid = false;
+                }
+                
+                // Validate Institution
+                const institution = document.getElementById('institution').value.trim();
+                if (institution === '') {
+                    document.getElementById('institution-error').classList.remove('hidden');
+                    isValid = false;
+                }
+                
+                // Validate Profession
+                const profession = document.getElementById('profession').value.trim();
+                if (profession === '') {
+                    document.getElementById('profession-error').classList.remove('hidden');
+                    isValid = false;
+                }
+                
+                // Validate Skill Level
+                const skillLevel = document.getElementById('skill_level').value;
+                if (skillLevel === '') {
+                    document.getElementById('skill-level-error').classList.remove('hidden');
+                    isValid = false;
+                }
+                
+                // Validate AI Interest
+                const aiInterest = document.getElementById('ai_interest').value;
+                if (aiInterest === '') {
+                    document.getElementById('ai-interest-error').classList.remove('hidden');
+                    isValid = false;
+                }
+                
+                // Validate Expectations
+                const expectations = document.getElementById('expectations').value.trim();
+                if (expectations === '') {
+                    document.getElementById('expectations-error').classList.remove('hidden');
+                    isValid = false;
+                }
+                
+                // Validate Referral
+                const referral = document.getElementById('referral').value;
+                if (referral === '') {
+                    document.getElementById('referral-error').classList.remove('hidden');
+                    isValid = false;
+                }
+                
+                return isValid;
+            }
+            
+            // Form submission handler
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                if (validateForm()) {
+                    // Show loading state on button
+                    const submitBtn = document.getElementById('submit-btn');
+                    const originalText = submitBtn.innerHTML;
+                    submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i> Processing Registration...';
+                    submitBtn.disabled = true;
+                    
+                    // Hide any previous messages
+                    successMessage.classList.remove('show');
+                    errorMessage.classList.remove('show');
+                    
+                    // Prepare form data
+                    const formData = new FormData();
+                    formData.append('full_name', document.getElementById('full_name').value);
+                    formData.append('email', document.getElementById('email').value);
+                    formData.append('phone', document.getElementById('phone').value);
+                    formData.append('institution', document.getElementById('institution').value);
+                    formData.append('profession', document.getElementById('profession').value);
+                    formData.append('skill_level', document.getElementById('skill_level').value);
+                    formData.append('ai_interest', document.getElementById('ai_interest').value);
+                    formData.append('expectations', document.getElementById('expectations').value);
+                    formData.append('referral', document.getElementById('referral').value);
+                    formData.append('_subject', 'Digital Skills Bootcamp 2.0 Registration – Ilm Nexus');
+                    formData.append('_captcha', 'false');
+                    formData.append('_template', 'table');
+                    formData.append('_replyto', document.getElementById('email').value);
+                    
+                    // Submit to FormSubmit
+                    fetch('https://formsubmit.co/ajax/theilmnexus@gmail.com', {
+                        method: 'POST',
+                        body: formData
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            // Show success message
+                            successMessage.classList.add('show');
+                            
+                            // Reset form
+                            form.reset();
+                            
+                            // Scroll to success message
+                            successMessage.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                            
+                            // Hide success message after 5 seconds
+                            setTimeout(function() {
+                                successMessage.classList.remove('show');
+                            }, 5000);
+                        } else {
+                            throw new Error('Form submission failed');
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        errorText.textContent = 'There was an error submitting your registration. Please try again or contact us directly at theilmnexus@gmail.com.';
+                        errorMessage.classList.add('show');
+                        errorMessage.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    })
+                    .finally(() => {
+                        // Reset button
+                        submitBtn.innerHTML = originalText;
+                        submitBtn.disabled = false;
+                    });
+                }
+            });
+            
+            // Real-time validation for email field
+            document.getElementById('email').addEventListener('blur', function() {
+                const email = this.value.trim();
+                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                const errorElement = document.getElementById('email-error');
+                
+                if (email === '') {
+                    errorElement.textContent = 'Please enter your email address';
+                    errorElement.classList.remove('hidden');
+                } else if (!emailRegex.test(email)) {
+                    errorElement.textContent = 'Please enter a valid email address';
+                    errorElement.classList.remove('hidden');
+                } else {
+                    errorElement.classList.add('hidden');
+                }
+            });
+            
+            // Real-time validation for phone field
+            document.getElementById('phone').addEventListener('blur', function() {
+                const phone = this.value.trim();
+                const phoneRegex = /^[\+]?[0-9]{10,15}$/;
+                const errorElement = document.getElementById('phone-error');
+                
+                if (phone === '') {
+                    errorElement.textContent = 'Please enter your WhatsApp number';
+                    errorElement.classList.remove('hidden');
+                } else if (!phoneRegex.test(phone)) {
+                    errorElement.textContent = 'Please enter a valid phone number';
+                    errorElement.classList.remove('hidden');
+                } else {
+                    errorElement.classList.add('hidden');
+                }
+            });
+        });
+    </script>
+</body>
+</html>

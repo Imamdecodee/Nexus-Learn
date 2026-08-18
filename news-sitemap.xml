@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:news="http://www.google.com/schemas/sitemap-news/0.9">
+    
+    <!-- News Article 1: Ilm Nexus Limited Officially Registered -->
+    <url>
+        <loc>https://nexus-learn.netlify.app/news.html?article=ilm-nexus-registered</loc>
+        <lastmod>2025-12-03T00:00:00+00:00</lastmod>
+        <changefreq>never</changefreq>
+        <priority>0.8</priority>
+        <news:news>
+            <news:publication>
+                <news:name>Nexus-Learn News</news:name>
+                <news:language>en</news:language>
+            </news:publication>
+            <news:publication_date>2025-12-03T00:00:00Z</news:publication_date>
+            <news:title>Ilm Nexus Limited Officially Registered</news:title>
+            <news:keywords>Ilm Nexus, registration, TIN, universities, Nigeria</news:keywords>
+        </news:news>
+    </url>
+
+    <!-- News Article 2: Conference 3.0 -->
+    <url>
+        <loc>https://nexus-learn.netlify.app/news.html?article=conference-3.0</loc>
+        <lastmod>2025-12-13T00:00:00+00:00</lastmod>
+        <changefreq>never</changefreq>
+        <priority>0.8</priority>
+        <news:news>
+            <news:publication>
+                <news:name>Nexus-Learn News</news:name>
+                <news:language>en</news:language>
+            </news:publication>
+            <news:publication_date>2025-12-13T00:00:00Z</news:publication_date>
+            <news:title>ILM Nexus Conference 3.0 — University of Ilorin</news:title>
+            <news:keywords>conference, bootcamp, workshops, networking, education</news:keywords>
+        </news:news>
+    </url>
+
+    <!-- News Article 3: Digital Skills Certificate Fee -->
+    <url>
+        <loc>https://nexus-learn.netlify.app/news.html?article=certificate-fee</loc>
+        <lastmod>2026-05-25T00:00:00+00:00</lastmod>
+        <changefreq>never</changefreq>
+        <priority>0.7</priority>
+        <news:news>
+            <news:publication>
+                <news:name>Nexus-Learn News</news:name>
+                <news:language>en</news:language>
+            </news:publication>
+            <news:publication_date>2026-05-25T00:00:00Z</news:publication_date>
+            <news:title>ILM Nexus Announces Official Digital Skills Certificate Fee</news:title>
+            <news:keywords>certificate, fee, digital skills, training, certification</news:keywords>
+        </news:news>
+    </url>
+
+    <!-- News Article 4: University Expansion -->
+    <url>
+        <loc>https://nexus-learn.netlify.app/news.html?article=expansion</loc>
+        <lastmod>2025-12-03T00:00:00+00:00</lastmod>
+        <changefreq>never</changefreq>
+        <priority>0.8</priority>
+        <news:news>
+            <news:publication>
+                <news:name>Nexus-Learn News</news:name>
+                <news:language>en</news:language>
+            </news:publication>
+            <news:publication_date>2025-12-03T00:00:00Z</news:publication_date>
+            <news:title>Ilm Nexus Expands to More Universities Across Nigeria</news:title>
+            <news:keywords>expansion, universities, Nigeria, digital skills, education</news:keywords>
+        </news:news>
+    </url>
+
+    <!-- News Article 5: Latest Update -->
+    <url>
+        <loc>https://nexus-learn.netlify.app/news.html?article=latest-update</loc>
+        <lastmod>2025-12-23T00:00:00+00:00</lastmod>
+        <changefreq>never</changefreq>
+        <priority>0.7</priority>
+        <news:news>
+            <news:publication>
+                <news:name>Nexus-Learn News</news:name>
+                <news:language>en</news:language>
+            </news:publication>
+            <news:publication_date>2025-12-23T00:00:00Z</news:publication_date>
+            <news:title>LATEST UPDATE FROM ILM NEXUS</news:title>
+            <news:keywords>update, growth, achievement, leadership, organization</news:keywords>
+        </news:news>
+    </url>
+
+    <!-- News Article 6: Student Talent Recruitment -->
+    <url>
+        <loc>https://nexus-learn.netlify.app/news.html?article=talent-recruitment</loc>
+        <lastmod>2025-11-30T00:00:00+00:00</lastmod>
+        <changefreq>never</changefreq>
+        <priority>0.7</priority>
+        <news:news>
+            <news:publication>
+                <news:name>Nexus-Learn News</news:name>
+                <news:language>en</news:language>
+            </news:publication>
+            <news:publication_date>2025-11-30T00:00:00Z</news:publication_date>
+            <news:title>ILM Nexus Launches Student Talent Recruitment Program</news:title>
+            <news:keywords>recruitment, talent, creators, community, opportunity</news:keywords>
+        </news:news>
+    </url>
+
+</urlset>

@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Edit Profile - NexusLearn</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #f4f6f8;
+      margin: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .profile-card {
+      background: white;
+      padding: 40px 30px;
+      border-radius: 12px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      text-align: center;
+      width: 90%;
+      max-width: 450px;
+    }
+
+    .profile-card img {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      border: 4px solid #0073e6;
+      margin-bottom: 15px;
+      object-fit: cover;
+    }
+
+    .profile-card input[type="text"],
+    .profile-card input[type="file"] {
+      width: 100%;
+      padding: 10px 14px;
+      margin: 10px 0;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+    }
+
+    .btn {
+      margin-top: 20px;
+      padding: 10px 20px;
+      background: #0073e6;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    .btn:hover {
+      background: #005bb5;
+    }
+
+    .note {
+      font-size: 12px;
+      color: #777;
+    }
+
+    .back-link {
+      display: inline-block;
+      margin-top: 15px;
+      text-decoration: none;
+      color: #0073e6;
+    }
+  </style>
+</head>
+<body>
+
+<div class="profile-card">
+  <img id="avatarPreview" src="" alt="Profile Picture">
+  <input type="file" id="avatarFile" accept="image/*">
+  <input type="text" id="nameInput" placeholder="Your Full Name">
+  <input type="text" id="courseInput" placeholder="Course Enrolled" disabled />
+  <button class="btn" onclick="saveProfile()">Save Changes</button>
+  <br>
+  <a href="dashboard.html" class="back-link">← Back to Dashboard</a>
+  <p class="note">Note: Changes are saved in your browser.</p>
+</div>
+
+<script>
+  let student = JSON.parse(localStorage.getItem("student_data"));
+  if (!student) window.location.href = "login.html";
+
+  // Set existing values
+  document.getElementById('nameInput').value = student.name;
+  document.getElementById('courseInput').value = student.course;
+  document.getElementById('avatarPreview').src = student.avatar;
+
+  // Image preview
+  document.getElementById('avatarFile').addEventListener('change', function () {
+    const file = this.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = function (e) {
+        document.getElementById('avatarPreview').src = e.target.result;
+        student.avatar = e.target.result; // Set base64 to avatar
+      }
+      reader.readAsDataURL(file);
+    }
+  });
+
+  function saveProfile() {
+    const newName = document.getElementById('nameInput').value.trim();
+    if (newName) {
+      student.name = newName;
+      localStorage.setItem("student_data", JSON.stringify(student));
+      alert("Profile updated!");
+    } else {
+      alert("Please enter your name.");
+    }
+  }
+</script>
+
+</body>
+</html>

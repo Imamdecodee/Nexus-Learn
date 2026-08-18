@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register - Ilm Nexus Conference 3.0</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+        }
+        
+        .card {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            width: 100%;
+            max-width: 900px;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #4f46e5, #4338ca);
+            color: white;
+            padding: 2.5rem;
+            text-align: center;
+        }
+        
+        .logo-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1.5rem;
+        }
+        
+        .logo {
+            width: 70px;
+            height: 70px;
+            background: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 1rem;
+        }
+        
+        .conference-title {
+            font-size: 2.2rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+        
+        .form-container {
+            padding: 2.5rem;
+        }
+        
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-label {
+            display: block;
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+            color: #374151;
+        }
+        
+        .form-input, .form-select, .form-textarea {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 2px solid #e5e7eb;
+            border-radius: 10px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+        
+        .form-input:focus, .form-select:focus, .form-textarea:focus {
+            border-color: #4f46e5;
+            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+            outline: none;
+        }
+        
+        .form-textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+        
+        .error-message {
+            color: #ef4444;
+            font-size: 0.875rem;
+            margin-top: 0.5rem;
+            display: none;
+        }
+        
+        .submit-btn {
+            background: linear-gradient(135deg, #4f46e5, #4338ca);
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            font-size: 1.1rem;
+            font-weight: 600;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+        
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 7px 14px rgba(79, 70, 229, 0.3);
+        }
+        
+        .submit-btn:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .message {
+            padding: 1rem 1.5rem;
+            border-radius: 10px;
+            margin-bottom: 1.5rem;
+            display: none;
+        }
+        
+        .success-message {
+            background: #f0fdf4;
+            border-left: 4px solid #10b981;
+            color: #065f46;
+        }
+        
+        .error-message-box {
+            background: #fef2f2;
+            border-left: 4px solid #ef4444;
+            color: #991b1b;
+        }
+        
+        @media (max-width: 768px) {
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .header, .form-container {
+                padding: 2rem 1.5rem;
+            }
+            
+            .conference-title {
+                font-size: 1.8rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <div class="header">
+            <div class="logo-container">
+                <div class="logo">
+                    <span style="color: #4f46e5; font-weight: 700; font-size: 1.5rem;">IN</span>
+                </div>
+                <div style="font-size: 2rem; font-weight: 700;">Ilm Nexus</div>
+            </div>
+            <h1 class="conference-title">Conference 3.0 Registration</h1>
+            <p>University of Ilorin | December 11, 2025</p>
+        </div>
+        
+        <div id="success-message" class="message success-message">
+            <i class="fas fa-check-circle mr-2"></i>
+            <strong>Registration Successful!</strong> Thank you for registering. We've sent a confirmation to your email.
+        </div>
+        
+        <div id="error-message" class="message error-message-box">
+            <i class="fas fa-exclamation-circle mr-2"></i>
+            <strong>Registration Failed!</strong> <span id="error-text">There was an error submitting your registration.</span>
+        </div>
+        
+        <div class="form-container">
+            <form id="registration-form">
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="full_name" class="form-label">Full Name</label>
+                        <input type="text" id="full_name" name="full_name" class="form-input" required>
+                        <div class="error-message" id="name-error">Please enter your full name</div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="email" class="form-label">Email Address</label>
+                        <input type="email" id="email" name="email" class="form-input" required>
+                        <div class="error-message" id="email-error">Please enter a valid email address</div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="phone" class="form-label">WhatsApp Number</label>
+                        <input type="text" id="phone" name="phone" class="form-input" required>
+                        <div class="error-message" id="phone-error">Please enter a valid phone number</div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="phone" class="form-label">Referal Code</label>
+                        <input type="text" id="phone" name="phone" class="form-input">
+                        <div class="error-message" id="phone-error">Put the referal code given by your friend</div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="phone" class="form-label">State Based</label>
+                        <input type="text" id="phone" name="phone" class="form-input" required>
+                        <div class="error-message" id="phone-error">Your State Of Origin</div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="institution" class="form-label">Institution</label>
+                        <input type="text" id="institution" name="institution" class="form-input" required>
+                        <div class="error-message" id="institution-error">Please enter your institution</div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="department" class="form-label">Department</label>
+                        <input type="text" id="department" name="department" class="form-input" required>
+                        <div class="error-message" id="department-error">Please enter your department</div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="year" class="form-label">Year of Study</label>
+                        <input type="text" id="year" name="year" class="form-input" required>
+                        <div class="error-message" id="year-error">Please enter your year of study</div>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="skills_interest" class="form-label">Skill Interest</label>
+                    <select id="skills_interest" name="skills_interest" class="form-select" required>
+                        <option value="">Select Skill Interest</option>
+                        <option>Frontend Development</option>
+                        <option>Graphics Design</option>
+                        <option>Digital Marketing</option>
+                        <option>Video Editing</option>
+                        <option>Communication Skills</option>
+                    </select>
+                    <div class="error-message" id="skills-error">Please select a skill interest</div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="note" class="form-label">Message or Course Interested In</label>
+                    <textarea id="note" name="note" class="form-textarea" required></textarea>
+                    <div class="error-message" id="note-error">Please enter a message or course interest</div>
+                </div>
+                
+                <div class="form-group">
+                    <button type="submit" id="submit-btn" class="submit-btn">
+                        <i class="fas fa-paper-plane mr-2"></i>
+                        Submit Registration
+                    </button>
+                </div>
+                
+                <div style="text-align: center; margin-top: 2rem; color: #64748b;">
+                    <p>If you continue having issues, please contact us directly:</p>
+                    <p class="font-medium mt-2">
+                        <i class="fas fa-envelope mr-2"></i>theilmnexus@gmail.com
+                    </p>
+                </div>
+            </form>
+        </div>
+        
+        <div style="background: #f8fafc; padding: 1.5rem; text-align: center; border-top: 1px solid #e5e7eb;">
+            <a href="index.html" style="color: #4f46e5; font-weight: 500;">
+                <i class="fas fa-arrow-left mr-2"></i>
+                Back to Homepage
+            </a>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const form = document.getElementById('registration-form');
+            const successMessage = document.getElementById('success-message');
+            const errorMessage = document.getElementById('error-message');
+            const errorText = document.getElementById('error-text');
+            
+            function validateForm() {
+                let isValid = true;
+                
+                document.querySelectorAll('.error-message').forEach(el => {
+                    el.style.display = 'none';
+                });
+                
+                const fullName = document.getElementById('full_name').value.trim();
+                if (fullName === '') {
+                    document.getElementById('name-error').style.display = 'block';
+                    isValid = false;
+                }
+                
+                const email = document.getElementById('email').value.trim();
+                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                if (!emailRegex.test(email)) {
+                    document.getElementById('email-error').style.display = 'block';
+                    isValid = false;
+                }
+                
+                const phone = document.getElementById('phone').value.trim();
+                const phoneRegex = /^[\+]?[0-9\s\-\(\)]{10,15}$/;
+                if (!phoneRegex.test(phone.replace(/\s/g, ''))) {
+                    document.getElementById('phone-error').style.display = 'block';
+                    isValid = false;
+                }
+                
+                const requiredFields = ['institution', 'department', 'year', 'skills_interest', 'note'];
+                requiredFields.forEach(field => {
+                    const value = document.getElementById(field).value.trim();
+                    if (value === '') {
+                        document.getElementById(`${field}-error`).style.display = 'block';
+                        isValid = false;
+                    }
+                });
+                
+                return isValid;
+            }
+            
+            form.addEventListener('submit', async function(e) {
+                e.preventDefault();
+                
+                if (validateForm()) {
+                    const submitBtn = document.getElementById('submit-btn');
+                    const originalText = submitBtn.innerHTML;
+                    submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i> Processing...';
+                    submitBtn.disabled = true;
+                    
+                    successMessage.style.display = 'none';
+                    errorMessage.style.display = 'none';
+                    
+                    try {
+                        const formData = {
+                            full_name: document.getElementById('full_name').value,
+                            email: document.getElementById('email').value,
+                            phone: document.getElementById('phone').value,
+                            institution: document.getElementById('institution').value,
+                            department: document.getElementById('department').value,
+                            year: document.getElementById('year').value,
+                            skills_interest: document.getElementById('skills_interest').value,
+                            note: document.getElementById('note').value
+                        };
+                        
+                        const response = await fetch('/.netlify/functions/submitForm', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                            },
+                            body: JSON.stringify(formData)
+                        });
+                        
+                        if (!response.ok) {
+                            throw new Error(`HTTP error! status: ${response.status}`);
+                        }
+                        
+                        const data = await response.json();
+                        
+                        if (data.success) {
+                            successMessage.style.display = 'flex';
+                            form.reset();
+                            successMessage.scrollIntoView({ behavior: 'smooth' });
+                            
+                            setTimeout(function() {
+                                successMessage.style.display = 'none';
+                            }, 5000);
+                        } else {
+                            throw new Error(data.message || 'Form submission failed');
+                        }
+                        
+                    } catch (error) {
+                        console.error('Error:', error);
+                        errorText.textContent = 'There was an error submitting your registration. Please try again or contact us directly at theilmnexus@gmail.com.';
+                        errorMessage.style.display = 'flex';
+                        errorMessage.scrollIntoView({ behavior: 'smooth' });
+                    } finally {
+                        submitBtn.innerHTML = originalText;
+                        submitBtn.disabled = false;
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>
