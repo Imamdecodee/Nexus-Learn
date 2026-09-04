@@ -407,6 +407,26 @@
 
   const studentKey = "completed_videos_" + student.name;
   const videoList = document.getElementById("videoList");
+  const paymentVerified = student.paymentStatus === "Payment Verified";
+
+  const accountPanel = document.createElement("section");
+  accountPanel.style.cssText = "margin: 20px 0; padding: 22px; border-radius: 12px; background: white; box-shadow: 0 2px 8px rgba(0,0,0,.06); border-left: 5px solid #ef9c18;";
+  accountPanel.innerHTML = `
+    <p style="margin:0 0 6px; color:#667085; font-size:13px; text-transform:uppercase; letter-spacing:.08em;">Account status</p>
+    <h3 style="margin:0 0 8px; color:${paymentVerified ? '#147d5a' : '#b54708'};">${paymentVerified ? 'Payment Verified' : 'Incomplete - Payment Pending'}</h3>
+    <p style="margin:0 0 14px; color:#667085;">Course: <strong>${student.course || 'Not selected'}</strong> · Plan: <strong>${student.plan || 'Not selected'}</strong></p>
+    ${paymentVerified ? '<p style="margin:0; color:#147d5a;">Your eligible learning materials are unlocked.</p>' : '<p style="margin:0 0 14px; color:#667085;">Complete payment and upload your receipt to activate full access to your course materials.</p><p style="margin:0 0 14px; color:#667085;"><strong>Zenith Bank</strong> · 1310989845 · ILM Nexus official account</p><label style="display:inline-flex; align-items:center; gap:8px; padding:10px 14px; border-radius:7px; background:#eef4ff; color:#246bfe; font-weight:600; cursor:pointer;">Upload payment receipt <input id="receiptInput" type="file" accept="image/*,.pdf" style="display:none;"></label><span id="receiptStatus" style="margin-left:10px; color:#667085; font-size:13px;">${student.receiptStatus || 'Not submitted'}</span>'}
+  `;
+  document.querySelector(".main").insertBefore(accountPanel, videoList);
+
+  document.getElementById("receiptInput")?.addEventListener("change", function () {
+    if (!this.files[0]) return;
+    student.receiptStatus = "Receipt Submitted";
+    student.paymentStatus = "Receipt Submitted";
+    localStorage.setItem("student_data", JSON.stringify(student));
+    localStorage.setItem("registered_student", JSON.stringify(student));
+    document.getElementById("receiptStatus").textContent = "Receipt Submitted";
+  });
 
   function renderVideos(list) {
     videoList.innerHTML = "";
@@ -417,13 +437,17 @@
 
       const card = document.createElement("div");
       card.className = "video-card";
-      card.innerHTML = `
-        <iframe src="${video.url}" allowfullscreen></iframe>
-        <div class="video-title">${video.title}</div>
-        <button class="complete-btn" onclick="markCompleted('${video.title}', this)" ${isCompleted ? "disabled" : ""}>
-          ${isCompleted ? "✅ Completed" : "Mark as Completed"}
-        </button>
-      `;
+      card.innerHTML = paymentVerified ? `
+          <iframe src="${video.url}" allowfullscreen></iframe>
+          <div class="video-title">${video.title}</div>
+          <button class="complete-btn" onclick="markCompleted('${video.title}', this)" ${isCompleted ? "disabled" : ""}>
+            ${isCompleted ? "✅ Completed" : "Mark as Completed"}
+          </button>
+        ` : `
+          <div style="height:160px; display:grid; place-items:center; background:#eaf0ff; color:#173d9b; font-size:2rem;"><i class="ri-lock-2-line"></i></div>
+          <div class="video-title">🔒 ${video.title}</div>
+          <p style="padding:0 16px 16px; margin:0; color:#667085; font-size:13px;">Payment verification required.</p>
+        `;
       videoList.appendChild(card);
     });
 

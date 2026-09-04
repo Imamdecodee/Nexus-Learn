@@ -1,187 +1,93 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Student Login | NexusLearn</title>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;600&display=swap" rel="stylesheet">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sign In | ILM Nexus Academy</title>
+  <meta name="description" content="Sign in to your ILM Nexus Academy learning dashboard.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
   <style>
-    * {
-      box-sizing: border-box;
-    }
-
-    body {
-      margin: 0;
-      font-family: 'Poppins', sans-serif;
-      background: linear-gradient(135deg, #dbeafe, #eff6ff);
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-    }
-
-    .login-card {
-      background: #ffffff;
-      padding: 40px;
-      border-radius: 16px;
-      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
-      width: 100%;
-      max-width: 400px;
-      text-align: center;
-    }
-
-    .login-card h2 {
-      color: #1e40af;
-      margin-bottom: 25px;
-    }
-
-    .login-card input {
-      width: 100%;
-      padding: 14px 16px;
-      margin: 10px 0;
-      font-size: 15px;
-      border: 1px solid #ccc;
-      border-radius: 8px;
-      transition: 0.2s;
-    }
-
-    .login-card input:focus {
-      border-color: #0073e6;
-      outline: none;
-      box-shadow: 0 0 5px rgba(0, 115, 230, 0.3);
-    }
-
-    .login-card button {
-      width: 100%;
-      padding: 14px;
-      background: #0073e6;
-      color: white;
-      font-weight: 600;
-      font-size: 16px;
-      border: none;
-      border-radius: 8px;
-      cursor: pointer;
-      transition: background 0.3s ease;
-      margin-top: 15px;
-    }
-
-    .login-card button:hover {
-      background: #005bb5;
-    }
-
-    .error {
-      color: #d32f2f;
-      font-size: 14px;
-      margin-top: 10px;
-    }
-
-    .helper-links {
-      margin-top: 20px;
-      font-size: 14px;
-    }
-
-    .helper-links a {
-      color: #0073e6;
-      text-decoration: none;
-    }
-
-    .helper-links a:hover {
-      text-decoration: underline;
-    }
+    :root { --blue: #246bfe; --blue-dark: #1744ad; --gold: #ef9c18; --ink: #14213d; --muted: #667085; --line: #dbe3ef; --paper: #f5f8fc; }
+    * { box-sizing: border-box; }
+    body { min-height: 100vh; margin: 0; padding: 1.25rem; display: grid; place-items: center; color: var(--ink); background: var(--paper); font-family: 'DM Sans', sans-serif; }
+    body::before { content: ''; position: fixed; inset: 0 55% 0 0; z-index: -1; background: var(--blue); }
+    .login-shell { width: min(980px, 100%); min-height: 620px; display: grid; grid-template-columns: .9fr 1.1fr; overflow: hidden; background: #fff; border: 1px solid rgba(20, 33, 61, .08); border-radius: 22px; box-shadow: 0 24px 70px rgba(20, 33, 61, .15); }
+    .login-intro { display: flex; flex-direction: column; justify-content: space-between; padding: clamp(2rem, 5vw, 4rem); color: #fff; background: linear-gradient(155deg, var(--blue), var(--blue-dark)); }
+    .brand { display: inline-flex; align-items: center; gap: .7rem; color: #fff; font: 700 1rem 'Space Grotesk', sans-serif; text-decoration: none; }
+    .brand img { width: 42px; height: 42px; object-fit: contain; border-radius: 50%; background: #fff; }
+    .intro-copy { max-width: 320px; }
+    .eyebrow { margin: 0 0 1rem; color: #ffd58a; font-size: .78rem; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; }
+    .intro-copy h1 { margin: 0 0 1rem; font: 700 clamp(2.1rem, 4vw, 3.6rem)/1.05 'Space Grotesk', sans-serif; }
+    .intro-copy p:not(.eyebrow) { color: rgba(255, 255, 255, .78); line-height: 1.75; }
+    .intro-footer { margin: 0; color: rgba(255, 255, 255, .68); font-size: .9rem; }
+    .login-panel { display: flex; align-items: center; padding: clamp(2rem, 6vw, 5rem); }
+    .login-form { width: 100%; max-width: 390px; margin: 0 auto; }
+    .login-form h2 { margin: 0 0 .55rem; font: 700 2rem 'Space Grotesk', sans-serif; }
+    .subheading { margin: 0 0 2rem; color: var(--muted); }
+    .field { margin-bottom: 1.15rem; }
+    .field label { display: block; margin-bottom: .45rem; font-size: .9rem; font-weight: 600; }
+    .input-wrap { position: relative; }
+    .login-form input { width: 100%; padding: .9rem 1rem; color: var(--ink); border: 1px solid var(--line); border-radius: 10px; background: #fff; font: inherit; transition: border-color .2s, box-shadow .2s; }
+    .login-form input:focus { border-color: var(--blue); outline: none; box-shadow: 0 0 0 4px rgba(36, 107, 254, .12); }
+    .toggle-password { position: absolute; top: 50%; right: .8rem; transform: translateY(-50%); border: 0; background: transparent; color: var(--muted); cursor: pointer; font: inherit; font-size: .85rem; font-weight: 600; }
+    .submit-button { width: 100%; padding: .95rem 1rem; margin-top: .5rem; border: 0; border-radius: 10px; background: var(--blue); color: #fff; cursor: pointer; font: inherit; font-weight: 700; transition: background .2s, transform .2s; }
+    .submit-button:hover { background: var(--blue-dark); transform: translateY(-1px); }
+    .submit-button:disabled { cursor: wait; opacity: .65; }
+    .error { min-height: 1.4rem; margin: .8rem 0 0; color: #c62828; font-size: .9rem; }
+    .helper-links { display: flex; justify-content: space-between; gap: 1rem; margin-top: 1.5rem; color: var(--muted); font-size: .9rem; }
+    .helper-links a { color: var(--blue); font-weight: 600; text-decoration: none; }
+    .helper-links a:hover { text-decoration: underline; }
+    .secure-note { margin-top: 2rem; color: var(--muted); font-size: .82rem; }
+    .secure-note i { margin-right: .35rem; color: var(--gold); }
+    @media (max-width: 720px) { body { padding: 0; } body::before { inset: 0 0 70% 0; } .login-shell { min-height: 100vh; grid-template-columns: 1fr; border: 0; border-radius: 0; } .login-intro { min-height: 285px; padding: 1.5rem; } .intro-copy h1 { font-size: 2.2rem; } .intro-footer { display: none; } .login-panel { align-items: flex-start; padding: 2rem 1.5rem 3rem; } .helper-links { flex-direction: column; } }
   </style>
 </head>
 <body>
-
-  <div class="login-card">
-    <h2>Student Login</h2>
-    <input type="text" id="username" placeholder="Username" required />
-    <input type="password" id="password" placeholder="Password" required />
-    <button onclick="login()">Login</button>
-    <p class="error" id="errorMsg"></p>
-
-    <div class="helper-links">
-      <p>Don’t have access? <a href="get-access.html">Get Access</a></p>
-    </div>
-  </div>
-
+  <main class="login-shell">
+    <section class="login-intro">
+      <a class="brand" href="index.html"><img src="./image/nexus-learn logo.png" alt="ILM Nexus logo"><span>ILM Nexus Academy</span></a>
+      <div class="intro-copy"><p class="eyebrow">Your learning space</p><h1>Keep learning. Keep moving.</h1><p>Pick up your courses, track your progress, and stay connected to your next opportunity.</p></div>
+      <p class="intro-footer">Learn · Build · Earn</p>
+    </section>
+    <section class="login-panel">
+      <form class="login-form" id="loginForm">
+        <h2>Welcome back</h2><p class="subheading">Sign in to open your student dashboard.</p>
+        <div class="field"><label for="username">Username</label><input type="text" id="username" placeholder="Enter your username" autocomplete="username" required></div>
+        <div class="field"><label for="password">Password</label><div class="input-wrap"><input type="password" id="password" placeholder="Enter your password" autocomplete="current-password" required><button type="button" class="toggle-password" id="togglePassword" aria-label="Show password">Show</button></div></div>
+        <button type="submit" class="submit-button" id="loginButton">Sign in</button>
+        <p class="error" id="errorMsg" role="alert" aria-live="polite"></p>
+        <div class="helper-links"><span>Need access to a course?</span><a href="get-access.html">Request access</a></div>
+        <p class="secure-note"><i class="fas fa-lock"></i>Your learning dashboard is private to you.</p>
+      </form>
+    </section>
+  </main>
   <script>
     const students = [
-      {
-        username: "student1",
-        password: "pass123",
-        name: "Aisha Bello",
-        course: "Frontend Development",
-        avatar: "https://i.pravatar.cc/150?img=1"
-      },
-      {
-       username: "student2",
-        password: "def456",
-        name: "Musa Ibrahim",
-        course: "Video Editing",
-        avatar: "https://i.pravatar.cc/150?img=2"
-      },
-       {
-        username: "student3",
-        password: "admin",
-        name: "Musa Ibrahim",
-        course: "Video Editing",
-        avatar: "https://i.pravatar.cc/150?img=2"
-      }
-      ,
-      {
-       username: "student4",
-        password: "ghi456",
-        name: "Musa Ibrahim",
-        course: "Video Editing",
-        avatar: "https://i.pravatar.cc/150?img=2"
-      }
-      ,
-      {
-       username: "student5",
-        password: "jkl456",
-        name: "Musa Ibrahim",
-        course: "Video Editing",
-        avatar: "https://i.pravatar.cc/150?img=2"
-      },
-      {
-       username: "student6",
-        password: "mno456",
-        name: "Musa Ibrahim",
-        course: "Video Editing",
-        avatar: "https://i.pravatar.cc/150?img=2"
-      },
-      {
-       username: "student7",
-        password: "pqr456",
-        name: "Musa Ibrahim",
-        course: "Video Editing",
-        avatar: "https://i.pravatar.cc/150?img=2"
-      },
-      {
-       username: "student8",
-        password: "stu456",
-        name: "Musa Ibrahim",
-        course: "Video Editing",
-        avatar: "https://i.pravatar.cc/150?img=2"
-      }
+      { username: 'student1', password: 'pass123', name: 'Aisha Bello', course: 'Frontend Development', avatar: 'https://i.pravatar.cc/150?img=1' },
+      { username: 'student2', password: 'def456', name: 'Musa Ibrahim', course: 'Video Editing', avatar: 'https://i.pravatar.cc/150?img=2' },
+      { username: 'student3', password: 'admin', name: 'Musa Ibrahim', course: 'Video Editing', avatar: 'https://i.pravatar.cc/150?img=2' },
+      { username: 'student4', password: 'ghi456', name: 'Musa Ibrahim', course: 'Video Editing', avatar: 'https://i.pravatar.cc/150?img=2' },
+      { username: 'student5', password: 'jkl456', name: 'Musa Ibrahim', course: 'Video Editing', avatar: 'https://i.pravatar.cc/150?img=2' },
+      { username: 'student6', password: 'mno456', name: 'Musa Ibrahim', course: 'Video Editing', avatar: 'https://i.pravatar.cc/150?img=2' },
+      { username: 'student7', password: 'pqr456', name: 'Musa Ibrahim', course: 'Video Editing', avatar: 'https://i.pravatar.cc/150?img=2' },
+      { username: 'student8', password: 'stu456', name: 'Musa Ibrahim', course: 'Video Editing', avatar: 'https://i.pravatar.cc/150?img=2' }
     ];
-
-    function login() {
-      const user = document.getElementById('username').value.trim();
-      const pass = document.getElementById('password').value.trim();
-      const errorMsg = document.getElementById('errorMsg');
-
-      const matched = students.find(s => s.username === user && s.password === pass);
-
-      if (matched) {
-        localStorage.setItem("student_logged_in", "yes");
-        localStorage.setItem("student_data", JSON.stringify(matched));
-        window.location.href = "dashboard.html";
-      } else {
-        errorMsg.textContent = "❌ Invalid username or password.";
-      }
-    }
+    document.getElementById('loginForm').addEventListener('submit', event => {
+      event.preventDefault();
+      const username = document.getElementById('username').value.trim();
+      const password = document.getElementById('password').value;
+      const errorMessage = document.getElementById('errorMsg');
+      const loginButton = document.getElementById('loginButton');
+      const registeredStudent = JSON.parse(localStorage.getItem('registered_student') || 'null');
+      const availableStudents = registeredStudent ? [...students, registeredStudent] : students;
+      const matchedStudent = availableStudents.find(student => student.username === username && student.password === password);
+      if (matchedStudent) { localStorage.setItem('student_logged_in', 'yes'); localStorage.setItem('student_data', JSON.stringify(matchedStudent)); loginButton.disabled = true; loginButton.textContent = 'Opening dashboard...'; window.location.href = 'dashboard.html'; return; }
+      errorMessage.textContent = 'That username and password do not match. Check them and try again.';
+    });
+    document.getElementById('togglePassword').addEventListener('click', event => { const passwordInput = document.getElementById('password'); const showingPassword = passwordInput.type === 'password'; passwordInput.type = showingPassword ? 'text' : 'password'; event.currentTarget.textContent = showingPassword ? 'Hide' : 'Show'; event.currentTarget.setAttribute('aria-label', showingPassword ? 'Hide password' : 'Show password'); });
   </script>
-
 </body>
 </html>
