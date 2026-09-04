@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ILM Nexus News Article</title>
+    <meta name="description" content="Read the latest news and updates from ILM Nexus.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+    <style>
+        :root { --blue: #4361ee; --dark: #212529; --muted: #6c757d; --light: #f8f9fa; --border: #e9ecef; }
+        * { box-sizing: border-box; }
+        body { margin: 0; color: var(--dark); background: var(--light); font-family: Inter, sans-serif; line-height: 1.7; }
+        .container { width: min(900px, calc(100% - 2rem)); margin: 0 auto; }
+        .site-header { background: white; border-bottom: 1px solid var(--border); }
+        .nav { min-height: 70px; display: flex; align-items: center; justify-content: space-between; gap: 1rem; }
+        .logo img { width: 120px; height: auto; display: block; }
+        .back-link { color: var(--blue); text-decoration: none; font-weight: 600; }
+        .article-shell { margin: 3rem auto; background: white; border-radius: 14px; overflow: hidden; box-shadow: 0 4px 22px rgba(0,0,0,.08); }
+        .article-body { padding: clamp(1.25rem, 4vw, 3rem); }
+        .article-category { color: var(--blue); font-size: .85rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; }
+        h1 { margin: .6rem 0 1rem; font: 800 clamp(1.8rem, 5vw, 3.2rem)/1.15 Poppins, sans-serif; }
+        .article-meta { color: var(--muted); display: flex; flex-wrap: wrap; gap: 1rem; font-size: .92rem; }
+        .article-cover { width: 100%; max-height: 520px; object-fit: cover; display: block; }
+        .article-content { margin-top: 2rem; white-space: pre-wrap; font-size: 1.08rem; }
+        .article-video { width: 100%; aspect-ratio: 16 / 9; border: 0; margin-top: 2rem; border-radius: 10px; }
+        .article-video-file { width: 100%; margin-top: 2rem; border-radius: 10px; }
+        .gallery { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: .8rem; margin-top: 2rem; }
+        .gallery img { width: 100%; height: 180px; object-fit: cover; border-radius: 8px; }
+        .related-links { display: flex; flex-wrap: wrap; gap: .75rem; margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid var(--border); }
+        .related-links a { color: var(--blue); font-weight: 600; text-decoration: none; }
+        .source-link { display: inline-block; margin-top: 1.5rem; color: var(--blue); font-weight: 600; }
+        .status { padding: 4rem 1rem; text-align: center; color: var(--muted); }
+        @media (max-width: 600px) { .nav { min-height: 60px; } .logo img { width: 100px; } .article-shell { margin-top: 1.5rem; } }
+    </style>
+</head>
+<body>
+    <header class="site-header">
+        <nav class="nav container">
+            <a class="logo" href="index.html"><img src="./image/nexus-learn logo.png" alt="ILM Nexus"></a>
+            <a class="back-link" href="news.html"><i class="fas fa-arrow-left"></i> All News</a>
+        </nav>
+    </header>
+
+    <main class="container">
+        <div id="articleStatus" class="status">Loading article...</div>
+        <article id="articleShell" class="article-shell" hidden>
+            <img id="articleCover" class="article-cover" alt="">
+            <div class="article-body">
+                <div id="articleCategory" class="article-category"></div>
+                <h1 id="articleTitle"></h1>
+                <div class="article-meta">
+                    <span id="articleDate"></span>
+                    <span id="articleViews"></span>
+                </div>
+                <div id="articleContent" class="article-content"></div>
+                <iframe id="articleVideo" class="article-video" title="Article video" allowfullscreen hidden></iframe>
+                <video id="articleVideoFile" class="article-video-file" controls hidden></video>
+                <div id="articleGallery" class="gallery"></div>
+                <div id="articleLinks" class="related-links"></div>
+                <a id="articleSource" class="source-link" target="_blank" rel="noopener" hidden>Read the related source <i class="fas fa-arrow-up-right-from-square"></i></a>
+            </div>
+        </article>
+    </main>
+
+    <script type="module">
+        import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js';
+        import { doc, getDoc, getFirestore, increment, updateDoc } from 'https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js';
+
+        const firebaseConfig = {
+            apiKey: 'AIzaSyBJKtNJDIxbo-_PxSwGTYcuS8gRjg9ReX8',
+            authDomain: 'ilmnexusnews.firebaseapp.com',
+            projectId: 'ilmnexusnews',
+            storageBucket: 'ilmnexusnews.firebasestorage.app',
+            messagingSenderId: '434251311563',
+            appId: '1:434251311563:web:0264d1049c463369862e4e'
+        };
+        const db = getFirestore(initializeApp(firebaseConfig));
+        const articleId = new URLSearchParams(window.location.search).get('id');
+        const status = document.getElementById('articleStatus');
+
+        function youtubeEmbed(url) {
+            try {
+                const parsed = new URL(url);
+                const videoId = parsed.hostname.includes('youtu.be') ? parsed.pathname.slice(1) : parsed.searchParams.get('v');
+                return videoId ? `https://www.youtube.com/embed/${encodeURIComponent(videoId)}` : url;
+            } catch {
+                return url;
+            }
+        }
+
+        function renderArticle(article) {
+            document.title = `${article.title} | ILM Nexus News`;
+            document.getElementById('articleCover').src = article.image;
+            document.getElementById('articleCover').alt = article.title;
+            document.getElementById('articleCategory').textContent = article.category || 'ILM Nexus News';
+            document.getElementById('articleTitle').textContent = article.title;
+            document.getElementById('articleDate').textContent = article.date ? new Date(article.date).toLocaleDateString() : '';
+            document.getElementById('articleViews').innerHTML = `<i class="far fa-eye"></i> ${(article.views || 0).toLocaleString()} views`;
+            document.getElementById('articleContent').textContent = article.content || article.description || '';
+
+            if (article.videoUrl) {
+                const isYoutube = article.videoUrl.includes('youtube.com') || article.videoUrl.includes('youtu.be');
+                const videoFile = document.getElementById('articleVideoFile');
+                const video = document.getElementById('articleVideo');
+                if (isYoutube) {
+                    video.src = youtubeEmbed(article.videoUrl);
+                    video.hidden = false;
+                } else {
+                    videoFile.src = article.videoUrl;
+                    videoFile.hidden = false;
+                }
+            }
+
+            const gallery = document.getElementById('articleGallery');
+            (article.gallery || []).forEach(imageUrl => {
+                const image = document.createElement('img');
+                image.src = imageUrl;
+                image.alt = article.title;
+                gallery.appendChild(image);
+            });
+
+            const links = document.getElementById('articleLinks');
+            (article.socialLinks || []).forEach(linkUrl => {
+                const link = document.createElement('a');
+                link.href = linkUrl;
+                link.target = '_blank';
+                link.rel = 'noopener';
+                link.textContent = 'Related social post';
+                links.appendChild(link);
+            });
+
+            if (article.link && article.link !== '#') {
+                const source = document.getElementById('articleSource');
+                source.href = article.link;
+                source.hidden = false;
+            }
+
+            document.getElementById('articleShell').hidden = false;
+            status.hidden = true;
+        }
+
+        async function loadArticle() {
+            if (!articleId) {
+                status.textContent = 'Article not found.';
+                return;
+            }
+
+            try {
+                const articleSnapshot = await getDoc(doc(db, 'news', articleId));
+                if (!articleSnapshot.exists()) {
+                    status.textContent = 'This article is not available yet. Migrate the old news into Firebase first.';
+                    return;
+                }
+
+                const article = articleSnapshot.data();
+                renderArticle(article);
+                updateDoc(doc(db, 'news', articleId), { views: increment(1) }).catch(() => {});
+            } catch (error) {
+                status.textContent = `Could not load article: ${error.message}`;
+            }
+        }
+
+        loadArticle();
+    </script>
+</body>
+</html>

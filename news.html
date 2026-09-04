@@ -402,6 +402,7 @@
         .news-meta {
             display: flex;
             align-items: center;
+            flex-wrap: wrap;
             gap: var(--space-sm);
             margin-bottom: var(--space-md);
             font-size: 0.9rem;
@@ -415,6 +416,39 @@
             border-radius: var(--radius-full);
             font-size: 0.8rem;
             font-weight: 500;
+        }
+
+        .news-views {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.35rem;
+            color: var(--gray-600);
+            font-size: 0.82rem;
+        }
+
+        .admin-actions {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 0.75rem;
+        }
+
+        .admin-action {
+            border: 0;
+            border-radius: var(--radius-sm);
+            padding: 0.5rem 0.75rem;
+            color: white;
+            font: inherit;
+            font-size: 0.8rem;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .admin-action-edit {
+            background: #2563eb;
+        }
+
+        .admin-action-delete {
+            background: #dc2626;
         }
 
         .news-card-title {
@@ -720,6 +754,24 @@
             transform: translateY(-2px);
             box-shadow: var(--shadow-md);
         }
+
+        .migration-btn {
+            display: none;
+            margin-top: 0.75rem;
+            background: white;
+            color: var(--primary);
+            border: 1px solid rgba(67, 97, 238, 0.35);
+            padding: 0.65rem 1.25rem;
+            border-radius: var(--radius-full);
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .migration-btn.active {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
         
         /* FILE UPLOAD STYLING */
         .file-upload-wrapper {
@@ -935,6 +987,7 @@
         // Import Firebase modules
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js";
         import { getFirestore } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js";
+        import { getStorage } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-storage.js";
         
         // Firebase web app configuration
         const firebaseConfig = {
@@ -952,7 +1005,8 @@
         if (hasFirebaseConfig) {
             const app = initializeApp(firebaseConfig);
             const db = getFirestore(app);
-            window.firebase = { db, app };
+            const storage = getStorage(app);
+            window.firebase = { db, app, storage };
             window.firebaseReady = true;
         } else {
             window.firebaseError = new Error('Firebase is not configured. Replace the YOUR_* values in news.html with your Firebase web app configuration.');
@@ -1028,6 +1082,9 @@
             </div>
             <button class="publish-btn" id="publishNewsBtn">
                 <i class="fas fa-plus"></i> Publish News
+            </button>
+            <button class="migration-btn" id="migrateNewsBtn" type="button">
+                <i class="fas fa-cloud-arrow-up"></i> Move Old News to Firebase
             </button>
         </div>
     </section>
@@ -1209,14 +1266,19 @@
                     </div>
 
                     <div class="form-group">
-                        <label for="newsImage">Article Image</label>
+                        <label for="imageSource">Article Image</label>
+                        <select id="imageSource" name="imageSource">
+                            <option value="upload">Upload an image</option>
+                            <option value="url">Use an image URL</option>
+                        </select>
                         <div class="file-upload-wrapper">
                             <label for="newsImage" class="file-upload-label">
                                 <i class="fas fa-image"></i> Click to upload image
                             </label>
-                            <input type="file" id="newsImage" name="image" accept="image/*" required class="file-upload-input">
+                            <input type="file" id="newsImage" name="image" accept="image/*" class="file-upload-input">
                             <div class="file-name" id="fileName">No image selected</div>
                         </div>
+                        <input type="url" id="newsImageUrl" name="imageUrl" placeholder="https://example.com/image.jpg" style="display: none; margin-top: var(--space-sm);">
                     </div>
 
                     <div class="form-group">
@@ -1225,11 +1287,37 @@
                     </div>
 
                     <div class="form-group">
+                        <label for="newsContent">Full Article Story</label>
+                        <textarea id="newsContent" name="content" placeholder="Write the complete story readers should see after clicking Read More."></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="videoSource">Article Video (Optional)</label>
+                        <select id="videoSource" name="videoSource">
+                            <option value="none">No video</option>
+                            <option value="url">Use a video URL</option>
+                            <option value="upload">Upload a video file</option>
+                        </select>
+                        <input type="url" id="newsVideoUrl" name="videoUrl" placeholder="https://www.youtube.com/watch?v=..." style="display: none; margin-top: var(--space-sm);">
+                        <input type="file" id="newsVideoFile" name="videoFile" accept="video/*" style="display: none; margin-top: var(--space-sm);">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="newsGallery">Additional Image URLs (Optional)</label>
+                        <textarea id="newsGallery" name="gallery" placeholder="Paste one image URL per line"></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="newsSocialLinks">Related Social Links (Optional)</label>
+                        <textarea id="newsSocialLinks" name="socialLinks" placeholder="Paste one Facebook, Instagram, LinkedIn, or X link per line"></textarea>
+                    </div>
+
+                    <div class="form-group">
                         <label for="newsLink">Read More Link (Optional)</label>
                         <input type="url" id="newsLink" name="link" placeholder="https://example.com/full-article" alt="Full article link">
                     </div>
 
-                    <button type="submit" class="submit-btn">Publish Article</button>
+                    <button type="submit" class="submit-btn" id="submitNewsBtn">Publish Article</button>
                     <button type="button" class="submit-btn" id="closeFormBtn" style="background: linear-gradient(135deg, var(--gray-600), var(--gray-700)); margin-top: var(--space-md);">Close</button>
                 </form>
                 <div id="formMessage" style="display:none; margin-top: var(--space-lg); padding: var(--space-lg); border-radius: var(--radius-md); text-align: center; font-weight: 500;"></div>
@@ -1270,6 +1358,7 @@
         // PASSWORD PROTECTION LOGIC
         const ADMIN_EMAIL = 'theilmnexus@gmail.com';
         const publishNewsBtn = document.getElementById('publishNewsBtn');
+        const migrateNewsBtn = document.getElementById('migrateNewsBtn');
         const passwordModal = document.getElementById('passwordModal');
         const passwordInput = document.getElementById('passwordInput');
         const submitPasswordBtn = document.getElementById('submitPasswordBtn');
@@ -1277,6 +1366,11 @@
         const addNewsSection = document.querySelector('.add-news-section');
         const closeFormBtn = document.getElementById('closeFormBtn');
         const newsImageInput = document.getElementById('newsImage');
+        const imageSource = document.getElementById('imageSource');
+        const newsImageUrl = document.getElementById('newsImageUrl');
+        const videoSource = document.getElementById('videoSource');
+        const newsVideoUrl = document.getElementById('newsVideoUrl');
+        const newsVideoFile = document.getElementById('newsVideoFile');
         const fileName = document.getElementById('fileName');
         const commentModal = document.getElementById('commentModal');
         const closeCommentBtn = document.getElementById('closeCommentBtn');
@@ -1287,7 +1381,25 @@
         const commentText = document.getElementById('commentText');
         const submitCommentBtn = document.getElementById('submitCommentBtn');
         const commentMessage = document.getElementById('commentMessage');
+        const submitNewsBtn = document.getElementById('submitNewsBtn');
+        const loadedArticles = new Map();
+        let editingArticleId = null;
+        let editingArticleImage = '';
         let activeCommentArticleId = '';
+
+        function updateMediaFields() {
+            const uploadImage = imageSource.value === 'upload';
+            newsImageInput.style.display = uploadImage ? 'block' : 'none';
+            newsImageInput.parentElement.style.display = uploadImage ? 'block' : 'none';
+            newsImageUrl.style.display = uploadImage ? 'none' : 'block';
+
+            newsVideoUrl.style.display = videoSource.value === 'url' ? 'block' : 'none';
+            newsVideoFile.style.display = videoSource.value === 'upload' ? 'block' : 'none';
+        }
+
+        imageSource.addEventListener('change', updateMediaFields);
+        videoSource.addEventListener('change', updateMediaFields);
+        updateMediaFields();
 
         // Show password modal
         publishNewsBtn.addEventListener('click', () => {
@@ -1327,11 +1439,15 @@
                 const { getAuth, signInWithEmailAndPassword } = await import('https://www.gstatic.com/firebasejs/10.7.0/firebase-auth.js');
                 const auth = getAuth(window.firebase.app);
                 await signInWithEmailAndPassword(auth, ADMIN_EMAIL, adminPassword);
+                window.firebase.auth = auth;
+                window.adminAuthenticated = true;
+                migrateNewsBtn.classList.add('active');
 
                 passwordModal.classList.remove('active');
                 addNewsSection.classList.add('active');
                 passwordInput.value = '';
                 document.querySelector('.form-header h2').textContent = 'Publish News ✓';
+                enhanceNewsCards();
                 // Scroll to form
                 addNewsSection.scrollIntoView({ behavior: 'smooth' });
             } catch (error) {
@@ -1364,6 +1480,12 @@
             newsForm.reset();
             fileName.textContent = 'No image selected';
             document.getElementById('newsDate').valueAsDate = new Date();
+            editingArticleId = null;
+            editingArticleImage = '';
+            submitNewsBtn.textContent = 'Publish Article';
+            imageSource.value = 'upload';
+            videoSource.value = 'none';
+            updateMediaFields();
         });
 
         // File upload preview
@@ -1460,6 +1582,155 @@
             loadComments(articleId);
         }
 
+        function startEditingArticle(articleId) {
+            const article = loadedArticles.get(articleId);
+            if (!article) {
+                return;
+            }
+
+            editingArticleId = articleId;
+            editingArticleImage = article.image;
+            document.getElementById('newsTitle').value = article.title || '';
+            document.getElementById('newsCategory').value = article.category || '';
+            document.getElementById('newsDate').value = article.date || '';
+            document.getElementById('newsDescription').value = article.description || '';
+            document.getElementById('newsContent').value = article.content || '';
+            document.getElementById('newsVideoUrl').value = article.videoUrl || '';
+            document.getElementById('newsGallery').value = (article.gallery || []).join('\n');
+            document.getElementById('newsSocialLinks').value = (article.socialLinks || []).join('\n');
+            document.getElementById('newsLink').value = article.link || '';
+            imageSource.value = 'url';
+            newsImageUrl.value = article.image || '';
+            videoSource.value = article.videoUrl ? 'url' : 'none';
+            newsVideoUrl.value = article.videoUrl || '';
+            newsVideoFile.value = '';
+            updateMediaFields();
+            fileName.textContent = 'Current image will be kept unless you choose a new one';
+            submitNewsBtn.textContent = 'Save Changes';
+            document.querySelector('.form-header h2').textContent = 'Edit Article';
+            addNewsSection.classList.add('active');
+            addNewsSection.scrollIntoView({ behavior: 'smooth' });
+        }
+
+        async function deleteArticle(articleId) {
+            const article = loadedArticles.get(articleId);
+            if (!article || !window.adminAuthenticated || !window.confirm(`Delete “${article.title}”? This cannot be undone.`)) {
+                return;
+            }
+
+            try {
+                await waitForFirebase();
+                const { db } = window.firebase;
+                const { deleteDoc, doc } = await import('https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js');
+                await deleteDoc(doc(db, 'news', articleId));
+                loadedArticles.delete(articleId);
+                await displayAllNews();
+            } catch (error) {
+                window.alert(`Could not delete article: ${error.message}`);
+            }
+        }
+
+        function getLegacyArticles() {
+            return Array.from(document.querySelectorAll('#newsContainer .news-card'))
+                .filter(card => !card.dataset.articleId)
+                .map((card, index) => {
+                    const dateText = card.querySelector('[itemprop="datePublished"]')?.textContent.trim() || '';
+                    const parsedDate = new Date(dateText);
+                    const date = Number.isNaN(parsedDate.getTime()) ? new Date().toISOString().slice(0, 10) : parsedDate.toISOString().slice(0, 10);
+                    return {
+                        id: `legacy-${index + 1}`,
+                        title: card.querySelector('.news-card-title')?.textContent.trim() || 'ILM Nexus News',
+                        category: card.querySelector('.news-category')?.textContent.trim() || 'Announcement',
+                        date,
+                        image: card.querySelector('.news-image')?.src || '',
+                        description: card.querySelector('.news-card-excerpt')?.textContent.trim() || '',
+                        link: card.querySelector('.read-more')?.href || '#'
+                    };
+                });
+        }
+
+        async function migrateLegacyNews() {
+            if (!window.adminAuthenticated) {
+                return;
+            }
+
+            const legacyArticles = getLegacyArticles();
+            if (!legacyArticles.length) {
+                window.alert('The old news articles have already been moved to Firebase.');
+                return;
+            }
+
+            migrateNewsBtn.disabled = true;
+            migrateNewsBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Moving old news...';
+
+            try {
+                await waitForFirebase();
+                const { db } = window.firebase;
+                const { doc, getDoc, serverTimestamp, setDoc } = await import('https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js');
+
+                for (const article of legacyArticles) {
+                    const articleRef = doc(db, 'news', article.id);
+                    const existingArticle = await getDoc(articleRef);
+                    if (existingArticle.exists()) {
+                        continue;
+                    }
+
+                    await setDoc(articleRef, {
+                        title: article.title,
+                        category: article.category,
+                        date: article.date,
+                        image: article.image,
+                        description: article.description,
+                        content: article.description,
+                        videoUrl: '',
+                        gallery: [],
+                        socialLinks: [],
+                        link: article.link,
+                        views: 0,
+                        dateAdded: serverTimestamp(),
+                        migratedFromLegacy: true
+                    }, { merge: false });
+                }
+
+                window.alert(`${legacyArticles.length} old news articles are now in Firebase.`);
+                await displayAllNews();
+            } catch (error) {
+                window.alert(`Could not move old news: ${error.message}`);
+            } finally {
+                migrateNewsBtn.disabled = false;
+                migrateNewsBtn.innerHTML = '<i class="fas fa-cloud-arrow-up"></i> Move Old News to Firebase';
+            }
+        }
+
+        migrateNewsBtn.addEventListener('click', migrateLegacyNews);
+
+        function addAdminControls(card) {
+            if (!window.adminAuthenticated || !card.dataset.articleId || card.querySelector('.admin-actions')) {
+                return;
+            }
+
+            const adminActions = document.createElement('div');
+            adminActions.className = 'admin-actions';
+            adminActions.innerHTML = `
+                <button type="button" class="admin-action admin-action-edit" data-admin-action="edit">
+                    <i class="fas fa-pen"></i> Edit
+                </button>
+                <button type="button" class="admin-action admin-action-delete" data-admin-action="delete">
+                    <i class="fas fa-trash"></i> Delete
+                </button>
+            `;
+            adminActions.addEventListener('click', event => {
+                const button = event.target.closest('.admin-action');
+                if (button?.dataset.adminAction === 'edit') {
+                    startEditingArticle(card.dataset.articleId);
+                }
+                if (button?.dataset.adminAction === 'delete') {
+                    deleteArticle(card.dataset.articleId);
+                }
+            });
+            card.querySelector('.news-card-content').appendChild(adminActions);
+        }
+
         closeCommentBtn.addEventListener('click', () => commentModal.classList.remove('active'));
         commentModal.addEventListener('click', event => {
             if (event.target === commentModal) {
@@ -1503,6 +1774,7 @@
         function enhanceNewsCards() {
             document.querySelectorAll('#newsContainer .news-card').forEach((card, index) => {
                 if (card.querySelector('.news-actions')) {
+                    addAdminControls(card);
                     return;
                 }
 
@@ -1511,6 +1783,9 @@
                 const title = titleElement ? titleElement.textContent.trim() : 'ILM Nexus news';
                 const cardId = card.dataset.articleId || createNewsSlug(title, index);
                 card.id = cardId;
+                if (readMore && !card.dataset.articleId) {
+                    readMore.href = `article.html?id=legacy-${index + 1}`;
+                }
                 const shareUrl = `${window.location.origin}${window.location.pathname}#${cardId}`;
                 const actions = document.createElement('div');
                 actions.className = 'news-actions';
@@ -1566,7 +1841,18 @@
                 } else {
                     card.querySelector('.news-card-content').appendChild(actions);
                 }
+
+                addAdminControls(card);
             });
+        }
+
+        async function uploadMediaFile(file, folder) {
+            const { storage } = window.firebase;
+            const { getDownloadURL, ref, uploadBytes } = await import('https://www.gstatic.com/firebasejs/10.7.0/firebase-storage.js');
+            const safeName = file.name.replace(/[^a-z0-9._-]/gi, '-');
+            const fileRef = ref(storage, `${folder}/${Date.now()}-${safeName}`);
+            await uploadBytes(fileRef, file, { contentType: file.type });
+            return getDownloadURL(fileRef);
         }
 
         function compressImage(file) {
@@ -1616,9 +1902,25 @@
 
             const formData = new FormData(this);
             const imageFile = newsImageInput.files[0];
+            const videoFile = newsVideoFile.files[0];
 
-            if (!imageFile) {
-                alert('Please select an image');
+            if (imageSource.value === 'url' && !newsImageUrl.value.trim() && !editingArticleId) {
+                alert('Please enter an image URL or choose image upload.');
+                return;
+            }
+
+            if (imageSource.value === 'upload' && !imageFile && !editingArticleId) {
+                alert('Please choose an image file.');
+                return;
+            }
+
+            if (videoSource.value === 'url' && !newsVideoUrl.value.trim()) {
+                alert('Please enter a video URL or choose video upload.');
+                return;
+            }
+
+            if (videoSource.value === 'upload' && !videoFile) {
+                alert('Please choose a video file.');
                 return;
             }
 
@@ -1634,35 +1936,65 @@
                 await waitForFirebase();
                 
                 const { db } = window.firebase;
-                const { addDoc, collection, serverTimestamp } = await import('https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js');
+                const { addDoc, collection, doc, serverTimestamp, updateDoc } = await import('https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js');
 
-                // Resize and compress the image before saving it in Firestore.
-                const compressedImage = await compressImage(imageFile);
+                let imageUrl = editingArticleImage;
+                if (imageSource.value === 'url') {
+                    imageUrl = newsImageUrl.value.trim();
+                } else if (imageFile) {
+                    imageUrl = await uploadMediaFile(imageFile, 'news-images');
+                }
+
+                let articleVideoUrl = editingArticleId ? (loadedArticles.get(editingArticleId)?.videoUrl || '') : '';
+                if (videoSource.value === 'none') {
+                    articleVideoUrl = '';
+                } else if (videoSource.value === 'url') {
+                    articleVideoUrl = newsVideoUrl.value.trim();
+                } else if (videoFile) {
+                    articleVideoUrl = await uploadMediaFile(videoFile, 'news-videos');
+                }
+
                 const newsData = {
-                            title: formData.get('title'),
-                            category: formData.get('category'),
-                            date: formData.get('date'),
-                            image: compressedImage,
-                            description: formData.get('description'),
-                            link: formData.get('link') || '#',
-                            dateAdded: serverTimestamp() // Server timestamp
+                    title: formData.get('title'),
+                    category: formData.get('category'),
+                    date: formData.get('date'),
+                    image: imageUrl,
+                    description: formData.get('description'),
+                    content: formData.get('content') || formData.get('description'),
+                    videoUrl: articleVideoUrl,
+                    gallery: formData.get('gallery').split('\n').map(value => value.trim()).filter(Boolean),
+                    socialLinks: formData.get('socialLinks').split('\n').map(value => value.trim()).filter(Boolean),
+                    link: formData.get('link') || '#'
                 };
 
-                // Save to Firebase Firestore
-                const docRef = await addDoc(collection(db, 'news'), newsData);
-                console.log('Article saved with ID:', docRef.id);
+                if (editingArticleId) {
+                    await updateDoc(doc(db, 'news', editingArticleId), newsData);
+                    console.log('Article updated:', editingArticleId);
+                } else {
+                    newsData.views = 0;
+                    newsData.dateAdded = serverTimestamp();
+                    const docRef = await addDoc(collection(db, 'news'), newsData);
+                    console.log('Article saved with ID:', docRef.id);
+                }
 
                 // Show success message
                 formMessage.style.display = 'block';
                 formMessage.style.background = '#d4edda';
                 formMessage.style.color = '#155724';
                 formMessage.style.border = '1px solid #c3e6cb';
-                formMessage.textContent = '✓ Article published successfully! Syncing across devices...';
+                formMessage.textContent = editingArticleId ? '✓ Article updated successfully!' : '✓ Article published successfully! Syncing across devices...';
 
                 // Reset form
                 newsForm.reset();
                 fileName.textContent = 'No image selected';
                 document.getElementById('newsDate').valueAsDate = new Date();
+                editingArticleId = null;
+                editingArticleImage = '';
+                submitNewsBtn.textContent = 'Publish Article';
+                document.querySelector('.form-header h2').textContent = 'Add New Article';
+                imageSource.value = 'upload';
+                videoSource.value = 'none';
+                updateMediaFields();
 
                 // Reload news display
                 displayAllNews();
@@ -1692,7 +2024,7 @@
                 await waitForFirebase();
                 
                 const { db } = window.firebase;
-                const { collection, query, orderBy, getDocs } = await import('https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js');
+                const { collection, doc, getDocs, increment, orderBy, query, updateDoc } = await import('https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js');
                 
                 const newsContainer = document.getElementById('newsContainer');
                 const q = query(collection(db, 'news'), orderBy('dateAdded', 'desc'));
@@ -1701,6 +2033,7 @@
                 if (!querySnapshot.empty) {
                     const addedNewsHTML = querySnapshot.docs.map(doc => {
                         const news = doc.data();
+                        loadedArticles.set(doc.id, news);
                         return `
                             <article class="news-card" data-article-id="${doc.id}" itemscope itemtype="https://schema.org/NewsArticle">
                                 <div class="news-image-container">
@@ -1710,20 +2043,32 @@
                                     <div class="news-meta">
                                         <span class="news-category">${news.category}</span>
                                         <span itemprop="datePublished"><i class="far fa-calendar"></i> ${new Date(news.date).toLocaleDateString()}</span>
+                                        <span class="news-views"><i class="far fa-eye"></i> ${(news.views || 0).toLocaleString()} views</span>
                                     </div>
                                     <h3 class="news-card-title" itemprop="headline">${news.title}</h3>
                                     <p class="news-card-excerpt" itemprop="description">${news.description}</p>
-                                    <a href="${news.link}" class="read-more" itemprop="url">Learn More <i class="fas fa-arrow-right"></i></a>
+                                    <a href="article.html?id=${encodeURIComponent(doc.id)}" class="read-more" itemprop="url">Read More <i class="fas fa-arrow-right"></i></a>
                                 </div>
                             </article>
                         `;
                     }).join('');
 
                     // Get only the default articles (first 6 cards that are hardcoded)
-                    const defaultCards = Array.from(newsContainer.querySelectorAll('.news-card')).slice(0, 6).map(card => card.outerHTML).join('');
+                    const firebaseTitles = new Set(querySnapshot.docs.map(articleDoc => articleDoc.data().title));
+                    const defaultCards = Array.from(newsContainer.querySelectorAll('.news-card'))
+                        .slice(0, 6)
+                        .filter(card => !firebaseTitles.has(card.querySelector('.news-card-title')?.textContent.trim()))
+                        .map(card => card.outerHTML)
+                        .join('');
                     
                     // Combine: new articles first, then default
                     newsContainer.innerHTML = addedNewsHTML + defaultCards;
+
+                    querySnapshot.docs.forEach(articleDoc => {
+                        updateDoc(doc(db, 'news', articleDoc.id), { views: increment(1) }).catch(error => {
+                            console.warn('Could not update article views:', error);
+                        });
+                    });
                 }
 
                 enhanceNewsCards();
