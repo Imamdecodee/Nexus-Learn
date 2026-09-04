@@ -447,6 +447,136 @@
             gap: 0.75rem;
         }
 
+        .news-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top: var(--space-md);
+            padding-top: var(--space-md);
+            border-top: 1px solid var(--gray-200);
+        }
+
+        .news-action {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            padding: 0.55rem 0.75rem;
+            border: 1px solid var(--gray-300);
+            border-radius: var(--radius-sm);
+            background: white;
+            color: var(--gray-800);
+            font: inherit;
+            font-size: 0.82rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all var(--transition-fast);
+        }
+
+        .news-action:hover {
+            color: var(--primary);
+            border-color: var(--primary);
+            background: rgba(67, 97, 238, 0.05);
+        }
+
+        .news-action.is-success {
+            color: #16803c;
+            border-color: #8bd3a5;
+        }
+
+        .comment-modal {
+            display: none;
+            position: fixed;
+            inset: 0;
+            z-index: 2100;
+            padding: 1rem;
+            background: rgba(15, 23, 42, 0.7);
+            align-items: center;
+            justify-content: center;
+        }
+
+        .comment-modal.active {
+            display: flex;
+        }
+
+        .comment-dialog {
+            width: min(560px, 100%);
+            max-height: min(720px, 92vh);
+            overflow-y: auto;
+            padding: 1.5rem;
+            border-radius: var(--radius-lg);
+            background: white;
+            box-shadow: var(--shadow-xl);
+        }
+
+        .comment-dialog-header {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 1rem;
+            margin-bottom: 1.25rem;
+        }
+
+        .comment-dialog-header h2 {
+            font-size: 1.35rem;
+            color: var(--dark);
+        }
+
+        .comment-close {
+            border: 0;
+            background: transparent;
+            color: var(--gray-600);
+            font-size: 1.25rem;
+            cursor: pointer;
+        }
+
+        .comments-list {
+            display: grid;
+            gap: 0.75rem;
+            margin-bottom: 1.25rem;
+        }
+
+        .comment-item {
+            padding: 0.85rem 1rem;
+            border: 1px solid var(--gray-200);
+            border-radius: var(--radius-sm);
+            background: var(--gray-100);
+        }
+
+        .comment-item strong {
+            display: block;
+            margin-bottom: 0.2rem;
+            color: var(--dark);
+        }
+
+        .comment-item p {
+            color: var(--gray-600);
+            white-space: pre-wrap;
+        }
+
+        .comment-empty {
+            color: var(--gray-600);
+            font-size: 0.95rem;
+        }
+
+        .comment-form {
+            display: grid;
+            gap: 0.75rem;
+        }
+
+        .comment-form input,
+        .comment-form textarea {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid var(--gray-300);
+            border-radius: var(--radius-sm);
+            font: inherit;
+        }
+
+        .comment-form textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+
         /* ADD NEWS FORM */
         .add-news-section {
             padding: var(--space-3xl) 0;
@@ -919,6 +1049,27 @@
         </div>
     </div>
 
+    <!-- COMMENTS MODAL -->
+    <div class="comment-modal" id="commentModal" role="dialog" aria-modal="true" aria-labelledby="commentTitle">
+        <div class="comment-dialog">
+            <div class="comment-dialog-header">
+                <h2 id="commentTitle">Comments</h2>
+                <button type="button" class="comment-close" id="closeCommentBtn" aria-label="Close comments">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="comments-list" id="commentsList">
+                <p class="comment-empty">Loading comments...</p>
+            </div>
+            <form class="comment-form" id="commentForm">
+                <input type="text" id="commentName" maxlength="60" placeholder="Your name" required>
+                <textarea id="commentText" maxlength="500" placeholder="Write a congratulatory message or comment..." required></textarea>
+                <button type="submit" class="btn-primary" id="submitCommentBtn">Post Comment</button>
+                <p class="comment-empty" id="commentMessage" role="status"></p>
+            </form>
+        </div>
+    </div>
+
     <!-- NEWS GRID SECTION -->
     <section class="news-section" id="news-grid">
         <div class="container">
@@ -1127,6 +1278,16 @@
         const closeFormBtn = document.getElementById('closeFormBtn');
         const newsImageInput = document.getElementById('newsImage');
         const fileName = document.getElementById('fileName');
+        const commentModal = document.getElementById('commentModal');
+        const closeCommentBtn = document.getElementById('closeCommentBtn');
+        const commentTitle = document.getElementById('commentTitle');
+        const commentsList = document.getElementById('commentsList');
+        const commentForm = document.getElementById('commentForm');
+        const commentName = document.getElementById('commentName');
+        const commentText = document.getElementById('commentText');
+        const submitCommentBtn = document.getElementById('submitCommentBtn');
+        const commentMessage = document.getElementById('commentMessage');
+        let activeCommentArticleId = '';
 
         // Show password modal
         publishNewsBtn.addEventListener('click', () => {
@@ -1226,6 +1387,187 @@
         // Form submission handling
         const newsForm = document.getElementById('newsForm');
         const formMessage = document.getElementById('formMessage');
+
+        function createNewsSlug(title, index) {
+            const slug = title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+            return `news-${slug || 'article'}-${index + 1}`;
+        }
+
+        function copyText(text) {
+            if (navigator.clipboard && window.isSecureContext) {
+                return navigator.clipboard.writeText(text);
+            }
+
+            const textArea = document.createElement('textarea');
+            textArea.value = text;
+            textArea.style.position = 'fixed';
+            textArea.style.opacity = '0';
+            document.body.appendChild(textArea);
+            textArea.focus();
+            textArea.select();
+            document.execCommand('copy');
+            textArea.remove();
+            return Promise.resolve();
+        }
+
+        function escapeHtml(value) {
+            return String(value).replace(/[&<>'"]/g, character => ({
+                '&': '&amp;',
+                '<': '&lt;',
+                '>': '&gt;',
+                "'": '&#39;',
+                '"': '&quot;'
+            }[character]));
+        }
+
+        async function loadComments(articleId) {
+            commentsList.innerHTML = '<p class="comment-empty">Loading comments...</p>';
+
+            try {
+                await waitForFirebase();
+                const { db } = window.firebase;
+                const { collection, getDocs, query, where } = await import('https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js');
+                const commentsQuery = query(collection(db, 'comments'), where('articleId', '==', articleId));
+                const snapshot = await getDocs(commentsQuery);
+                const comments = snapshot.docs
+                    .map(doc => doc.data())
+                    .sort((first, second) => (second.createdAt?.seconds || 0) - (first.createdAt?.seconds || 0));
+
+                if (!comments.length) {
+                    commentsList.innerHTML = '<p class="comment-empty">No comments yet. Be the first to congratulate them.</p>';
+                    return;
+                }
+
+                commentsList.innerHTML = comments.map(comment => `
+                    <div class="comment-item">
+                        <strong>${escapeHtml(comment.name || 'ILM Nexus community member')}</strong>
+                        <p>${escapeHtml(comment.text || '')}</p>
+                    </div>
+                `).join('');
+            } catch (error) {
+                console.error('Error loading comments:', error);
+                commentsList.innerHTML = '<p class="comment-empty">Comments are temporarily unavailable.</p>';
+            }
+        }
+
+        function openCommentModal(articleId, title) {
+            activeCommentArticleId = articleId;
+            commentTitle.textContent = `Comments: ${title}`;
+            commentMessage.textContent = '';
+            commentForm.reset();
+            commentModal.classList.add('active');
+            commentName.focus();
+            loadComments(articleId);
+        }
+
+        closeCommentBtn.addEventListener('click', () => commentModal.classList.remove('active'));
+        commentModal.addEventListener('click', event => {
+            if (event.target === commentModal) {
+                commentModal.classList.remove('active');
+            }
+        });
+        document.addEventListener('keydown', event => {
+            if (event.key === 'Escape') {
+                commentModal.classList.remove('active');
+            }
+        });
+
+        commentForm.addEventListener('submit', async event => {
+            event.preventDefault();
+            submitCommentBtn.disabled = true;
+            submitCommentBtn.textContent = 'Posting...';
+            commentMessage.textContent = '';
+
+            try {
+                await waitForFirebase();
+                const { db } = window.firebase;
+                const { addDoc, collection, serverTimestamp } = await import('https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js');
+                await addDoc(collection(db, 'comments'), {
+                    articleId: activeCommentArticleId,
+                    name: commentName.value.trim(),
+                    text: commentText.value.trim(),
+                    createdAt: serverTimestamp()
+                });
+                commentForm.reset();
+                commentMessage.textContent = 'Comment posted successfully.';
+                await loadComments(activeCommentArticleId);
+            } catch (error) {
+                console.error('Error posting comment:', error);
+                commentMessage.textContent = `Could not post comment: ${error.message}`;
+            } finally {
+                submitCommentBtn.disabled = false;
+                submitCommentBtn.textContent = 'Post Comment';
+            }
+        });
+
+        function enhanceNewsCards() {
+            document.querySelectorAll('#newsContainer .news-card').forEach((card, index) => {
+                if (card.querySelector('.news-actions')) {
+                    return;
+                }
+
+                const titleElement = card.querySelector('.news-card-title');
+                const readMore = card.querySelector('.read-more');
+                const title = titleElement ? titleElement.textContent.trim() : 'ILM Nexus news';
+                const cardId = card.dataset.articleId || createNewsSlug(title, index);
+                card.id = cardId;
+                const shareUrl = `${window.location.origin}${window.location.pathname}#${cardId}`;
+                const actions = document.createElement('div');
+                actions.className = 'news-actions';
+                actions.innerHTML = `
+                    <button type="button" class="news-action" data-action="copy" aria-label="Copy link to ${title}">
+                        <i class="fas fa-link"></i> Copy Link
+                    </button>
+                    <button type="button" class="news-action" data-action="share" aria-label="Share ${title}">
+                        <i class="fas fa-share-nodes"></i> Share
+                    </button>
+                    <button type="button" class="news-action" data-action="comment" aria-label="Comment on ${title}">
+                        <i class="fas fa-comment"></i> Comment
+                    </button>
+                `;
+
+                actions.addEventListener('click', async event => {
+                    const button = event.target.closest('.news-action');
+                    if (!button) {
+                        return;
+                    }
+
+                    if (button.dataset.action === 'copy') {
+                        await copyText(shareUrl);
+                        button.classList.add('is-success');
+                        button.innerHTML = '<i class="fas fa-check"></i> Copied';
+                        setTimeout(() => {
+                            button.classList.remove('is-success');
+                            button.innerHTML = '<i class="fas fa-link"></i> Copy Link';
+                        }, 1800);
+                    }
+
+                    if (button.dataset.action === 'share') {
+                        if (navigator.share) {
+                            await navigator.share({ title, text: `Read this update from ILM Nexus: ${title}`, url: shareUrl });
+                        } else {
+                            await copyText(shareUrl);
+                            button.classList.add('is-success');
+                            button.innerHTML = '<i class="fas fa-check"></i> Link Copied';
+                            setTimeout(() => {
+                                button.classList.remove('is-success');
+                                button.innerHTML = '<i class="fas fa-share-nodes"></i> Share';
+                            }, 1800);
+                        }
+                    }
+
+                    if (button.dataset.action === 'comment') {
+                        openCommentModal(cardId, title);
+                    }
+                });
+
+                if (readMore) {
+                    readMore.insertAdjacentElement('afterend', actions);
+                } else {
+                    card.querySelector('.news-card-content').appendChild(actions);
+                }
+            });
+        }
 
         function compressImage(file) {
             return new Promise((resolve, reject) => {
@@ -1360,7 +1702,7 @@
                     const addedNewsHTML = querySnapshot.docs.map(doc => {
                         const news = doc.data();
                         return `
-                            <article class="news-card" itemscope itemtype="https://schema.org/NewsArticle">
+                            <article class="news-card" data-article-id="${doc.id}" itemscope itemtype="https://schema.org/NewsArticle">
                                 <div class="news-image-container">
                                     <img src="${news.image}" alt="${news.title}" class="news-image" itemprop="image">
                                 </div>
@@ -1383,10 +1725,13 @@
                     // Combine: new articles first, then default
                     newsContainer.innerHTML = addedNewsHTML + defaultCards;
                 }
+
+                enhanceNewsCards();
             } catch (error) {
                 console.error('Error loading news:', error);
                 // If Firebase fails, show a message but don't break the page
                 console.log('Firebase not available, showing default articles only');
+                enhanceNewsCards();
             }
         }
 
@@ -1394,6 +1739,7 @@
         window.addEventListener('load', async () => {
             await new Promise(resolve => setTimeout(resolve, 1000)); // Wait for Firebase
             displayAllNews();
+            enhanceNewsCards();
         });
 
         // Set today's date as default
