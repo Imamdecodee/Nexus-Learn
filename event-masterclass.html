@@ -1,0 +1,1327 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="LinkedIn Optimization & Professional Visibility Masterclass - ILM Nexus International Digital Skills Cohort 1.0">
+    <meta property="og:title" content="ILM Nexus Masterclass - LinkedIn Optimization & Professional Visibility">
+    <meta property="og:description" content="Join us for an exclusive masterclass on LinkedIn optimization and professional visibility with guest speaker Abdulbasit Lukman">
+    <title>ILM Nexus Masterclass - LinkedIn Optimization & Professional Visibility</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+    <style>
+        :root {
+            --blue: #246bfe;
+            --blue-dark: #173d9b;
+            --gold: #ef9c18;
+            --ink: #14213d;
+            --muted: #667085;
+            --paper: #f5f8fc;
+            --line: #dbe3ef;
+            --white: #fff;
+            --green: #147d5a;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'DM Sans', sans-serif;
+            line-height: 1.65;
+            color: var(--ink);
+            background: var(--paper);
+            overflow-x: hidden;
+        }
+
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        .container {
+            width: min(1180px, calc(100% - 2rem));
+            margin: 0 auto;
+        }
+
+        h1, h2, h3 {
+            font-family: 'Space Grotesk', sans-serif;
+            line-height: 1.13;
+        }
+
+        .button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            padding: 0.78rem 1.05rem;
+            border: 0;
+            border-radius: 7px;
+            font: inherit;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        .button-gold {
+            color: var(--white);
+            background: var(--gold);
+            transition: background 0.3s;
+        }
+
+        .button-gold:hover {
+            background: #d88308;
+        }
+
+        .button-primary {
+            color: var(--white);
+            background: var(--blue);
+            transition: background 0.3s;
+        }
+
+        .button-primary:hover {
+            background: var(--blue-dark);
+        }
+
+        .button-outline {
+            color: var(--blue);
+            border: 1px solid var(--blue);
+            background: transparent;
+            transition: all 0.3s;
+        }
+
+        .button-outline:hover {
+            color: var(--white);
+            background: var(--blue);
+        }
+
+        /* HEADER & NAVBAR */
+        .site-header {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: rgba(255, 255, 255, 0.96);
+            border-bottom: 1px solid var(--line);
+            backdrop-filter: blur(14px);
+        }
+
+        .navbar {
+            min-height: 72px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1.2rem;
+        }
+
+        .logo img {
+            width: 112px;
+            height: auto;
+            display: block;
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 1.35rem;
+            list-style: none;
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+
+        .nav-links a {
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: var(--blue);
+        }
+
+        /* HERO SECTION */
+        .hero {
+            position: relative;
+            overflow: hidden;
+            padding: 7.5rem 0 6.2rem;
+            color: var(--white);
+            background: linear-gradient(120deg, #122b67 0%, #246bfe 70%, #ef9c18 160%);
+        }
+
+        .hero::after {
+            content: '';
+            position: absolute;
+            right: -170px;
+            bottom: -240px;
+            width: 520px;
+            height: 520px;
+            border: 80px solid rgba(255, 255, 255, 0.08);
+            border-radius: 50%;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+            max-width: 790px;
+        }
+
+        .eyebrow {
+            margin: 0 0 0.8rem;
+            color: #ffda91;
+            font-size: 0.76rem;
+            font-weight: 700;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+        }
+
+        .hero h1 {
+            max-width: 760px;
+            margin: 0 0 1.2rem;
+            font-size: clamp(2.5rem, 6vw, 5rem);
+            letter-spacing: -0.03em;
+        }
+
+        .hero p:not(.eyebrow) {
+            max-width: 670px;
+            margin: 0 0 2rem;
+            color: rgba(255, 255, 255, 0.82);
+            font-size: 1.08rem;
+        }
+
+        .hero-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+        }
+
+        /* SECTION STYLING */
+        .section {
+            padding: 5.2rem 0;
+        }
+
+        .section-white {
+            background: var(--white);
+            border-block: 1px solid var(--line);
+        }
+
+        .section-heading {
+            max-width: 690px;
+            margin-bottom: 2rem;
+        }
+
+        .section-heading h2 {
+            margin: 0 0 0.6rem;
+            font-size: clamp(1.8rem, 4vw, 2.8rem);
+        }
+
+        .section-heading p:not(.eyebrow) {
+            margin: 0;
+            color: var(--muted);
+        }
+
+        /* SPEAKER SECTION */
+        .founder-grid {
+            display: grid;
+            grid-template-columns: minmax(280px, 0.8fr) minmax(0, 1.2fr);
+            align-items: center;
+            gap: clamp(2rem, 6vw, 5rem);
+            margin-top: 3rem;
+        }
+
+        .founder-image {
+            position: relative;
+            overflow: hidden;
+            border-radius: 12px;
+            box-shadow: 0 18px 40px rgba(20, 33, 61, 0.14);
+            background: var(--ink);
+        }
+
+        .founder-image::after {
+            content: '';
+            position: absolute;
+            inset: auto 0 0;
+            height: 28%;
+            background: linear-gradient(transparent, rgba(20, 33, 61, 0.32));
+            pointer-events: none;
+        }
+
+        .founder-image img {
+            display: block;
+            width: 100%;
+            aspect-ratio: 4 / 5;
+            object-fit: cover;
+        }
+
+        .founder-copy h2 {
+            margin: 0 0 0.35rem;
+            font-size: clamp(1.9rem, 4vw, 2.8rem);
+        }
+
+        .founder-name {
+            margin: 0 0 0.9rem;
+            color: var(--blue);
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.15rem;
+            font-weight: 700;
+        }
+
+        .founder-bio {
+            color: var(--muted);
+        }
+
+        .founder-bio p {
+            margin: 0 0 1rem;
+        }
+
+        /* OFFER GRID - FOR LEARNING SECTION */
+        .offer-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .offer {
+            padding: 2rem;
+            border: 1px solid var(--line);
+            border-radius: 10px;
+            background: var(--white);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .offer:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(20, 33, 61, 0.1);
+        }
+
+        .offer-kicker {
+            margin: 0 0 0.8rem;
+            color: var(--gold);
+            font-size: 0.75rem;
+            font-weight: 700;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+        }
+
+        .offer h3 {
+            margin: 0 0 0.65rem;
+            font-size: 1.55rem;
+            color: var(--ink);
+        }
+
+        .offer p {
+            margin: 0 0 1.3rem;
+            color: var(--muted);
+            font-size: 0.95rem;
+        }
+
+        .skill-list {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 0.55rem 1rem;
+            margin: 0 0 1.5rem;
+            padding: 0;
+            list-style: none;
+        }
+
+        .skill-list li {
+            font-size: 0.92rem;
+            color: var(--ink);
+        }
+
+        .skill-list li::before {
+            content: '+';
+            margin-right: 0.45rem;
+            color: var(--gold);
+            font-weight: 700;
+        }
+
+        /* Q&A FORM */
+        .qa-form {
+            max-width: 600px;
+            margin: 3rem auto;
+            padding: 2.5rem;
+            border: 1px solid var(--line);
+            border-radius: 10px;
+            background: var(--white);
+            box-shadow: 0 5px 15px rgba(20, 33, 61, 0.08);
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--ink);
+            font-weight: 600;
+            font-size: 0.95rem;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 0.8rem;
+            border: 1px solid var(--line);
+            border-radius: 7px;
+            font-family: inherit;
+            font-size: 0.95rem;
+            transition: border-color 0.3s, background-color 0.3s;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--blue);
+            background-color: #eef4ff;
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 120px;
+        }
+
+        .form-submit {
+            width: 100%;
+            padding: 0.78rem;
+            font-size: 1rem;
+            border: 0;
+            border-radius: 7px;
+            color: var(--white);
+            background: var(--gold);
+            font-weight: 700;
+            cursor: pointer;
+            transition: background 0.3s, transform 0.2s;
+        }
+
+        .form-submit:hover {
+            background: #d88308;
+            transform: translateY(-2px);
+        }
+
+        /* CERTIFICATE SECTION */
+        .certificate-section {
+            background: var(--white);
+            border-block: 1px solid var(--line);
+        }
+
+        .certificate-container {
+            max-width: 600px;
+            margin: 3rem auto;
+        }
+
+        .certificate-message {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .certificate-message p {
+            margin: 0.5rem 0;
+            color: var(--muted);
+            font-size: 0.98rem;
+        }
+
+        .certificate-form {
+            padding: 2.5rem;
+            border: 1px solid var(--line);
+            border-radius: 10px;
+            background: var(--white);
+            box-shadow: 0 5px 15px rgba(20, 33, 61, 0.08);
+        }
+
+        .certificate-preview {
+            border: 2px solid var(--line);
+            padding: 3rem 2rem;
+            border-radius: 10px;
+            text-align: center;
+            margin-top: 2rem;
+            box-shadow: 0 10px 30px rgba(20, 33, 61, 0.1);
+            background: var(--white);
+            display: none;
+        }
+
+        .certificate-preview.active {
+            display: block;
+        }
+
+        .certificate-header {
+            color: var(--ink);
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            font-family: 'Space Grotesk', sans-serif;
+        }
+
+        .certificate-subtitle {
+            color: var(--blue);
+            font-size: 0.9rem;
+            margin-bottom: 2rem;
+            font-weight: 700;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+        }
+
+        .certificate-title {
+            font-size: 1.3rem;
+            color: var(--ink);
+            margin: 1.5rem 0;
+            font-weight: 600;
+            font-family: 'Space Grotesk', sans-serif;
+        }
+
+        .certificate-recipient {
+            font-size: 2rem;
+            color: var(--ink);
+            font-weight: 700;
+            margin: 2rem 0;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .certificate-event {
+            color: var(--ink);
+            margin: 1.5rem 0;
+            font-size: 0.98rem;
+            line-height: 1.8;
+        }
+
+        .certificate-date {
+            color: var(--muted);
+            margin-top: 2rem;
+            font-size: 0.92rem;
+        }
+
+        .certificate-id {
+            color: var(--muted);
+            font-size: 0.82rem;
+            margin-top: 1rem;
+            font-family: monospace;
+        }
+
+        /* HIGHLIGHTS GRID */
+        .highlights-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+            margin-top: 3rem;
+        }
+
+        .highlight-card {
+            padding: 2rem;
+            border: 1px solid var(--line);
+            border-radius: 10px;
+            background: var(--white);
+            text-align: center;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .highlight-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(20, 33, 61, 0.1);
+        }
+
+        .highlight-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .highlight-card h3 {
+            margin: 0 0 0.65rem;
+            font-size: 1.15rem;
+            color: var(--ink);
+        }
+
+        .highlight-card p {
+            margin: 0;
+            color: var(--muted);
+            font-size: 0.92rem;
+        }
+
+        /* APPRECIATION SECTION */
+        .appreciation-section {
+            background: linear-gradient(120deg, #122b67 0%, #246bfe 70%, #ef9c18 160%);
+            color: var(--white);
+            text-align: center;
+            padding: 5.2rem 0;
+        }
+
+        .appreciation-section h2 {
+            color: var(--white);
+            font-size: clamp(1.8rem, 4vw, 2.8rem);
+            margin: 0 0 2rem;
+        }
+
+        .appreciation-quote {
+            font-size: 1.15rem;
+            margin: 2rem 0;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+            line-height: 1.8;
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        .appreciation-speaker {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 2rem;
+            border-radius: 10px;
+            margin: 2rem 0;
+            backdrop-filter: blur(10px);
+        }
+
+        .appreciation-speaker p {
+            margin: 0.5rem 0;
+        }
+
+        /* FOOTER */
+        footer {
+            padding: 3.5rem 0 1.5rem;
+            color: rgba(255, 255, 255, 0.74);
+            background: #0d1526;
+        }
+
+        .footer-bottom {
+            padding-top: 1.2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.12);
+            font-size: 0.82rem;
+        }
+
+        /* BUTTON GROUP */
+        .button-group {
+            display: flex;
+            gap: 0.75rem;
+            justify-content: center;
+            margin-top: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .button-group .button {
+            padding: 0.65rem 1rem;
+            font-size: 0.92rem;
+        }
+
+        #qaResponse {
+            display: none;
+            margin-top: 1rem;
+            padding: 1rem;
+            background: #e8f5e9;
+            border-radius: 7px;
+            color: #2e7d32;
+            border: 1px solid #c8e6c9;
+        }
+
+        #certificateError {
+            display: none;
+            margin-top: 1rem;
+            padding: 1rem;
+            background: #ffebee;
+            border-radius: 7px;
+            color: #c62828;
+            border: 1px solid #ffcdd2;
+        }
+
+        /* RESPONSIVE */
+        @media (max-width: 980px) {
+            .founder-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .offer-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .highlights-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 760px) {
+            .nav-links {
+                gap: 0.75rem;
+                font-size: 0.82rem;
+            }
+
+            .section {
+                padding: 3.8rem 0;
+            }
+
+            .highlights-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .skill-list {
+                grid-template-columns: 1fr;
+            }
+
+            .certificate-recipient {
+                font-size: 1.5rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero {
+                padding: 5rem 0 4rem;
+            }
+
+            .hero h1 {
+                font-size: 2rem;
+            }
+
+            .hero-actions {
+                gap: 0.5rem;
+            }
+
+            .button {
+                padding: 0.65rem 0.85rem;
+                font-size: 0.9rem;
+            }
+
+            .form-group input,
+            .form-group textarea {
+                padding: 0.7rem;
+            }
+        }
+
+        /* PRINT STYLES */
+        @media print {
+            body {
+                background-color: white;
+            }
+
+            .site-header, footer, .button-group, .qa-form, .section:not(.certificate-section),
+            .certificate-form {
+                display: none;
+            }
+
+            .certificate-preview {
+                display: block !important;
+                box-shadow: none;
+                border: none;
+                page-break-after: always;
+            }
+
+            .certificate-section {
+                background: white;
+                padding: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- HEADER & NAVBAR -->
+    <header class="site-header">
+        <nav class="container navbar">
+            <a class="logo" href="index.html"><img src="./image/nexus-learn logo.png" alt="ILM Nexus"></a>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="#speaker">Speaker</a></li>
+                <li><a href="#learning">What You'll Learn</a></li>
+                <li><a href="#qa">Q&A</a></li>
+                <li><a href="#certificate">Certificate</a></li>
+            </ul>
+            <a class="button button-primary" href="https://meet.google.com/sso-aqbo-bsz" target="_blank">Join Meet <i class="fas fa-arrow-right"></i></a>
+        </nav>
+    </header>
+
+    <!-- HERO SECTION WITH SPEAKER -->
+    <section class="hero">
+        <div class="container" style="display: grid; grid-template-columns: 1fr 1fr; align-items: center; gap: 3rem; position: relative; z-index: 2;">
+            <div class="hero-content">
+                <p class="eyebrow">ILM Nexus Professional Development Series</p>
+                <h1 style="font-size: 2.5rem;">Build Your Digital Identity</h1>
+                <p style="font-size: 1rem; margin-bottom: 1.5rem;">LinkedIn Optimization & Professional Visibility</p>
+                
+                <div style="background: rgba(255,255,255,0.15); padding: 1.2rem; border-radius: 10px; margin-bottom: 1.5rem; backdrop-filter: blur(10px); text-align: left;">
+                    <div style="margin: 0.6rem 0; font-size: 0.9rem;">
+                        <strong style="color: #ffda91;">🎤 Speaker:</strong> Abdulbasit Lukman
+                    </div>
+                    <div style="margin: 0.6rem 0; font-size: 0.9rem;">
+                        <strong style="color: #ffda91;">📅 Date:</strong> Saturday, Sept 5, 2026
+                    </div>
+                    <div style="margin: 0.6rem 0; font-size: 0.9rem;">
+                        <strong style="color: #ffda91;">⏰ Time:</strong> 8:20 PM – 9:30 PM
+                    </div>
+                    <div style="margin: 0.6rem 0; font-size: 0.9rem;">
+                        <strong style="color: #ffda91;">🎥 Platform:</strong> Google Meet
+                    </div>
+                </div>
+
+                <div class="hero-actions">
+                    <a class="button button-gold" href="https://meet.google.com/sso-aqbo-bsz" target="_blank">Join Google Meet <i class="fas fa-arrow-right"></i></a>
+                </div>
+            </div>
+
+            <div style="position: relative; text-align: center;">
+                <div style="position: relative; display: inline-block; width: 100%;">
+                    <img src="./image/abdulpic.jpg" alt="Abdulbasit Lukman" style="width: 100%; max-width: 350px; border-radius: 12px; box-shadow: 0 20px 50px rgba(0,0,0,0.3); display: block; position: relative; z-index: 2;">
+                    <div style="position: absolute; bottom: -15px; left: 50%; transform: translateX(-50%); background: var(--gold); color: var(--white); padding: 0.8rem 1.5rem; border-radius: 8px; font-weight: 700; white-space: nowrap; z-index: 3; box-shadow: 0 5px 20px rgba(239, 156, 24, 0.3);">
+                        Sincerely Abdul ✨
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- EVENT FLYER SECTION -->
+    <section class="section section-white" style="padding: 3rem 0;">
+        <div class="container" style="text-align: center;">
+            <div class="section-heading">
+                <p class="eyebrow" style="color: var(--blue)">Event Flyer</p>
+                <h2>Session Highlights</h2>
+            </div>
+            <div style="background: var(--paper); padding: 2rem; border-radius: 10px; border: 2px solid var(--line); max-width: 600px; margin: 2rem auto;">
+                <div style="background: var(--white); padding: 2rem; border-radius: 8px; box-shadow: 0 5px 20px rgba(20, 33, 61, 0.1);">
+                    <div style="color: var(--gold); font-weight: 700; font-size: 0.85rem; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 1rem;">
+                        🎓 Professional Development Series — Cohort 1.0
+                    </div>
+                    <h3 style="color: var(--ink); font-size: 1.8rem; margin-bottom: 1rem; font-family: 'Space Grotesk', sans-serif;">Build Your Digital Identity</h3>
+                    <p style="color: var(--blue); font-weight: 700; font-size: 1.1rem; margin-bottom: 1rem;">LinkedIn Optimization & Professional Visibility</p>
+                    <hr style="border: none; border-top: 2px solid var(--line); margin: 1.5rem 0;">
+                    <div style="text-align: left; font-size: 0.95rem; color: var(--ink); line-height: 2;">
+                        <div><strong>📅 Date:</strong> Saturday, September 5, 2026</div>
+                        <div><strong>⏰ Time:</strong> 8:20 PM – 9:30 PM</div>
+                        <div><strong>🎤 Speaker:</strong> Abdulbasit Lukman (Sincerely Abdul)</div>
+                        <div><strong>🎥 Platform:</strong> Google Meet</div>
+                        <div><strong>👥 Host:</strong> ILM Nexus Community</div>
+                    </div>
+                    <hr style="border: none; border-top: 2px solid var(--line); margin: 1.5rem 0;">
+                    <p style="color: var(--muted); font-size: 0.9rem; margin-bottom: 1.5rem;">In today's professional world, your digital presence can be just as important as your physical CV. Learn how to intentionally build your professional identity.</p>
+                    <a class="button button-gold" href="https://meet.google.com/sso-aqbo-bsz" target="_blank" style="width: 100%; justify-content: center;">Join Us on Google Meet</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- EVENT FLOW / AGENDA SECTION -->
+    <section class="section" style="background: var(--white); border-block: 1px solid var(--line);">
+        <div class="container">
+            <div class="section-heading">
+                <p class="eyebrow" style="color: var(--blue)">Session Agenda</p>
+                <h2>Event Flow & Order</h2>
+                <p>Here's how today's masterclass will unfold.</p>
+            </div>
+
+            <div style="max-width: 900px; margin: 3rem auto; position: relative;">
+                <!-- Timeline vertical line -->
+                <div style="position: absolute; left: 30px; top: 0; bottom: 0; width: 3px; background: linear-gradient(180deg, var(--blue), var(--gold)); border-radius: 2px;"></div>
+
+                <!-- Timeline items -->
+                <div style="display: flex; flex-direction: column; gap: 2rem; margin-left: 100px;">
+                    
+                    <!-- 1. Opening -->
+                    <div style="display: flex; gap: 1.5rem; position: relative;">
+                        <div style="position: absolute; left: -75px; top: 5px; width: 45px; height: 45px; background: var(--blue); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: var(--white); font-weight: 700; font-size: 1.1rem; box-shadow: 0 4px 12px rgba(36, 107, 254, 0.3);">
+                            1
+                        </div>
+                        <div style="padding: 1.5rem; border: 2px solid var(--line); border-radius: 10px; background: var(--white); flex: 1; transition: all 0.3s;">
+                            <h4 style="color: var(--ink); font-size: 1.1rem; margin-bottom: 0.5rem; font-weight: 700;">Opening & Welcome</h4>
+                            <p style="color: var(--muted); margin: 0; font-size: 0.92rem;">Welcome from Chief Host, introduction to ILM Nexus Professional Development Series Cohort 1.0</p>
+                        </div>
+                    </div>
+
+                    <!-- 2. Welcome Guests -->
+                    <div style="display: flex; gap: 1.5rem; position: relative;">
+                        <div style="position: absolute; left: -75px; top: 5px; width: 45px; height: 45px; background: var(--blue); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: var(--white); font-weight: 700; font-size: 1.1rem; box-shadow: 0 4px 12px rgba(36, 107, 254, 0.3);">
+                            2
+                        </div>
+                        <div style="padding: 1.5rem; border: 2px solid var(--line); border-radius: 10px; background: var(--white); flex: 1;">
+                            <h4 style="color: var(--ink); font-size: 1.1rem; margin-bottom: 0.5rem; font-weight: 700;">Welcome Special Guests</h4>
+                            <p style="color: var(--muted); margin: 0; font-size: 0.92rem;">Appreciation of special guests, mentors, facilitators, and participants</p>
+                        </div>
+                    </div>
+
+                    <!-- 3. Introduce Session -->
+                    <div style="display: flex; gap: 1.5rem; position: relative;">
+                        <div style="position: absolute; left: -75px; top: 5px; width: 45px; height: 45px; background: var(--blue); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: var(--white); font-weight: 700; font-size: 1.1rem; box-shadow: 0 4px 12px rgba(36, 107, 254, 0.3);">
+                            3
+                        </div>
+                        <div style="padding: 1.5rem; border: 2px solid var(--line); border-radius: 10px; background: var(--white); flex: 1;">
+                            <h4 style="color: var(--ink); font-size: 1.1rem; margin-bottom: 0.5rem; font-weight: 700;">Introduce the Session</h4>
+                            <p style="color: var(--muted); margin: 0; font-size: 0.92rem;">Understanding the importance of digital presence and LinkedIn in today's professional world</p>
+                        </div>
+                    </div>
+
+                    <!-- 4. Introduce Speaker -->
+                    <div style="display: flex; gap: 1.5rem; position: relative;">
+                        <div style="position: absolute; left: -75px; top: 5px; width: 45px; height: 45px; background: var(--gold); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: var(--white); font-weight: 700; font-size: 1.1rem; box-shadow: 0 4px 12px rgba(239, 156, 24, 0.3);">
+                            4
+                        </div>
+                        <div style="padding: 1.5rem; border: 2px solid var(--gold); border-radius: 10px; background: #fffbf0; flex: 1;">
+                            <h4 style="color: var(--ink); font-size: 1.1rem; margin-bottom: 0.5rem; font-weight: 700;">🎤 Introduce Guest Speaker</h4>
+                            <p style="color: var(--muted); margin: 0; font-size: 0.92rem;"><strong>Abdulbasit Lukman (Sincerely Abdul)</strong> — Tech Community Builder, Community Manager, NACOS KWASU Software Director</p>
+                        </div>
+                    </div>
+
+                    <!-- 5. Speaker Presentation -->
+                    <div style="display: flex; gap: 1.5rem; position: relative;">
+                        <div style="position: absolute; left: -75px; top: 5px; width: 45px; height: 45px; background: var(--gold); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: var(--white); font-weight: 700; font-size: 1.1rem; box-shadow: 0 4px 12px rgba(239, 156, 24, 0.3);">
+                            5
+                        </div>
+                        <div style="padding: 1.5rem; border: 2px solid var(--gold); border-radius: 10px; background: #fffbf0; flex: 1;">
+                            <h4 style="color: var(--ink); font-size: 1.1rem; margin-bottom: 0.5rem; font-weight: 700;">Speaker Presentation</h4>
+                            <p style="color: var(--muted); margin: 0; font-size: 0.92rem;">LinkedIn Optimization, professional visibility, building credible digital presence, and career strategies</p>
+                        </div>
+                    </div>
+
+                    <!-- 6. Q&A Session -->
+                    <div style="display: flex; gap: 1.5rem; position: relative;">
+                        <div style="position: absolute; left: -75px; top: 5px; width: 45px; height: 45px; background: var(--blue); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: var(--white); font-weight: 700; font-size: 1.1rem; box-shadow: 0 4px 12px rgba(36, 107, 254, 0.3);">
+                            6
+                        </div>
+                        <div style="padding: 1.5rem; border: 2px solid var(--line); border-radius: 10px; background: var(--white); flex: 1;">
+                            <h4 style="color: var(--ink); font-size: 1.1rem; margin-bottom: 0.5rem; font-weight: 700;">Questions & Answers</h4>
+                            <p style="color: var(--muted); margin: 0; font-size: 0.92rem;">Interactive Q&A session — ask clarifying questions and interact directly with our guest speaker</p>
+                        </div>
+                    </div>
+
+                    <!-- 7. Speaker Final Advice -->
+                    <div style="display: flex; gap: 1.5rem; position: relative;">
+                        <div style="position: absolute; left: -75px; top: 5px; width: 45px; height: 45px; background: var(--gold); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: var(--white); font-weight: 700; font-size: 1.1rem; box-shadow: 0 4px 12px rgba(239, 156, 24, 0.3);">
+                            7
+                        </div>
+                        <div style="padding: 1.5rem; border: 2px solid var(--gold); border-radius: 10px; background: #fffbf0; flex: 1;">
+                            <h4 style="color: var(--ink); font-size: 1.1rem; margin-bottom: 0.5rem; font-weight: 700;">Speaker's Final Advice</h4>
+                            <p style="color: var(--muted); margin: 0; font-size: 0.92rem;">Final words and advice for students and young professionals, why ILM Nexus Cohort 1.0 matters</p>
+                        </div>
+                    </div>
+
+                    <!-- 8. Program Overview -->
+                    <div style="display: flex; gap: 1.5rem; position: relative;">
+                        <div style="position: absolute; left: -75px; top: 5px; width: 45px; height: 45px; background: var(--blue); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: var(--white); font-weight: 700; font-size: 1.1rem; box-shadow: 0 4px 12px rgba(36, 107, 254, 0.3);">
+                            8
+                        </div>
+                        <div style="padding: 1.5rem; border: 2px solid var(--line); border-radius: 10px; background: var(--white); flex: 1;">
+                            <h4 style="color: var(--ink); font-size: 1.1rem; margin-bottom: 0.5rem; font-weight: 700;">Program Overview</h4>
+                            <p style="color: var(--muted); margin: 0; font-size: 0.92rem;">ILM Nexus International Digital Skills Cohort 1.0 — timetable, requirements, benefits, and registration</p>
+                        </div>
+                    </div>
+
+                    <!-- 9. Cohort Closing Remarks -->
+                    <div style="display: flex; gap: 1.5rem; position: relative;">
+                        <div style="position: absolute; left: -75px; top: 5px; width: 45px; height: 45px; background: var(--gold); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: var(--white); font-weight: 700; font-size: 1.1rem; box-shadow: 0 4px 12px rgba(239, 156, 24, 0.3);">
+                            9
+                        </div>
+                        <div style="padding: 1.5rem; border: 2px solid var(--gold); border-radius: 10px; background: #fffbf0; flex: 1;">
+                            <h4 style="color: var(--ink); font-size: 1.1rem; margin-bottom: 0.5rem; font-weight: 700;">Cohort Closing Remarks</h4>
+                            <p style="color: var(--muted); margin: 0; font-size: 0.92rem;">Closing remarks from Cohort 1.0 representatives (representing 19 students)</p>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SPEAKER SECTION -->
+    <section class="section section-white" id="speaker">
+        <div class="container">
+            <div class="section-heading">
+                <p class="eyebrow" style="color: var(--blue)">Meet Our Speaker</p>
+                <h2>Abdulbasit Lukman</h2>
+                <p>Community Manager, Tech Community Builder & Digital Skills Expert</p>
+            </div>
+
+            <div class="founder-grid">
+                <div class="founder-image">
+                    <img src="./image/abdulpic.jpg" alt="Abdulbasit Lukman">
+                </div>
+                <div class="founder-copy">
+                    <p class="eyebrow" style="color: var(--blue)">About the Speaker</p>
+                    <h2 style="font-size: 2rem;">Abdulbasit Lukman</h2>
+                    <p class="founder-name">Sincerely Abdul</p>
+                    <div class="founder-bio">
+                        <p>Abdulbasit is a passionate community leader and tech enthusiast dedicated to building strong tech communities and fostering professional growth. With extensive experience in community management and digital skills development, he brings valuable insights on building a credible online presence and leveraging professional networks.</p>
+                        <p><strong>Current Roles:</strong> Community Manager • Tech Community Builder • NACOS KWASU Software Director</p>
+                        <p>Through his work with various tech communities, Abdulbasit has helped numerous young professionals enhance their digital visibility and unlock new opportunities in their careers. His expertise in LinkedIn optimization and professional branding makes him the perfect guide for this masterclass.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- WHAT YOU'LL LEARN SECTION -->
+    <section class="section" id="learning">
+        <div class="container">
+            <div class="section-heading">
+                <p class="eyebrow" style="color: var(--blue)">Learning Outcomes</p>
+                <h2>What You'll Learn</h2>
+                <p>Master the skills to build a powerful professional presence and leverage LinkedIn for career growth.</p>
+            </div>
+            
+            <div class="offer-grid">
+                <div class="offer">
+                    <p class="offer-kicker">💼 Professional Branding</p>
+                    <h3>Optimize Your LinkedIn Profile</h3>
+                    <p>Learn the essential elements that make a LinkedIn profile stand out and attract the right opportunities and connections.</p>
+                </div>
+                <div class="offer">
+                    <p class="offer-kicker">🎯 Presentation Skills</p>
+                    <h3>Present Yourself Professionally</h3>
+                    <p>Discover how to showcase your skills, experience, and personality in a way that builds credibility and trust.</p>
+                </div>
+                <div class="offer">
+                    <p class="offer-kicker">👁️ Visibility & Reach</p>
+                    <h3>Improve Your Professional Visibility</h3>
+                    <p>Strategies to increase your reach and ensure the right people see your professional profile and accomplishments.</p>
+                </div>
+                <div class="offer">
+                    <p class="offer-kicker">🔐 Digital Presence</p>
+                    <h3>Build a Credible Digital Presence</h3>
+                    <p>Understand the importance of consistency and authenticity in building a professional brand online.</p>
+                </div>
+                <div class="offer">
+                    <p class="offer-kicker">🚀 Career Growth</p>
+                    <h3>Use LinkedIn Strategically</h3>
+                    <p>Practical tips for leveraging LinkedIn to discover opportunities, network effectively, and advance your career.</p>
+                </div>
+                <div class="offer">
+                    <p class="offer-kicker">💡 Action Steps</p>
+                    <h3>Practical Tips for Your Journey</h3>
+                    <p>Actionable advice specifically tailored for students and young professionals starting their career journey.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SESSION HIGHLIGHTS SECTION -->
+    <section class="section section-white">
+        <div class="container">
+            <div class="section-heading">
+                <p class="eyebrow" style="color: var(--blue)">Experience</p>
+                <h2>Session Highlights</h2>
+                <p>What to expect from this masterclass experience.</p>
+            </div>
+            
+            <div class="highlights-grid">
+                <div class="highlight-card">
+                    <div class="highlight-icon">📸</div>
+                    <h3>Live Session</h3>
+                    <p>Interactive masterclass with real-time Q&A and expert guidance from Abdulbasit</p>
+                </div>
+                <div class="highlight-card">
+                    <div class="highlight-icon">🎤</div>
+                    <h3>Expert Insights</h3>
+                    <p>Proven strategies and real-world tips from a seasoned community builder</p>
+                </div>
+                <div class="highlight-card">
+                    <div class="highlight-icon">💡</div>
+                    <h3>Key Takeaways</h3>
+                    <p>Essential learnings you can implement immediately after the session</p>
+                </div>
+                <div class="highlight-card">
+                    <div class="highlight-icon">🎓</div>
+                    <h3>Certificate</h3>
+                    <p>Earn a certificate of participation to showcase your professional development</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Q&A SECTION -->
+    <section class="section" id="qa">
+        <div class="container">
+            <div class="section-heading">
+                <p class="eyebrow" style="color: var(--blue)">Engagement</p>
+                <h2>Got a Question?</h2>
+                <p>Submit your questions and have them answered during the live masterclass.</p>
+            </div>
+
+            <div class="qa-form">
+                <form id="qaForm" onsubmit="handleQASubmit(event)">
+                    <div class="form-group">
+                        <label for="qaName">Your Full Name</label>
+                        <input type="text" id="qaName" name="name" required placeholder="Enter your full name">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="qaEmail">Your Email Address</label>
+                        <input type="email" id="qaEmail" name="email" required placeholder="Enter your email address">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="qaQuestion">Your Question</label>
+                        <textarea id="qaQuestion" name="question" required placeholder="What would you like to ask Abdulbasit?"></textarea>
+                    </div>
+
+                    <button type="submit" class="form-submit">Submit Question</button>
+                </form>
+                <div id="qaResponse">
+                    ✓ Thank you! Your question has been received and will be answered during the masterclass.
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- LARGE THANK YOU SECTION -->
+    <section class="appreciation-section" style="padding: 8rem 0;">
+        <div class="container">
+            <div style="max-width: 900px; margin: 0 auto; text-align: center;">
+                
+                <!-- Main Thank You Message -->
+                <h2 style="font-size: 3.5rem; margin-bottom: 1rem; font-weight: 700; line-height: 1.1;">
+                    Thank You for<br>Coming Today
+                </h2>
+
+                <div class="appreciation-quote" style="font-size: 1.3rem; margin: 3rem 0; color: rgba(255, 255, 255, 0.95); line-height: 1.9;">
+                    Your presence, participation, and commitment to professional growth is what makes the ILM Nexus International Digital Skills community thrive.
+                </div>
+
+                <!-- Speaker Appreciation -->
+                <div class="appreciation-speaker" style="margin: 3rem 0; padding: 2.5rem; background: rgba(255, 255, 255, 0.12); border-left: 4px solid #ffda91;">
+                    <p style="margin: 0 0 1rem; font-size: 1rem; opacity: 0.95;">A special appreciation to our guest speaker</p>
+                    <p style="font-size: 2rem; font-weight: 700; color: #ffda91; margin: 0 0 0.5rem; font-family: 'Space Grotesk', sans-serif;">Abdulbasit Lukman</p>
+                    <p style="margin: 0; opacity: 0.9;">"Sincerely Abdul"</p>
+                    <p style="margin: 1rem 0 0; font-size: 0.95rem; opacity: 0.9;">for generously sharing his knowledge, experience, and insights<br>with all of us today.</p>
+                </div>
+
+                <!-- Key Takeaways -->
+                <div style="margin: 4rem 0; padding: 2.5rem; background: rgba(255, 255, 255, 0.08); border-radius: 12px;">
+                    <h3 style="color: var(--white); font-size: 1.5rem; margin-bottom: 2rem; font-weight: 700;">What We Achieved Today</h3>
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.5rem;">
+                        <div>
+                            <div style="font-size: 2.5rem; margin-bottom: 0.5rem;">✅</div>
+                            <h4 style="color: var(--white); margin: 0 0 0.5rem;">Learned & Grew</h4>
+                            <p style="margin: 0; color: rgba(255, 255, 255, 0.85); font-size: 0.9rem;">Built knowledge on LinkedIn optimization & professional visibility</p>
+                        </div>
+                        <div>
+                            <div style="font-size: 2.5rem; margin-bottom: 0.5rem;">🤝</div>
+                            <h4 style="color: var(--white); margin: 0 0 0.5rem;">Connected & Engaged</h4>
+                            <p style="margin: 0; color: rgba(255, 255, 255, 0.85); font-size: 0.9rem;">Interacted directly with an expert in the field</p>
+                        </div>
+                        <div>
+                            <div style="font-size: 2.5rem; margin-bottom: 0.5rem;">🚀</div>
+                            <h4 style="color: var(--white); margin: 0 0 0.5rem;">Inspired & Motivated</h4>
+                            <p style="margin: 0; color: rgba(255, 255, 255, 0.85); font-size: 0.9rem;">Gained practical strategies to advance your career</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Next Steps -->
+                <div style="margin: 4rem 0; padding: 2rem; background: rgba(255, 255, 255, 0.1); border-radius: 12px; border: 1px solid rgba(255, 255, 255, 0.2);">
+                    <h3 style="color: var(--white); font-size: 1.5rem; margin-bottom: 1rem; font-weight: 700;">What's Next?</h3>
+                    <p style="color: rgba(255, 255, 255, 0.9); margin-bottom: 1.5rem; line-height: 1.8;">
+                        Apply what you learned today. Update your LinkedIn profile, implement the strategies shared, and continue your journey with ILM Nexus International Digital Skills — Cohort 1.0.
+                    </p>
+                    <a class="button button-gold" href="index.html" style="font-size: 1rem; padding: 0.9rem 1.5rem;">
+                        Explore ILM Nexus <i class="fas fa-arrow-right"></i>
+                    </a>
+                </div>
+
+                <!-- Closing Message -->
+                <div style="margin-top: 4rem; padding-top: 3rem; border-top: 2px solid rgba(255, 255, 255, 0.2);">
+                    <p style="font-size: 1.1rem; margin: 0; color: rgba(255, 255, 255, 0.95); line-height: 1.8;">
+                        <strong>We look forward to seeing you at our next session</strong><br>
+                        <span style="font-size: 0.95rem; opacity: 0.85;">Continue your professional growth with ILM Nexus</span>
+                    </p>
+                    <p style="margin-top: 2rem; font-size: 0.9rem; opacity: 0.7;">
+                        ILM Nexus International Digital Skills — Cohort 1.0<br>
+                        Building Professionals • Creating Opportunities • Fostering Growth
+                    </p>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- CERTIFICATE SECTION -->
+    <section class="section certificate-section" id="certificate">
+        <div class="container">
+            <div class="section-heading">
+                <p class="eyebrow" style="color: var(--blue)">Achievement</p>
+                <h2>🎓 Get Your Certificate</h2>
+                <p>Earn your certificate of participation and showcase your professional development.</p>
+            </div>
+
+            <div class="certificate-container">
+                <div class="certificate-message">
+                    <p><strong>Thank you for attending the ILM Nexus International Digital Skills Cohort 1.0 session.</strong></p>
+                    <p>Enter your details below to generate your certificate of participation.</p>
+                </div>
+
+                <div class="certificate-form">
+                    <form id="certificateForm" onsubmit="generateCertificate(event)">
+                        <div class="form-group">
+                            <label for="certName">Your Full Name</label>
+                            <input type="text" id="certName" name="fullName" required placeholder="Enter your full name">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="certEmail">Your Email Address</label>
+                            <input type="email" id="certEmail" name="email" required placeholder="Enter your email address">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="certCode">Attendance Verification Code</label>
+                            <input type="text" id="certCode" name="code" required placeholder="Enter the attendance code (provided during event)">
+                        </div>
+
+                        <button type="submit" class="form-submit">Generate My Certificate</button>
+                    </form>
+                </div>
+
+                <!-- Certificate Preview -->
+                <div class="certificate-preview" id="certificatePreview">
+                    <div style="padding: 2rem 0;">
+                        <div class="certificate-header">ILM NEXUS</div>
+                        <div class="certificate-subtitle">INTERNATIONAL DIGITAL SKILLS — COHORT 1.0</div>
+                        
+                        <div style="margin: 2rem 0; border-top: 2px solid var(--line); border-bottom: 2px solid var(--line); padding: 2rem 0;">
+                            <h2 style="color: var(--ink); font-size: 1.8rem; margin-bottom: 1rem; font-family: 'Space Grotesk', sans-serif;">CERTIFICATE OF PARTICIPATION</h2>
+                            <p style="color: var(--ink); margin-bottom: 1rem;">This certificate is proudly presented to</p>
+                            <div class="certificate-recipient" id="certRecipient">JOHN DOE</div>
+                        </div>
+
+                        <div class="certificate-event">
+                            <p>for participating in the</p>
+                            <p><strong>LinkedIn Optimization & Professional Visibility</strong></p>
+                            <p style="margin-top: 1rem;">masterclass.</p>
+                        </div>
+
+                        <div class="certificate-date">
+                            <strong>September 5, 2026</strong><br>
+                            Guest Speaker: <strong>Abdulbasit Lukman</strong>
+                        </div>
+
+                        <div style="margin-top: 2rem; padding-top: 1rem; border-top: 2px solid var(--line);">
+                            <div style="color: var(--ink); font-weight: 700; font-size: 1rem; margin-top: 1rem;">ILM Nexus</div>
+                            <div style="color: var(--blue); font-size: 0.9rem;">International Digital Skills</div>
+                        </div>
+
+                        <div class="certificate-id" id="certID">
+                            Certificate ID: ILM-2026-00001
+                        </div>
+                    </div>
+
+                    <div class="button-group">
+                        <button class="button button-gold" onclick="printCertificate()">🖨️ Print Certificate</button>
+                        <button class="button button-primary" onclick="downloadCertificatePDF()">📥 Download PDF</button>
+                        <button class="button" style="background-color: var(--muted);" onclick="resetCertificate()">← Back</button>
+                    </div>
+                </div>
+
+                <div id="certificateError"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer>
+        <div class="container">
+            <div style="padding-bottom: 2rem;">
+                <h3 style="color: var(--white); margin: 0 0 0.8rem; font-size: 1rem;">ILM Nexus</h3>
+                <p style="font-size: 0.9rem;">A practical digital skills, innovation, and career development organization helping young people build real opportunities.</p>
+            </div>
+            <div class="footer-bottom">
+                © 2026 ILM Nexus. All rights reserved. | <a href="index.html" style="color: #ffda91;">Visit us at ilmnexus.pro</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Q&A Form Handler
+        function handleQASubmit(event) {
+            event.preventDefault();
+            const form = event.target;
+            const formData = {
+                name: document.getElementById('qaName').value,
+                email: document.getElementById('qaEmail').value,
+                question: document.getElementById('qaQuestion').value,
+                timestamp: new Date().toISOString()
+            };
+
+            // Store in localStorage (for demo purposes)
+            let questions = JSON.parse(localStorage.getItem('ilmNexusQuestions')) || [];
+            questions.push(formData);
+            localStorage.setItem('ilmNexusQuestions', JSON.stringify(questions));
+
+            // Show response
+            document.getElementById('qaResponse').style.display = 'block';
+            form.reset();
+
+            // Hide response after 5 seconds
+            setTimeout(() => {
+                document.getElementById('qaResponse').style.display = 'none';
+            }, 5000);
+        }
+
+        // Certificate Generator
+        function generateCertificate(event) {
+            event.preventDefault();
+
+            const fullName = document.getElementById('certName').value.toUpperCase();
+            const email = document.getElementById('certEmail').value;
+            const code = document.getElementById('certCode').value;
+
+            // Verify attendance code
+            const validCodes = ['ilm-abdul01-opti', 'ILM2026', 'ILM-2026', 'NEXUS2026', 'ABDULBASIT'];
+
+            if (!validCodes.includes(code.toUpperCase())) {
+                showCertError('Invalid attendance code. Please check your code and try again.');
+                return;
+            }
+
+            // Generate certificate ID
+            const certID = 'ILM-2026-' + String(Math.floor(Math.random() * 9000) + 1000).padStart(5, '0');
+
+            // Populate certificate
+            document.getElementById('certRecipient').textContent = fullName;
+            document.getElementById('certID').textContent = 'Certificate ID: ' + certID;
+
+            // Store certificate data
+            const certData = {
+                name: fullName,
+                email: email,
+                certificateID: certID,
+                generatedDate: new Date().toISOString(),
+                eventDate: '2026-09-05'
+            };
+            localStorage.setItem('ilmNexusCertificate_' + certID, JSON.stringify(certData));
+
+            // Hide form, show certificate
+            document.getElementById('certificateForm').style.display = 'none';
+            document.getElementById('certificatePreview').classList.add('active');
+            document.getElementById('certificateError').style.display = 'none';
+        }
+
+        function showCertError(message) {
+            const errorDiv = document.getElementById('certificateError');
+            errorDiv.textContent = '✗ ' + message;
+            errorDiv.style.display = 'block';
+        }
+
+        function resetCertificate() {
+            document.getElementById('certificateForm').style.display = 'block';
+            document.getElementById('certificatePreview').classList.remove('active');
+            document.getElementById('certificateError').style.display = 'none';
+            document.getElementById('certificateForm').reset();
+        }
+
+        function printCertificate() {
+            window.print();
+        }
+
+        function downloadCertificatePDF() {
+            alert('PDF download feature would integrate with a backend PDF generation service (e.g., jsPDF or server-side solution).\n\nFor now, you can use the Print function to save as PDF.');
+        }
+
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>
