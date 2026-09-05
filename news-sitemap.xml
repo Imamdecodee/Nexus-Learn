@@ -4,7 +4,7 @@
     
     <!-- News Article 1: Ilm Nexus Limited Officially Registered -->
     <url>
-        <loc>https://nexus-learn.netlify.app/news.html?article=ilm-nexus-registered</loc>
+        <loc>https://ilmnexus.tech/article.html?id=legacy-1</loc>
         <lastmod>2025-12-03T00:00:00+00:00</lastmod>
         <changefreq>never</changefreq>
         <priority>0.8</priority>
@@ -21,7 +21,7 @@
 
     <!-- News Article 2: Conference 3.0 -->
     <url>
-        <loc>https://nexus-learn.netlify.app/news.html?article=conference-3.0</loc>
+        <loc>https://ilmnexus.tech/article.html?id=legacy-2</loc>
         <lastmod>2025-12-13T00:00:00+00:00</lastmod>
         <changefreq>never</changefreq>
         <priority>0.8</priority>
@@ -38,7 +38,7 @@
 
     <!-- News Article 3: Digital Skills Certificate Fee -->
     <url>
-        <loc>https://nexus-learn.netlify.app/news.html?article=certificate-fee</loc>
+        <loc>https://ilmnexus.tech/article.html?id=legacy-3</loc>
         <lastmod>2026-05-25T00:00:00+00:00</lastmod>
         <changefreq>never</changefreq>
         <priority>0.7</priority>
@@ -55,7 +55,7 @@
 
     <!-- News Article 4: University Expansion -->
     <url>
-        <loc>https://nexus-learn.netlify.app/news.html?article=expansion</loc>
+        <loc>https://ilmnexus.tech/article.html?id=legacy-4</loc>
         <lastmod>2025-12-03T00:00:00+00:00</lastmod>
         <changefreq>never</changefreq>
         <priority>0.8</priority>
@@ -72,7 +72,7 @@
 
     <!-- News Article 5: Latest Update -->
     <url>
-        <loc>https://nexus-learn.netlify.app/news.html?article=latest-update</loc>
+        <loc>https://ilmnexus.tech/article.html?id=legacy-5</loc>
         <lastmod>2025-12-23T00:00:00+00:00</lastmod>
         <changefreq>never</changefreq>
         <priority>0.7</priority>
@@ -89,7 +89,7 @@
 
     <!-- News Article 6: Student Talent Recruitment -->
     <url>
-        <loc>https://nexus-learn.netlify.app/news.html?article=talent-recruitment</loc>
+        <loc>https://ilmnexus.tech/article.html?id=legacy-6</loc>
         <lastmod>2025-11-30T00:00:00+00:00</lastmod>
         <changefreq>never</changefreq>
         <priority>0.7</priority>

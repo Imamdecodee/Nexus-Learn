@@ -19,8 +19,8 @@
     <!-- OPEN GRAPH TAGS (Social Media Sharing) -->
     <meta property="og:title" content="Latest News & Updates | Nexus-Learn Digital Skills Platform">
     <meta property="og:description" content="Discover the latest announcements, platform updates, and events from Nexus-Learn. Stay informed about our growth, new programs, and community opportunities.">
-    <meta property="og:image" content="https://nexus-learn.netlify.app/image/nexus-learn-logo.png">
-    <meta property="og:url" content="https://nexus-learn.netlify.app/news.html">
+    <meta property="og:image" content="https://ilmnexus.tech/image/logo.png">
+    <meta property="og:url" content="https://ilmnexus.tech/news.html">
     <meta property="og:type" content="website">
     <meta property="og:site_name" content="Nexus-Learn">
     <meta property="og:locale" content="en_NG">
@@ -29,7 +29,7 @@
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="Latest News & Updates | Nexus-Learn">
     <meta name="twitter:description" content="Stay informed about Nexus-Learn's latest features, announcements, and community updates.">
-    <meta name="twitter:image" content="https://nexus-learn.netlify.app/image/nexus-learn-logo.png">
+    <meta name="twitter:image" content="https://ilmnexus.tech/image/logo.png">
     <meta name="twitter:site" content="@nexus_learn">
     
     <!-- STRUCTURED DATA - NEWS COLLECTION -->
@@ -39,17 +39,17 @@
         "@type": "CollectionPage",
         "name": "Latest Updates & News",
         "description": "News and updates from Nexus-Learn - Digital Skills Platform by Ilm Nexus Ltd",
-        "url": "https://nexus-learn.netlify.app/news.html",
+        "url": "https://ilmnexus.tech/news.html",
         "publisher": {
             "@type": "Organization",
             "name": "Ilm Nexus Ltd",
-            "url": "https://nexus-learn.netlify.app",
-            "logo": "https://nexus-learn.netlify.app/image/nexus-learn-logo.png"
+            "url": "https://ilmnexus.tech/",
+            "logo": "https://ilmnexus.tech/image/logo.png"
         },
         "mainEntity": {
             "@type": "NewsArticle",
             "headline": "Latest Updates & News from Nexus-Learn",
-            "image": "https://nexus-learn.netlify.app/image/nexus-learn-logo.png",
+            "image": "https://ilmnexus.tech/image/logo.png",
             "datePublished": "2025-12-03T00:00:00Z",
             "author": {
                 "@type": "Organization",
@@ -60,7 +60,7 @@
     </script>
     
     <!-- CANONICAL URL -->
-    <link rel="canonical" href="https://nexus-learn.netlify.app/news.html">
+    <link rel="canonical" href="https://ilmnexus.tech/news.html">
     
     <!-- ADDITIONAL SEO TAGS -->
     <meta name="author" content="Ilm Nexus Ltd">
@@ -1124,6 +1124,71 @@
             border-color: #dbe3ef;
         }
 
+        .footer {
+            margin-top: 0;
+            padding: 4.5rem 0 1.25rem;
+            background: #101b33;
+            color: #fff;
+        }
+
+        .footer-content {
+            grid-template-columns: minmax(240px, 1.5fr) repeat(2, minmax(150px, 1fr));
+            gap: 3rem;
+            margin-bottom: 3rem;
+        }
+
+        .footer-section:first-child h3 {
+            color: #fff;
+            font-size: 1.45rem;
+        }
+
+        .footer-section p {
+            max-width: 300px;
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .footer-section h3 {
+            color: #ffcf70;
+            font-size: 0.85rem;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+        }
+
+        .footer-section a {
+            width: fit-content;
+            color: rgba(255, 255, 255, 0.72);
+        }
+
+        .footer-section a:hover {
+            color: #ffcf70;
+        }
+
+        .footer-bottom {
+            display: flex;
+            justify-content: space-between;
+            gap: 1rem;
+            text-align: left;
+            border-top-color: rgba(255, 255, 255, 0.14);
+            padding-top: 1.25rem;
+        }
+
+        .footer-bottom a {
+            color: #ffcf70 !important;
+            text-decoration: none;
+        }
+
+        @media (max-width: 768px) {
+            .footer-content,
+            .footer-bottom {
+                grid-template-columns: 1fr;
+                display: grid;
+            }
+
+            .footer-bottom {
+                text-align: center;
+            }
+        }
+
         @media (max-width: 768px) {
             .news-hero {
                 padding: 5rem var(--space-md) 3.5rem;
@@ -1497,25 +1562,28 @@
         <div class="container">
             <div class="footer-content">
                 <div class="footer-section">
-                    <h3>Nexus-Learn</h3>
-                    <p style="color: rgba(255, 255, 255, 0.7); margin-bottom: var(--space-md);">Empowering students with digital skills and real-world experience.</p>
+                    <h3>ILM Nexus</h3>
+                    <p style="margin-bottom: var(--space-md);">Practical digital skills, creative services, and career opportunities for the next generation.</p>
+                    <a href="mailto:theilmnexus@gmail.com"><i class="fas fa-envelope"></i> theilmnexus@gmail.com</a>
                 </div>
                 <div class="footer-section">
                     <h3>Quick Links</h3>
                     <a href="index.html">Home</a>
-                    <a href="index.html#courses">Courses</a>
+                    <a href="programs.html">Programs</a>
                     <a href="news.html">News</a>
-                    <a href="index.html#contact">Contact</a>
+                    <a href="services.html">Services</a>
                 </div>
                 <div class="footer-section">
-                    <h3>Follow Us</h3>
-                    <a href="https://facebook.com/ilmnexus" target="_blank"><i class="fab fa-facebook"></i> Facebook</a>
-                    <a href="https://twitter.com/nexus_learn" target="_blank"><i class="fab fa-twitter"></i> Twitter</a>
-                    <a href="https://instagram.com/ilmnexus" target="_blank"><i class="fab fa-instagram"></i> Instagram</a>
+                    <h3>Connect</h3>
+                    <a href="https://facebook.com/ilmnexus" target="_blank" rel="noopener"><i class="fab fa-facebook"></i> Facebook</a>
+                    <a href="https://instagram.com/ilmnexus" target="_blank" rel="noopener"><i class="fab fa-instagram"></i> Instagram</a>
+                    <a href="https://t.me/ilmNexus_bootcamp" target="_blank" rel="noopener"><i class="fab fa-telegram"></i> Telegram</a>
+                    <a href="https://wa.me/2347086808302" target="_blank" rel="noopener"><i class="fab fa-whatsapp"></i> WhatsApp</a>
                 </div>
             </div>
             <div class="footer-bottom">
-                <p>&copy; 2025 Ilm Nexus Limited. All rights reserved. | <a href="#" style="color: var(--primary);">Privacy Policy</a> | <a href="#" style="color: var(--primary);">Terms of Service</a></p>
+                <p>&copy; 2026 Ilm Nexus Limited. All rights reserved.</p>
+                <p><a href="index.html">ILM Nexus Academy</a> · Ilorin, Kwara State, Nigeria</p>
             </div>
         </div>
     </footer>

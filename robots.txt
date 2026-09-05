@@ -19,8 +19,8 @@ Disallow: /test/
 Crawl-delay: 1
 
 # Sitemap location for faster discovery
-Sitemap: https://nexus-learn.netlify.app/sitemap.xml
-Sitemap: https://nexus-learn.netlify.app/news-sitemap.xml
+Sitemap: https://ilmnexus.tech/sitemap.xml
+Sitemap: https://ilmnexus.tech/news-sitemap.xml
 
 # Google specific rules
 User-agent: Googlebot

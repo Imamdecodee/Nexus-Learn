@@ -40,7 +40,7 @@ This is the MOST important step to get indexed within 1 day!
 **Instructions:**
 1. Go to [Google Search Console](https://search.google.com/search-console)
 2. Click "Add property"
-3. Enter: `https://nexus-learn.netlify.app`
+3. Enter: `https://ilmnexus.tech`
 4. Verify ownership (choose HTML file method):
    - Google will ask you to upload an HTML file
    - Name it exactly: `google[verification-code].html`
@@ -48,8 +48,8 @@ This is the MOST important step to get indexed within 1 day!
    - Verify
 5. Once verified, submit sitemaps:
    - Go to "Sitemaps" menu
-   - Submit: `https://nexus-learn.netlify.app/sitemap.xml`
-   - Submit: `https://nexus-learn.netlify.app/news-sitemap.xml`
+  - Submit: `https://ilmnexus.tech/sitemap.xml`
+  - Submit: `https://ilmnexus.tech/news-sitemap.xml`
 
 ### Step 2: Submit to Google News (Special for News Content)
 To get your news articles in Google News specifically:
@@ -71,7 +71,7 @@ If you're using Netlify:
 In Google Search Console:
 
 1. Go to "URL Inspection"
-2. Enter: `https://nexus-learn.netlify.app/news.html`
+2. Enter: `https://ilmnexus.tech/news.html`
 3. Click "Request Indexing"
 4. Repeat for any new news articles
 
@@ -188,7 +188,7 @@ When writing new articles, follow these guidelines:
 ### Using Google Search
 Simple check:
 1. Go to [Google.com](https://www.google.com)
-2. Search: `site:nexus-learn.netlify.app news`
+2. Search: `site:ilmnexus.tech news`
 3. Your articles should appear in results
 
 ---

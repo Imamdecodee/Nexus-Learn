@@ -1,0 +1,71 @@
+Act as a Senior Frontend Engineer and SEO Expert. I need you to implement an SEO overhaul for my project to transition completely from our old Netlify URL to our official domain: https://ilmnexus.tech. 
+
+Our core goal is to make "Ilm Nexus" rank #1 globally on Google when users search for:
+1. "best tech academy in Nigeria" / "best tech academy in Africa"
+2. "best campus community in tech"
+
+Please execute the following updates across the repository:
+
+1. CREATE A REDIRECT FILE (For Netlify/Hosting)
+In the root directory of the project, create a file named exactly `_redirects` (with no file extension). Add the following line to permanently forward traffic and pass SEO juice to the new domain:
+https://netlify.app*  https://ilmnexus.tech:splat  301!
+
+2. UPDATE THE HOMEPAGE (index.html)
+Locate the <head> tag of the primary `index.html` file. Replace or update the existing meta tags with this optimized, professional structure:
+
+<!-- Primary Meta Tags -->
+<title>Best Tech Academy & Campus Community in Nigeria | Ilm Nexus</title>
+<meta name="description" content="Join Ilm Nexus, the best tech academy in Nigeria and Africa. Experience the ultimate campus community in tech with practical bootcamps, mentorship, and career growth.">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://ilmnexus.tech">
+
+<!-- Open Graph / Facebook -->
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://ilmnexus.tech">
+<meta property="og:title" content="Best Tech Academy & Campus Community in Nigeria | Ilm Nexus">
+<meta property="og:description" content="Empowering African students with tech skills. Discover why Ilm Nexus is the top-rated campus tech ecosystem.">
+<meta property="og:image" content="https://ilmnexus.techassets/images/seo-banner.jpg">
+
+<!-- Twitter Meta Tags -->
+<meta property="twitter:card" content="summary_large_image">
+<meta property="twitter:url" content="https://ilmnexus.tech">
+<meta property="twitter:title" content="Best Tech Academy & Campus Community in Nigeria | Ilm Nexus">
+<meta property="twitter:description" content="Join the fastest-growing student tech ecosystem in Africa. Learn coding, product, and design.">
+
+<!-- JSON-LD Structured Data Schema for Google -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "EducationalOrganization",
+  "name": "Ilm Nexus",
+  "url": "https://ilmnexus.tech",
+  "logo": "https://ilmnexus.techassets/images/logo.png",
+  "description": "Recognized as the best tech academy in Nigeria and Africa, providing a premier campus community in tech for university students.",
+  "address": {
+    "@type": "PostalAddress",
+    "addressLocality": "Ilorin",
+    "addressRegion": "Kwara State",
+    "addressCountry": "NG"
+  },
+  "keyword": "best tech academy in Nigeria, top tech academy in Africa, best campus community in tech, student tech ecosystem Nigeria"
+}
+</script>
+
+
+3. TEMPLATE FOR INDIVIDUAL CAMPUS PAGES
+Review our individual campus landing pages (e.g., unilorin, kwamsu, or any other school pages we have). Apply this specific template layout to their respective <head> blocks, making sure to dynamically swap out the placeholder name "CAMPUS_NAME" and "UNIVERSITY_FULL_NAME" with the specific school details for that page:
+
+<!-- Primary Meta Tags for Campus Page -->
+<title>Best Campus Community in Tech at CAMPUS_NAME | Ilm Nexus Academy</title>
+<meta name="description" content="Discover the Ilm Nexus campus community at UNIVERSITY_FULL_NAME (CAMPUS_NAME). Connect with student developers, access local tech bootcamps, and launch your career.">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://ilmnexus.techCAMPUS_NAME">
+
+<!-- Open Graph / Facebook -->
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://ilmnexus.techCAMPUS_NAME">
+<meta property="og:title" content="Best Campus Community in Tech at CAMPUS_NAME | Ilm Nexus">
+<meta property="og:description" content="Join the premier student tech community at UNIVERSITY_FULL_NAME. Bootcamps, tech events, and peer networking.">
+
+
+Please generate the fully updated files or apply these edits directly to my repository code now. Ensure that all old references to the old Netlify URL anywhere else in the code are completely updated to 'https://ilmnexus.tech'.

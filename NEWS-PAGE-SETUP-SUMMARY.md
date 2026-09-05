@@ -10,7 +10,7 @@
 - ✅ News articles stored in browser (localStorage)
 - ✅ Same professional styling as your main site
 
-**Visit**: `https://nexus-learn.netlify.app/news.html`
+**Visit**: `https://ilmnexus.tech/news.html`
 
 ---
 
@@ -60,7 +60,7 @@
 
 ### **Step 1: Setup Google Search Console (Required!)**
 1. Go to: https://search.google.com/search-console
-2. Add your property: `https://nexus-learn.netlify.app`
+2. Add your property: `https://ilmnexus.tech`
 3. Verify ownership (HTML file upload method)
 4. Submit both sitemaps in the "Sitemaps" section
 5. In "URL Inspection", test your news page
@@ -75,14 +75,14 @@
 ### **Step 3: Request Google Indexing**
 1. Go to Google Search Console
 2. Click "URL Inspection" 
-3. Paste: `https://nexus-learn.netlify.app/news.html`
+3. Paste: `https://ilmnexus.tech/news.html`
 4. Click "Request Indexing"
 5. ✅ Google crawls within 24 hours
 
 ### **Step 4: Check Search Results**
 After 24-48 hours, search on Google:
 ```
-site:nexus-learn.netlify.app news
+site:ilmnexus.tech news
 ```
 Your articles should appear! ✅
 
@@ -160,7 +160,7 @@ Your articles should appear! ✅
 - [ ] Add your first news article
 - [ ] Request indexing in Google Search Console
 - [ ] Wait for Google to crawl (24-48 hours)
-- [ ] Search `site:nexus-learn.netlify.app` on Google to verify
+- [ ] Search `site:ilmnexus.tech` on Google to verify
 
 ---
 

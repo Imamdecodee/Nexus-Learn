@@ -5,7 +5,7 @@
     
     <!-- Main Homepage -->
     <url>
-        <loc>https://nexus-learn.netlify.app/index.html</loc>
+        <loc>https://ilmnexus.tech/</loc>
         <lastmod>2025-08-18T00:00:00+00:00</lastmod>
         <changefreq>weekly</changefreq>
         <priority>1.0</priority>
@@ -13,19 +13,19 @@
     
     <!-- News Page (High Priority) -->
     <url>
-        <loc>https://nexus-learn.netlify.app/news.html</loc>
+        <loc>https://ilmnexus.tech/news.html</loc>
         <lastmod>2025-08-18T00:00:00+00:00</lastmod>
         <changefreq>daily</changefreq>
         <priority>0.9</priority>
         <image:image>
-            <image:loc>https://nexus-learn.netlify.app/image/nexus-learn-logo.png</image:loc>
+            <image:loc>https://ilmnexus.tech/image/logo.png</image:loc>
             <image:title>Nexus-Learn News</image:title>
         </image:image>
     </url>
     
     <!-- Login Page -->
     <url>
-        <loc>https://nexus-learn.netlify.app/login.html</loc>
+        <loc>https://ilmnexus.tech/login.html</loc>
         <lastmod>2025-08-18T00:00:00+00:00</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.7</priority>
@@ -33,7 +33,7 @@
     
     <!-- Dashboard Page -->
     <url>
-        <loc>https://nexus-learn.netlify.app/dashboard.html</loc>
+        <loc>https://ilmnexus.tech/dashboard.html</loc>
         <lastmod>2025-08-18T00:00:00+00:00</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.8</priority>
@@ -41,7 +41,7 @@
     
     <!-- Certificate Page -->
     <url>
-        <loc>https://nexus-learn.netlify.app/certificate.html</loc>
+        <loc>https://ilmnexus.tech/certificate.html</loc>
         <lastmod>2025-08-18T00:00:00+00:00</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.7</priority>
@@ -49,7 +49,7 @@
     
     <!-- Profile Page -->
     <url>
-        <loc>https://nexus-learn.netlify.app/profile.html</loc>
+        <loc>https://ilmnexus.tech/profile.html</loc>
         <lastmod>2025-08-18T00:00:00+00:00</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.6</priority>
@@ -57,7 +57,7 @@
     
     <!-- Web Design Page -->
     <url>
-        <loc>https://nexus-learn.netlify.app/web-design.html</loc>
+        <loc>https://ilmnexus.tech/web-design.html</loc>
         <lastmod>2025-08-18T00:00:00+00:00</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.8</priority>
@@ -65,21 +65,21 @@
     
     <!-- University Pages -->
     <url>
-        <loc>https://nexus-learn.netlify.app/kwasu.html</loc>
+        <loc>https://ilmnexus.tech/state/kwara/kwasu/</loc>
         <lastmod>2025-08-18T00:00:00+00:00</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.7</priority>
     </url>
     
     <url>
-        <loc>https://nexus-learn.netlify.app/uniilorin.html</loc>
+        <loc>https://ilmnexus.tech/state/kwara/unilorin/</loc>
         <lastmod>2025-08-18T00:00:00+00:00</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.7</priority>
     </url>
     
     <url>
-        <loc>https://nexus-learn.netlify.app/fssbootcamp.html</loc>
+        <loc>https://ilmnexus.tech/state/oyo/federal-school-of-survey/</loc>
         <lastmod>2025-08-18T00:00:00+00:00</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.7</priority>

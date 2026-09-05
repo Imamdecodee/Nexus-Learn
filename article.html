@@ -5,6 +5,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ILM Nexus News Article</title>
     <meta name="description" content="Read the latest news and updates from ILM Nexus.">
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+    <link id="articleCanonical" rel="canonical" href="https://ilmnexus.tech/article.html">
+    <meta id="articleOgTitle" property="og:title" content="ILM Nexus News Article">
+    <meta id="articleOgDescription" property="og:description" content="Read the latest news and updates from ILM Nexus.">
+    <meta id="articleOgImage" property="og:image" content="https://ilmnexus.tech/image/nexus-learn%20logo.png">
+    <meta id="articleOgUrl" property="og:url" content="https://ilmnexus.tech/article.html">
+    <meta property="og:type" content="article">
+    <meta property="og:site_name" content="ILM Nexus">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta id="articleTwitterTitle" name="twitter:title" content="ILM Nexus News Article">
+    <meta id="articleTwitterDescription" name="twitter:description" content="Read the latest news and updates from ILM Nexus.">
+    <meta id="articleTwitterImage" name="twitter:image" content="https://ilmnexus.tech/image/nexus-learn%20logo.png">
+    <script id="articleStructuredData" type="application/ld+json">{"@context":"https://schema.org","@type":"NewsArticle","publisher":{"@type":"Organization","name":"Ilm Nexus","url":"https://ilmnexus.tech/"}}</script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@600;700;800&display=swap" rel="stylesheet">
@@ -92,12 +105,44 @@
         }
 
         function renderArticle(article) {
-            document.title = `${article.title} | ILM Nexus News`;
-            document.getElementById('articleCover').src = article.image;
-            document.getElementById('articleCover').alt = article.title;
+            const articleUrl = `${window.location.origin}${window.location.pathname}?id=${encodeURIComponent(articleId)}`;
+            const articleTitle = article.title || 'ILM Nexus News';
+            const articleDescription = article.description || article.content || 'Read the latest news and updates from ILM Nexus.';
+            const articleImage = article.image || `${window.location.origin}/image/nexus-learn%20logo.png`;
+            const publishedDate = article.dateAdded?.toDate ? article.dateAdded.toDate() : new Date(article.date || Date.now());
+
+            document.title = `${articleTitle} | ILM Nexus News`;
+            document.querySelector('meta[name="description"]').content = articleDescription;
+            document.getElementById('articleCanonical').href = articleUrl;
+            document.getElementById('articleOgTitle').content = articleTitle;
+            document.getElementById('articleOgDescription').content = articleDescription;
+            document.getElementById('articleOgImage').content = articleImage;
+            document.getElementById('articleOgUrl').content = articleUrl;
+            document.getElementById('articleTwitterTitle').content = articleTitle;
+            document.getElementById('articleTwitterDescription').content = articleDescription;
+            document.getElementById('articleTwitterImage').content = articleImage;
+            document.getElementById('articleStructuredData').textContent = JSON.stringify({
+                '@context': 'https://schema.org',
+                '@type': 'NewsArticle',
+                headline: articleTitle,
+                description: articleDescription,
+                image: [articleImage],
+                datePublished: publishedDate.toISOString(),
+                dateModified: publishedDate.toISOString(),
+                mainEntityOfPage: { '@type': 'WebPage', '@id': articleUrl },
+                author: { '@type': 'Organization', name: 'Ilm Nexus' },
+                publisher: {
+                    '@type': 'Organization',
+                    name: 'Ilm Nexus',
+                    url: 'https://ilmnexus.tech/',
+                    logo: { '@type': 'ImageObject', url: 'https://ilmnexus.tech/image/nexus-learn%20logo.png' }
+                }
+            });
+            document.getElementById('articleCover').src = articleImage;
+            document.getElementById('articleCover').alt = articleTitle;
             document.getElementById('articleCategory').textContent = article.category || 'ILM Nexus News';
-            document.getElementById('articleTitle').textContent = article.title;
-            document.getElementById('articleDate').textContent = article.date ? new Date(article.date).toLocaleDateString() : '';
+            document.getElementById('articleTitle').textContent = articleTitle;
+            document.getElementById('articleDate').textContent = `Published ${publishedDate.toLocaleDateString()}`;
             document.getElementById('articleViews').innerHTML = `<i class="far fa-eye"></i> ${(article.views || 0).toLocaleString()} views`;
             document.getElementById('articleContent').textContent = article.content || article.description || '';
 
