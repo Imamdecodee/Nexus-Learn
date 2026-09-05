@@ -1,1288 +1,182 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ILM Nexus | Digital Skills, Innovation & Youth Development</title>
-    <meta name="description" content="ILM Nexus empowers students and young people across Nigeria with digital skills training, innovation programs, and real-world opportunities. Join thousands of future-ready leaders.">
-    <meta name="keywords" content="digital skills, youth development, Nigeria, tech training, bootcamp, online learning, career opportunities">
-    
-    <meta property="og:title" content="ILM Nexus | Digital Skills, Innovation & Youth Development">
-    <meta property="og:description" content="Empowering Nigerian students with digital skills, innovation, and career opportunities.">
-    <meta property="og:type" content="website">
-    
-    <meta name="theme-color" content="#3A82FA">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Poppins:wght@600;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
-    
-    <style>
-        :root {
-            --ilm-blue: #3A82FA;
-            --ilm-blue-dark: #1E40AF;
-            --ilm-gold: #EF9C18;
-            --ilm-black: #000000;
-            --ilm-white: #FFFFFF;
-            --gray-50: #F9FAFB;
-            --gray-100: #F3F4F6;
-            --gray-200: #E5E7EB;
-            --gray-300: #D1D5DB;
-            --gray-600: #4B5563;
-            --gray-800: #1F2937;
-            --gray-900: #111827;
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        html {
-            scroll-behavior: smooth;
-        }
-
-        body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-            line-height: 1.6;
-            color: var(--gray-800);
-            background: var(--ilm-white);
-            overflow-x: hidden;
-        }
-
-        img {
-            max-width: 100%;
-            height: auto;
-            display: block;
-        }
-
-        .container {
-            width: 100%;
-            max-width: 1280px;
-            margin: 0 auto;
-            padding: 0 1.5rem;
-        }
-
-        /* HEADER & NAVIGATION */
-        header {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
-            border-bottom: 1px solid var(--gray-100);
-            z-index: 1000;
-            transition: all 0.3s ease;
-        }
-
-        header.scrolled {
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-        }
-
-        nav {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            height: 70px;
-        }
-
-        .logo {
-            height: 45px;
-            width: auto;
-            display: flex;
-            align-items: center;
-        }
-
-        .nav-links {
-            display: flex;
-            gap: 2.5rem;
-            list-style: none;
-            align-items: center;
-        }
-
-        .nav-links a {
-            text-decoration: none;
-            color: var(--gray-800);
-            font-weight: 500;
-            font-size: 0.95rem;
-            transition: color 0.3s ease;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        .nav-links a:hover {
-            color: var(--ilm-blue);
-        }
-
-        .nav-links a.active {
-            color: var(--ilm-gold);
-        }
-
-        .btn-primary {
-            background: linear-gradient(135deg, var(--ilm-blue) 0%, var(--ilm-blue-dark) 100%);
-            color: var(--ilm-white);
-            padding: 0.75rem 1.75rem;
-            border-radius: 0.5rem;
-            border: none;
-            font-weight: 600;
-            cursor: pointer;
-            text-decoration: none;
-            font-size: 0.95rem;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            display: inline-block;
-            text-align: center;
-        }
-
-        .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 25px rgba(58, 130, 250, 0.3);
-        }
-
-        .btn-secondary {
-            background: var(--ilm-white);
-            color: var(--ilm-blue);
-            padding: 0.75rem 1.75rem;
-            border-radius: 0.5rem;
-            border: 2px solid var(--ilm-blue);
-            font-weight: 600;
-            cursor: pointer;
-            text-decoration: none;
-            font-size: 0.95rem;
-            transition: all 0.3s ease;
-            display: inline-block;
-            text-align: center;
-        }
-
-        .btn-secondary:hover {
-            background: var(--ilm-blue);
-            color: var(--ilm-white);
-            transform: translateY(-2px);
-        }
-
-        .btn-gold {
-            background: linear-gradient(135deg, var(--ilm-gold) 0%, #D97706 100%);
-            color: var(--ilm-white);
-            padding: 0.75rem 1.75rem;
-            border-radius: 0.5rem;
-            border: none;
-            font-weight: 600;
-            cursor: pointer;
-            text-decoration: none;
-            font-size: 0.95rem;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            display: inline-block;
-            text-align: center;
-        }
-
-        .btn-gold:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 25px rgba(239, 156, 24, 0.3);
-        }
-
-        .menu-toggle {
-            display: none;
-            background: none;
-            border: none;
-            font-size: 1.5rem;
-            cursor: pointer;
-            color: var(--ilm-blue);
-        }
-
-        /* HERO SECTION */
-        .hero {
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding-top: 70px;
-            background: linear-gradient(135deg, rgba(58, 130, 250, 0.08) 0%, rgba(239, 156, 24, 0.05) 100%);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .hero::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            right: -10%;
-            width: 500px;
-            height: 500px;
-            background: rgba(58, 130, 250, 0.1);
-            border-radius: 50%;
-            filter: blur(80px);
-        }
-
-        .hero::after {
-            content: '';
-            position: absolute;
-            bottom: -20%;
-            left: -5%;
-            width: 400px;
-            height: 400px;
-            background: rgba(239, 156, 24, 0.1);
-            border-radius: 50%;
-            filter: blur(80px);
-        }
-
-        .hero-content {
-            position: relative;
-            z-index: 1;
-            text-align: center;
-            max-width: 900px;
-        }
-
-        .hero h1 {
-            font-family: 'Poppins', sans-serif;
-            font-size: 3.5rem;
-            font-weight: 800;
-            line-height: 1.2;
-            margin-bottom: 1.5rem;
-            color: var(--ilm-black);
-        }
-
-        .hero p {
-            font-size: 1.25rem;
-            color: var(--gray-600);
-            margin-bottom: 2.5rem;
-            line-height: 1.8;
-            max-width: 700px;
-            margin-left: auto;
-            margin-right: auto;
-        }
-
-        .hero-buttons {
-            display: flex;
-            gap: 1.5rem;
-            justify-content: center;
-            flex-wrap: wrap;
-        }
-
-        /* SECTIONS */
-        section {
-            padding: 5rem 0;
-        }
-
-        .section-header {
-            text-align: center;
-            margin-bottom: 4rem;
-        }
-
-        .section-header h2 {
-            font-family: 'Poppins', sans-serif;
-            font-size: 2.5rem;
-            font-weight: 800;
-            margin-bottom: 1rem;
-            color: var(--ilm-black);
-        }
-
-        .section-header p {
-            font-size: 1.1rem;
-            color: var(--gray-600);
-            max-width: 600px;
-            margin: 0 auto;
-        }
-
-        .highlight {
-            color: var(--ilm-gold);
-        }
-
-        /* CARDS GRID */
-        .grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2rem;
-            margin-bottom: 3rem;
-        }
-
-        .card {
-            background: var(--ilm-white);
-            border-radius: 1rem;
-            padding: 2rem;
-            border: 1px solid var(--gray-100);
-            transition: all 0.3s ease;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
-        }
-
-        .card:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.12);
-            border-color: var(--ilm-blue);
-        }
-
-        .card-icon {
-            width: 60px;
-            height: 60px;
-            background: linear-gradient(135deg, var(--ilm-blue) 0%, var(--ilm-gold) 100%);
-            border-radius: 0.75rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.75rem;
-            color: var(--ilm-white);
-            margin-bottom: 1.5rem;
-        }
-
-        .card h3 {
-            font-size: 1.3rem;
-            margin-bottom: 0.75rem;
-            color: var(--ilm-black);
-        }
-
-        .card p {
-            color: var(--gray-600);
-            line-height: 1.7;
-        }
-
-        /* CAMPUS SECTION */
-        .campus-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 1.5rem;
-        }
-
-        .campus-card {
-            text-align: center;
-            padding: 2rem;
-            border-radius: 1rem;
-            background: linear-gradient(135deg, rgba(58, 130, 250, 0.05), rgba(239, 156, 24, 0.05));
-            border: 1px solid var(--gray-100);
-            transition: all 0.3s ease;
-        }
-
-        .campus-card:hover {
-            border-color: var(--ilm-blue);
-            background: linear-gradient(135deg, rgba(58, 130, 250, 0.1), rgba(239, 156, 24, 0.08));
-        }
-
-        .campus-card h3 {
-            font-size: 1.25rem;
-            margin-bottom: 0.5rem;
-            color: var(--ilm-blue);
-        }
-
-        .campus-card p {
-            color: var(--gray-600);
-            font-size: 0.95rem;
-        }
-
-        .university-logo {
-            width: 100%;
-            height: 96px;
-            object-fit: contain;
-            margin-bottom: 1rem;
-            text-align: center;
-        }
-
-        .university-logo-placeholder {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--gray-600);
-            font-size: 0.85rem;
-            background: var(--gray-50);
-            border-radius: 0.5rem;
-        }
-
-        /* CTA SECTION */
-        .cta-section {
-            background: linear-gradient(135deg, var(--ilm-blue) 0%, var(--ilm-blue-dark) 100%);
-            color: var(--ilm-white);
-            padding: 4rem 2rem;
-            border-radius: 1.5rem;
-            text-align: center;
-            margin: 4rem 0;
-        }
-
-        .cta-section h2 {
-            font-size: 2.5rem;
-            margin-bottom: 1.5rem;
-            font-weight: 800;
-        }
-
-        .cta-section p {
-            font-size: 1.1rem;
-            margin-bottom: 2rem;
-            opacity: 0.95;
-        }
-
-        /* TESTIMONIAL CARDS */
-        .testimonial-card {
-            background: var(--gray-50);
-            padding: 2rem;
-            border-radius: 1rem;
-            border-left: 4px solid var(--ilm-gold);
-        }
-
-        .testimonial-card p {
-            margin-bottom: 1.5rem;
-            color: var(--gray-700);
-            font-style: italic;
-        }
-
-        .testimonial-author {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-        }
-
-        .testimonial-avatar {
-            width: 50px;
-            height: 50px;
-            background: linear-gradient(135deg, var(--ilm-blue), var(--ilm-gold));
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--ilm-white);
-            font-weight: 700;
-        }
-
-        .testimonial-info h4 {
-            color: var(--ilm-black);
-            font-size: 0.95rem;
-            margin-bottom: 0.2rem;
-        }
-
-        .testimonial-info p {
-            color: var(--gray-600);
-            font-size: 0.85rem;
-            margin: 0;
-        }
-
-        /* FOOTER */
-        footer {
-            background: var(--ilm-black);
-            color: var(--ilm-white);
-            padding: 4rem 0 2rem;
-        }
-
-        .footer-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 3rem;
-            margin-bottom: 3rem;
-        }
-
-        .footer-col h3 {
-            font-size: 1rem;
-            margin-bottom: 1.5rem;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        .footer-col ul {
-            list-style: none;
-        }
-
-        .footer-col ul li {
-            margin-bottom: 0.75rem;
-        }
-
-        .footer-col a {
-            color: rgba(255, 255, 255, 0.7);
-            text-decoration: none;
-            transition: color 0.3s ease;
-        }
-
-        .footer-col a:hover {
-            color: var(--ilm-gold);
-        }
-
-        .footer-social {
-            display: flex;
-            gap: 1.5rem;
-            margin-top: 1.5rem;
-        }
-
-        .footer-social a {
-            width: 40px;
-            height: 40px;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1rem;
-            transition: all 0.3s ease;
-        }
-
-        .footer-social a:hover {
-            background: var(--ilm-gold);
-            color: var(--ilm-black);
-        }
-
-        .footer-bottom {
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
-            padding-top: 2rem;
-            text-align: center;
-            color: rgba(255, 255, 255, 0.6);
-            font-size: 0.9rem;
-        }
-
-        /* RESPONSIVE */
-        @media (max-width: 768px) {
-            .nav-links {
-                display: none;
-            }
-
-            .menu-toggle {
-                display: block;
-            }
-
-            .hero h1 {
-                font-size: 2.2rem;
-            }
-
-            .hero p {
-                font-size: 1.05rem;
-            }
-
-            .hero-buttons {
-                flex-direction: column;
-            }
-
-            .hero-buttons a {
-                width: 100%;
-            }
-
-            .section-header h2 {
-                font-size: 2rem;
-            }
-
-            .grid {
-                grid-template-columns: 1fr;
-            }
-
-            .cta-section h2 {
-                font-size: 2rem;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .container {
-                padding: 0 1rem;
-            }
-
-            .hero {
-                padding-top: 70px;
-                min-height: 90vh;
-            }
-
-            .hero h1 {
-                font-size: 1.75rem;
-            }
-
-            .hero p {
-                font-size: 1rem;
-            }
-
-            section {
-                padding: 3rem 0;
-            }
-
-            .section-header {
-                margin-bottom: 2rem;
-            }
-
-            .section-header h2 {
-                font-size: 1.5rem;
-            }
-
-            .card {
-                padding: 1.5rem;
-            }
-
-            .btn-primary, .btn-secondary, .btn-gold {
-                width: 100%;
-                padding: 1rem;
-            }
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Best Tech Academy & Campus Community in Nigeria | Ilm Nexus</title>
+  <meta name="description" content="Join Ilm Nexus, a leading tech academy and campus community in Nigeria and Africa. Build practical digital skills through bootcamps, mentorship, and career-focused learning.">
+  <meta name="keywords" content="best tech academy in Nigeria, tech academy in Africa, campus community in tech, digital skills Nigeria, student tech ecosystem">
+  <meta name="robots" content="index, follow">
+  <meta property="og:url" content="https://ilmnexus.tech/">
+  <meta property="og:title" content="Best Tech Academy & Campus Community in Nigeria | Ilm Nexus">
+  <meta property="og:description" content="Empowering African students with practical tech skills, mentorship, bootcamps, and career growth.">
+  <meta property="og:type" content="website">
+  <meta property="og:image" content="https://ilmnexus.tech/image/logo.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:url" content="https://ilmnexus.tech/">
+  <meta name="twitter:title" content="Best Tech Academy & Campus Community in Nigeria | Ilm Nexus">
+  <meta name="twitter:description" content="Join a growing African student tech ecosystem. Learn, build, and grow with Ilm Nexus.">
+  <meta name="twitter:image" content="https://ilmnexus.tech/image/logo.png">
+  <meta name="theme-color" content="#246bfe">
+  <link rel="canonical" href="https://ilmnexus.tech/">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "EducationalOrganization",
+    "name": "Ilm Nexus",
+    "url": "https://ilmnexus.tech/",
+    "logo": "https://ilmnexus.tech/image/logo.png",
+    "description": "A practical digital skills, innovation, and campus technology community serving students and young people across Nigeria and Africa.",
+    "address": {
+      "@type": "PostalAddress",
+      "addressLocality": "Ilorin",
+      "addressRegion": "Kwara State",
+      "addressCountry": "NG"
+    },
+    "keywords": "best tech academy in Nigeria, tech academy in Africa, best campus community in tech, student tech ecosystem Nigeria"
+  }
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+  <style>
+    :root { --blue:#246bfe; --blue-dark:#173d9b; --gold:#ef9c18; --ink:#14213d; --muted:#667085; --paper:#f5f8fc; --line:#dbe3ef; --white:#fff; --green:#147d5a; }
+    * { box-sizing:border-box; }
+    html { scroll-behavior:smooth; }
+    body { margin:0; color:var(--ink); background:var(--paper); font:16px/1.65 'DM Sans',sans-serif; overflow-x:hidden; }
+    a { color:inherit; }
+    .container { width:min(1180px,calc(100% - 2rem)); margin:0 auto; }
+    .site-header { position:sticky; top:0; z-index:100; background:rgba(255,255,255,.96); border-bottom:1px solid var(--line); backdrop-filter:blur(14px); }
+    .navbar { min-height:72px; display:flex; align-items:center; justify-content:space-between; gap:1.2rem; }
+    .logo img { width:112px; height:auto; display:block; }
+    .nav-links { display:flex; align-items:center; gap:1.35rem; list-style:none; margin:0; padding:0; font-size:.9rem; font-weight:600; }
+    .nav-links a { text-decoration:none; }
+    .nav-links a:hover, .dropdown:hover > .dropdown-trigger { color:var(--blue); }
+    .dropdown { position:relative; }
+    .dropdown-trigger { border:0; background:transparent; color:var(--ink); font:inherit; font-weight:600; cursor:pointer; padding:.4rem 0; }
+    .dropdown-menu { position:absolute; top:calc(100% + .7rem); right:0; display:none; width:190px; padding:.5rem; border:1px solid var(--line); border-radius:8px; background:var(--white); box-shadow:0 12px 28px rgba(20,33,61,.12); }
+    .dropdown:hover .dropdown-menu, .dropdown:focus-within .dropdown-menu { display:block; }
+    .dropdown-menu span { display:block; padding:.45rem .65rem .2rem; color:var(--muted); font-size:.72rem; font-weight:700; letter-spacing:.08em; text-transform:uppercase; }
+    .dropdown-menu a { display:block; padding:.45rem .65rem; border-radius:5px; font-size:.88rem; }
+    .dropdown-menu a:hover { background:#eef4ff; color:var(--blue); }
+    .button { display:inline-flex; align-items:center; justify-content:center; gap:.5rem; padding:.78rem 1.05rem; border:0; border-radius:7px; font:inherit; font-weight:700; text-decoration:none; cursor:pointer; }
+    .button-primary { color:var(--white); background:var(--blue); }
+    .button-primary:hover { background:var(--blue-dark); }
+    .button-gold { color:var(--white); background:var(--gold); }
+    .button-gold:hover { background:#d88308; }
+    .button-outline { color:var(--blue); border:1px solid var(--blue); background:transparent; }
+    .button-outline:hover { color:var(--white); background:var(--blue); }
+    .menu-toggle { display:none; border:0; background:transparent; color:var(--ink); font-size:1.35rem; cursor:pointer; }
+    .hero { position:relative; overflow:hidden; padding:7.5rem 0 6.2rem; color:var(--white); background:linear-gradient(120deg,#122b67 0%,#246bfe 70%,#ef9c18 160%); }
+    .hero::after { content:''; position:absolute; right:-170px; bottom:-240px; width:520px; height:520px; border:80px solid rgba(255,255,255,.08); border-radius:50%; }
+    .hero-content { position:relative; z-index:1; max-width:790px; }
+    .eyebrow { margin:0 0 .8rem; color:#ffda91; font-size:.76rem; font-weight:700; letter-spacing:.15em; text-transform:uppercase; }
+    h1,h2,h3 { font-family:'Space Grotesk',sans-serif; line-height:1.13; }
+    h1 { max-width:760px; margin:0 0 1.2rem; font-size:clamp(2.5rem,6vw,5rem); letter-spacing:-.03em; }
+    .hero p:not(.eyebrow) { max-width:670px; margin:0 0 2rem; color:rgba(255,255,255,.82); font-size:1.08rem; }
+    .hero-actions { display:flex; flex-wrap:wrap; gap:.75rem; }
+    .section { padding:5.2rem 0; }
+    .section-white { background:var(--white); border-block:1px solid var(--line); }
+    .section-heading { max-width:690px; margin-bottom:2rem; }
+    .section-heading h2 { margin:0 0 .6rem; font-size:clamp(1.8rem,4vw,2.8rem); }
+    .section-heading p:not(.eyebrow) { margin:0; color:var(--muted); }
+    .offer-grid { display:grid; grid-template-columns:1.1fr .9fr; gap:1rem; }
+    .offer { padding:2rem; border:1px solid var(--line); border-radius:10px; background:var(--white); }
+    .offer.primary { color:var(--white); background:var(--ink); border-color:var(--ink); }
+    .offer-kicker { margin:0 0 .8rem; color:var(--gold); font-size:.75rem; font-weight:700; letter-spacing:.12em; text-transform:uppercase; }
+    .offer h3 { margin:0 0 .65rem; font-size:1.55rem; }
+    .offer p { margin:0 0 1.3rem; color:var(--muted); }
+    .offer.primary p { color:rgba(255,255,255,.72); }
+    .skill-list, .service-list { display:grid; grid-template-columns:repeat(2,1fr); gap:.55rem 1rem; margin:0 0 1.5rem; padding:0; list-style:none; }
+    .skill-list li, .service-list li { font-size:.92rem; }
+    .skill-list li::before, .service-list li::before { content:'+'; margin-right:.45rem; color:var(--gold); font-weight:700; }
+    .university-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:1rem; }
+    .university { display:flex; flex-direction:column; min-width:0; padding:1rem; border:1px solid var(--line); background:var(--white); }
+    .university img { width:100%; height:105px; object-fit:contain; margin-bottom:.9rem; }
+    .university h3 { min-height:2.5rem; margin:0 0 .2rem; font-size:1rem; }
+    .university p { min-height:2.8rem; margin:0 0 1rem; color:var(--muted); font-size:.84rem; }
+    .university .button { width:100%; margin-top:auto; padding:.65rem .7rem; font-size:.82rem; }
+    .news-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:1rem; }
+    .news-card { overflow:hidden; border:1px solid var(--line); background:var(--white); }
+    .news-card img { width:100%; height:170px; object-fit:cover; }
+    .news-card-content { padding:1.2rem; }
+    .news-meta { color:var(--blue); font-size:.78rem; font-weight:700; text-transform:uppercase; }
+    .news-card h3 { margin:.5rem 0; font-size:1.15rem; }
+    .news-card p { margin:0 0 1rem; color:var(--muted); font-size:.9rem; }
+    .text-link { color:var(--blue); font-size:.9rem; font-weight:700; text-decoration:none; }
+    .text-link:hover { text-decoration:underline; }
+    .final-cta { padding:4rem 2rem; color:var(--white); background:var(--ink); }
+    .final-cta-inner { display:flex; align-items:center; justify-content:space-between; gap:2rem; }
+    .final-cta h2 { margin:0 0 .5rem; font-size:2rem; }
+    .final-cta p { margin:0; color:rgba(255,255,255,.7); }
+    footer { padding:3.5rem 0 1.5rem; color:rgba(255,255,255,.74); background:#0d1526; }
+    .footer-grid { display:grid; grid-template-columns:1.3fr repeat(3,1fr); gap:2rem; padding-bottom:2rem; }
+    .footer-col h3 { margin:0 0 .8rem; color:var(--white); font-size:1rem; }
+    .footer-col p { margin:0; font-size:.9rem; }
+    .footer-col ul { margin:0; padding:0; list-style:none; }
+    .footer-col li { margin:.4rem 0; font-size:.88rem; }
+    .footer-col a { text-decoration:none; }
+    .footer-col a:hover { color:#ffda91; }
+    .socials { display:flex; gap:.85rem; margin-top:1rem; }
+    .socials a { color:#ffda91; font-size:1.05rem; }
+    .footer-bottom { padding-top:1.2rem; border-top:1px solid rgba(255,255,255,.12); font-size:.82rem; }
+    .chat-trigger { position:fixed; right:1rem; bottom:1rem; z-index:80; display:inline-flex; align-items:center; gap:.5rem; padding:.85rem 1rem; border:0; border-radius:999px; color:var(--white); background:var(--green); box-shadow:0 10px 25px rgba(20,125,90,.24); font:inherit; font-weight:700; cursor:pointer; }
+    @media (max-width:980px) { .nav-links { gap:.75rem; font-size:.82rem; } .university-grid { grid-template-columns:repeat(3,1fr); } .footer-grid { grid-template-columns:repeat(2,1fr); } }
+    @media (max-width:760px) { .menu-toggle { display:block; } .nav-links { position:absolute; top:72px; left:0; right:0; display:none; flex-direction:column; align-items:stretch; gap:0; padding:.65rem 1rem 1rem; border-bottom:1px solid var(--line); background:var(--white); } .nav-links.open { display:flex; } .nav-links > li > a, .dropdown-trigger { display:block; padding:.75rem .4rem; text-align:left; } .dropdown-menu { position:static; width:auto; margin:0 0 .35rem; box-shadow:none; border:0; border-left:2px solid var(--line); border-radius:0; } .dropdown:hover .dropdown-menu { display:none; } .dropdown.open .dropdown-menu { display:block; } .navbar > .button-primary { display:none; } .offer-grid, .news-grid { grid-template-columns:1fr; } .university-grid { grid-template-columns:repeat(2,1fr); } .final-cta-inner { align-items:flex-start; flex-direction:column; } }
+    @media (max-width:480px) { .hero { padding:5rem 0 4rem; } .section { padding:3.8rem 0; } .skill-list, .service-list, .university-grid { grid-template-columns:1fr; } .university img { height:130px; } .footer-grid { grid-template-columns:1fr; } .chat-trigger { right:.65rem; bottom:.65rem; } }
+  </style>
 </head>
-
 <body>
-    <!-- HEADER -->
-    <header>
-        <div class="container">
-            <nav>
-                <a href="#home" class="logo">
-                    <img src="./image/nexus-learn logo.png" alt="ILM Nexus Logo" height="45" width="100">
-                </a>
-                <ul class="nav-links">
-                    <li><a href="#home">Home</a></li>
-                    <li><a href="#what-we-offer">What We Offer</a></li>
-                    <li><a href="#states">Our Presence</a></li>
-                    <li><a href="#courses">Programs</a></li>
-                    <li><a href="#news">News</a></li>
-                </ul>
-                <a href="https://bit.ly/IlmNexustraining" class="btn-gold">Register Now</a>
-                <button class="menu-toggle">
-                    <i class="fas fa-bars"></i>
-                </button>
-            </nav>
-        </div>
-    </header>
+  <header class="site-header">
+    <nav class="container navbar">
+      <a class="logo" href="#home"><img src="./image/nexus-learn logo.png" alt="ILM Nexus"></a>
+      <ul class="nav-links" id="navLinks">
+        <li><a href="#home">Home</a></li><li><a href="#what-we-offer">What We Offer</a></li><li><a href="#states">Our Presence</a></li><li><a href="programs.html">Programs</a></li><li><a href="news.html">News</a></li>
+        <li class="dropdown" id="portalDropdown"><button class="dropdown-trigger" type="button">Portal <i class="fas fa-chevron-down"></i></button><div class="dropdown-menu"><span>Student</span><a href="login.html">Student Login</a><span>Instructor</span><a href="login.html">Instructor Login</a><span>Admin</span><a href="login.html">Admin Login</a></div></li>
+      </ul>
+      <a class="button button-primary" href="login.html">Apply Now <i class="fas fa-arrow-right"></i></a>
+      <button class="menu-toggle" id="menuToggle" type="button" aria-label="Open navigation"><i class="fas fa-bars"></i></button>
+    </nav>
+  </header>
 
-    <!-- HERO SECTION -->
-    <section class="hero" id="home">
-        <div class="container hero-content">
-            <h1>Learn. Build. Grow.<br>With ILM Nexus Academy</h1>
-            <p>ILM Nexus Academy helps students and young people build practical digital, creative, and career skills that prepare them for the future. Learn from real projects, real mentors, and real opportunities.</p>
-            <div class="hero-buttons">
-                <a href="https://bit.ly/IlmNexustraining" class="btn-gold">Register for Training</a>
-                <a href="https://ilmnexus-5oxknaa6.manus.space/join" class="btn-secondary">Join ILM Nexus</a>
-            </div>
-        </div>
-    </section>
+  <main>
+    <section class="hero" id="home"><div class="container hero-content"><p class="eyebrow">ILM Nexus Academy</p><h1>Learn. Build. Grow. With ILM Nexus.</h1><p>ILM Nexus equips students and young people with practical digital, creative, and career skills designed to help them build real opportunities and thrive in the digital economy.</p><div class="hero-actions"><a class="button button-gold" href="login.html">Start Learning <i class="fas fa-arrow-right"></i></a><a class="button button-outline" style="color:#fff;border-color:#fff" href="programs.html">Explore Programs</a></div></div></section>
 
-    <!-- WHAT WE OFFER -->
-    <section id="what-we-offer">
-        <div class="container">
-            <div class="section-header">
-                <h2>Our <span class="highlight">Academy</span></h2>
-                <p>We help students and young people grow in the skills that matter most for the future.</p>
-            </div>
-            <div class="grid">
-                <a href="programs.html" class="card" style="text-decoration: none; color: inherit;">
-                    <div class="card-icon">
-                        <i class="fas fa-code"></i>
-                    </div>
-                    <h3>Digital & Tech Skills</h3>
-                    <p>From web design and digital marketing to data, content creation, and practical tech skills that help you build a strong digital future.</p>
-                </a>
-                <a href="programs.html" class="card" style="text-decoration: none; color: inherit;">
-                    <div class="card-icon">
-                        <i class="fas fa-video"></i>
-                    </div>
-                    <h3>Creative & Media Skills</h3>
-                    <p>Learn video editing, content production, branding, design, and storytelling to express ideas and build standout creative careers.</p>
-                </a>
-                <a href="programs.html" class="card" style="text-decoration: none; color: inherit;">
-                    <div class="card-icon">
-                        <i class="fas fa-briefcase"></i>
-                    </div>
-                    <h3>Business & Career Skills</h3>
-                    <p>Build confidence in communication, entrepreneurship, personal branding, productivity, and career growth for real-world success.</p>
-                </a>
-            </div>
-        </div>
-    </section>
+    <section class="section" id="what-we-offer"><div class="container"><div class="section-heading"><p class="eyebrow" style="color:var(--blue)">What we offer</p><h2>Practical skills. Digital solutions.</h2><p>ILM Nexus trains people for the work ahead and helps organizations bring their ideas to life.</p></div><div class="offer-grid"><article class="offer primary"><p class="offer-kicker">Learning</p><h3>Digital Skills Courses</h3><p>Build practical, industry-relevant skills through structured training, hands-on projects, mentorship, and real-world learning.</p><ul class="skill-list"><li>Social Media Management</li><li>Front-End Web Development</li><li>AI Automation</li><li>Graphic Design</li><li>Video Editing</li><li>Intro to Cybersecurity</li><li>Digital Marketing</li><li>Programme Management</li><li>Data Science / Analysis</li><li>Content Creation</li></ul><a class="button button-gold" href="programs.html">Explore Programs <i class="fas fa-arrow-right"></i></a></article><article class="offer"><p class="offer-kicker">Services</p><h3>Creative & Digital Services</h3><p>From creative production to digital solutions, we help individuals, organizations, and businesses bring their ideas to life.</p><ul class="service-list"><li>T-shirt printing & customization</li><li>Graphic design</li><li>Branding & visual identity</li><li>Website design & development</li><li>Digital design</li><li>Content and creative production</li></ul><a class="button button-primary" href="services.html">Explore Services <i class="fas fa-arrow-right"></i></a></article></div></div></section>
 
-    <!-- OUR PRESENCE -->
-    <section id="states">
-        <div class="container">
-            <div class="section-header">
-                <h2>Our <span class="highlight">Presence</span></h2>
-                <p>Active in leading universities across Nigeria with plans to expand nationwide</p>
-            </div>
-            <div class="campus-grid">
-                <div class="campus-card">
-                  <img class="university-logo" src="./image/university-logo/kwasu.jpg" alt="University of Ilorin logo">
-                    <h3>KWASU</h3>
-                    <p>Kwara State University</p>
-                </div>
-                <div class="campus-card">
-                   <img class="university-logo" src="./image/university-logo/fss oyo.jpg" alt="University of Lagos logo">
-                    <h3>Federal School of Survey</h3>
-                    <p>Oyo State</p>
-                </div>
-                <div class="campus-card">
-                    <img class="university-logo" src="./image/university-logo/University_of_Ilorin_logo.jpg" alt="University of Lagos logo">
-                    <h3>University of Ilorin</h3>
-                    <p>Kwara State</p>
-                </div>
-                <div class="campus-card">
-                    <img class="university-logo" src="./image/university-logo/al-hikmauniveristylogo.jpg" alt="Al-Hikma University logo">
-                    <h3>Al-Hikma University</h3>
-                    <p>Kwara State</p>
-                </div>
-                <div class="campus-card">
-                    <img class="university-logo" src="./image/university-logo/University%20of%20Lagoslogo.jpg" alt="University of Lagos logo">
-                    <h3>UNILAG</h3>
-                    <p>University of Lagos</p>
-                </div>
-                <div class="campus-card">
-                    <img class="university-logo" src="./image/university-logo/LASUlogo.jpg" alt="Lagos State University logo">
-                    <h3>LASU</h3>
-                    <p>Lagos State University</p>
-                </div>
-                <div class="campus-card">
-                    <img class="university-logo" src="./image/university-logo/YABATECHlogo.jpg" alt="Yaba College of Technology logo">
-                    <h3>YABATECH</h3>
-                    <p>Yaba College of Technology</p>
-                </div>
-                <div class="campus-card">
-                    <img class="university-logo" src="./image/university-logo/Summit%20Universitylogo.jpg" alt="Summit University Offa logo">
-                    <h3>Summit University</h3>
-                    <p>Offa, Kwara State</p>
-                </div>
-                <div class="campus-card">
-                    <img class="university-logo" src="./image/university-logo/fuhsalogo.jpg" alt="Muhamad Kalmardeen University logo">
-                    <h3>Federal University of Health Sciences, Azare (FUHSA)</h3>
-                    <p> Azare, Bauchi State</p>
-                </div>
-                <div class="campus-card">
-                    <img class="university-logo" src="./image/university-logo/mku logo.jpg" alt="Muhamad Kalmardeen University logo">
-                    <h3>Muhamad Kalmardeen University</h3>
-                    <p>Offa, Kwara State</p>
-                </div>
-                 <div class="campus-card">
-                    <img class="university-logo" src="./image/university-logo/aatulogo.jpg" alt="Abdulrasq Abubakar Toyyin University logo">
-                    <h3>Abdulrasq Abubakar Toyyin University</h3>
-                    <p>Offa, Kwara State</p>
-                </div>
-                 <div class="campus-card">
-                    <img class="university-logo" src="./image/university-logo/fpdlogo.jpg" alt="Federal Polytechnic Offa logo">
-                    <h3>Federal Polytechnic Offa</h3>
-                    <p>Offa, Kwara State</p>
-                </div>
-            </div>
-        </div>
-    </section>
+    <section class="section section-white" id="states"><div class="container"><div class="section-heading"><p class="eyebrow" style="color:var(--blue)">Our presence</p><h2>Active in leading universities across Nigeria.</h2><p>Our campus presence continues to grow through practical training, community, and partnerships.</p></div><div class="university-grid">
+      <article class="university"><img src="./image/university-logo/kwasu.jpg" alt="Kwara State University logo"><h3>KWASU</h3><p>Kwara State University · Kwara State</p><a class="button button-outline" href="state/kwara/kwasu/">Explore KWASU</a></article>
+      <article class="university"><img src="./image/university-logo/fss%20oyo.jpg" alt="Federal School of Surveying logo"><h3>Federal School of Survey</h3><p>Oyo State</p><a class="button button-outline" href="state/oyo/federal-school-of-survey/">Explore FSS</a></article>
+      <article class="university"><img src="./image/university-logo/University_of_Ilorin_logo.jpg" alt="University of Ilorin logo"><h3>University of Ilorin</h3><p>Ilorin · Kwara State</p><a class="button button-outline" href="state/kwara/unilorin/">Explore UNILORIN</a></article>
+      <article class="university"><img src="./image/university-logo/al-hikmauniveristylogo.jpg" alt="Al-Hikma University logo"><h3>Al-Hikmah University</h3><p>Ilorin · Kwara State</p><a class="button button-outline" href="state/kwara/alhikmah/">Explore campus</a></article>
+      <article class="university"><img src="./image/university-logo/University%20of%20Lagoslogo.jpg" alt="University of Lagos logo"><h3>UNILAG</h3><p>Akoka · Lagos State</p><a class="button button-outline" href="state/lagos/unilag/">Explore UNILAG</a></article>
+      <article class="university"><img src="./image/university-logo/LASUlogo.jpg" alt="Lagos State University logo"><h3>LASU</h3><p>Lagos State</p><a class="button button-outline" href="state/lagos/lasu/">Explore LASU</a></article>
+      <article class="university"><img src="./image/university-logo/YABATECHlogo.jpg" alt="Yaba College of Technology logo"><h3>YABATECH</h3><p>Yaba · Lagos State</p><a class="button button-outline" href="state/lagos/yabatech/">Explore YABATECH</a></article>
+      <article class="university"><img src="./image/university-logo/Summit%20Universitylogo.jpg" alt="Summit University logo"><h3>Summit University</h3><p>Offa · Kwara State</p><a class="button button-outline" href="state/kwara/summit-university/">Explore campus</a></article>
+      <article class="university"><img src="./image/university-logo/mku%20logo.jpg" alt="Muhamad Kalmardeen University logo"><h3>Muhamad Kalmardeen University</h3><p>Offa · Kwara State</p><a class="button button-outline" href="state/kwara/muhamad-kalmardeen/">Explore campus</a></article>
+      <article class="university"><img src="./image/university-logo/aatulogo.jpg" alt="Abdulrasq Abubakar Toyyin University logo"><h3>Abdulrasq Abubakar Toyyin University</h3><p>Offa · Kwara State</p><a class="button button-outline" href="state/kwara/aatu/">Explore campus</a></article>
+      <article class="university"><img src="./image/university-logo/fpdlogo.jpg" alt="Federal Polytechnic Offa logo"><h3>Federal Polytechnic Offa</h3><p>Offa · Kwara State</p><a class="button button-outline" href="state/kwara/federal-polytechnic-offa/">Explore campus</a></article>
+    </div></div></section>
 
-    <!-- FEATURED PROGRAMS -->
-    <section id="courses">
-        <div class="container">
-            <div class="section-header">
-                <h2>ILM Nexus <span class="highlight">Courses</span></h2>
-                <p>Learn practical skills that help you grow, create, and build a future you can be proud of.</p>
-            </div>
-            <div class="grid">
-                <div class="card">
-                    <div class="card-icon" style="background: linear-gradient(135deg, #3A82FA, #1E40AF);">
-                        <i class="fas fa-code"></i>
-                    </div>
-                    <h3>Digital & Tech Skills</h3>
-                    <p>Web design, social media growth, research, tech fundamentals, and digital literacy for the modern world.</p>
-                </div>
-                <div class="card">
-                    <div class="card-icon" style="background: linear-gradient(135deg, #EF9C18, #D97706);">
-                        <i class="fas fa-video"></i>
-                    </div>
-                    <h3>Creative & Media Skills</h3>
-                    <p>Design, video editing, branding, storytelling, and content creation for creative careers and online visibility.</p>
-                </div>
-                <div class="card">
-                    <div class="card-icon" style="background: linear-gradient(135deg, #3A82FA, #EF9C18);">
-                        <i class="fas fa-briefcase"></i>
-                    </div>
-                    <h3>Business & Career Skills</h3>
-                    <p>Entrepreneurship, communication, personal development, productivity, and career readiness for real opportunities.</p>
-                </div>
-            </div>
-            <div style="text-align: center; margin-top: 3rem;">
-                <a href="programs.html" class="btn-primary">View All Programs</a>
-            </div>
-        </div>
-    </section>
+    <section class="section" id="news"><div class="container"><div class="section-heading"><p class="eyebrow" style="color:var(--blue)">Latest from ILM Nexus</p><h2>What is happening across our community.</h2><p>Read the latest announcements, programs, partnerships, and achievements.</p></div><div class="news-grid"><article class="news-card"><img src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=700&q=80" alt="Digital skills training"><div class="news-card-content"><span class="news-meta">Platform update</span><h3>ILM Nexus Limited Officially Registered</h3><p>A new chapter begins as ILM Nexus strengthens its structure and expands its reach across Nigeria.</p><a class="text-link" href="news.html">Read More <i class="fas fa-arrow-right"></i></a></div></article><article class="news-card"><img src="https://images.unsplash.com/photo-1464983953574-0892a716854b?auto=format&fit=crop&w=700&q=80" alt="University conference"><div class="news-card-content"><span class="news-meta">New program</span><h3>ILM Nexus Conference 3.0</h3><p>Discover upcoming skills bootcamps, workshops, employer panels, and student networking opportunities.</p><a class="text-link" href="news.html">Read More <i class="fas fa-arrow-right"></i></a></div></article><article class="news-card"><img src="https://images.unsplash.com/photo-1503676382389-4809596d5290?auto=format&fit=crop&w=700&q=80" alt="Students learning"><div class="news-card-content"><span class="news-meta">Announcement</span><h3>Digital Skills Certificate Program</h3><p>Learn about ILM Nexus certification pathways and the practical work behind each achievement.</p><a class="text-link" href="news.html">Read More <i class="fas fa-arrow-right"></i></a></div></article></div><p style="margin-top:1.5rem"><a class="text-link" href="news.html">View all news <i class="fas fa-arrow-right"></i></a></p></div></section>
 
-    <!-- NEWS & UPDATES -->
-    <section id="news">
-        <div class="container">
-            <div class="section-header">
-                <h2>Latest <span class="highlight">Updates & News</span></h2>
-                <p>Stay informed about our latest programs, events, and community achievements</p>
-            </div>
-            <div style="text-align: center;">
-                <a href="news.html" class="btn-primary">View All News</a>
-            </div>
-        </div>
-    </section>
+    <section class="final-cta"><div class="container final-cta-inner"><div><p class="eyebrow">Your next step</p><h2>Ready to build your future?</h2><p>Learn practical skills, connect with a growing community, and take your next step with ILM Nexus.</p></div><div class="hero-actions"><a class="button button-gold" href="https://ilmnexus-5oxknaa6.manus.space/join">join IlmNexus Member</a><a class="button button-outline" style="color:#fff;border-color:#fff" href="programs.html">Explore Programs</a></div></div></section>
+  </main>
 
-    <!-- JOIN COMMUNITY CTA -->
-    <section>
-        <div class="container">
-            <div class="cta-section">
-                <h2>Join ILM Nexus</h2>
-                <p>Build your skills, grow your network, and take the next step with a community designed for the future.</p>
-                <div class="hero-buttons">
-                    <a href="https://bit.ly/IlmNexustraining" class="btn-gold" style="background: var(--ilm-white); color: var(--ilm-blue); border: none;">Register for Training</a>
-                    <a href="https://ilmnexus-5oxknaa6.manus.space/join" class="btn-secondary" style="border-color: var(--ilm-white); color: var(--ilm-white);">Join ILM Nexus</a>
-                </div>
-            </div>
-        </div>
-    </section>
+  <footer><div class="container"><div class="footer-grid"><div class="footer-col"><h3>ILM Nexus</h3><p>A practical digital skills, innovation, and career development organization helping young people build real opportunities.</p><div class="socials"><a href="https://facebook.com/ilmnexus" target="_blank" rel="noopener" aria-label="Facebook"><i class="fab fa-facebook"></i></a><a href="https://instagram.com/ilmnexus" target="_blank" rel="noopener" aria-label="Instagram"><i class="fab fa-instagram"></i></a><a href="https://t.me/ilmNexus_bootcamp" target="_blank" rel="noopener" aria-label="Telegram"><i class="fab fa-telegram"></i></a><a href="https://wa.me/2347086808302" target="_blank" rel="noopener" aria-label="WhatsApp"><i class="fab fa-whatsapp"></i></a></div></div><div class="footer-col"><h3>Explore</h3><ul><li><a href="#home">Home</a></li><li><a href="#what-we-offer">What We Offer</a></li><li><a href="programs.html">Programs</a></li><li><a href="#states">Our Presence</a></li><li><a href="news.html">News</a></li></ul></div><div class="footer-col"><h3>Portal</h3><ul><li><a href="login.html">Student Login</a></li><li><a href="login.html">Instructor Login</a></li><li><a href="login.html">Admin Login</a></li><li><a href="get-access.html">Get Access</a></li></ul></div><div class="footer-col"><h3>Contact</h3><p><a href="mailto:theilmnexus@gmail.com">theilmnexus@gmail.com</a><br>Ilorin, Kwara State, Nigeria</p></div></div><div class="footer-bottom">© 2026 ILM Nexus. All rights reserved.</div></div></footer>
 
-    <!-- TESTIMONIALS -->
-    <section>
-        <div class="container">
-            <div class="section-header">
-                <h2>What Our <span class="highlight">Students Say</span></h2>
-                <p>Real stories from real learners who have transformed their careers</p>
-            </div>
-            <div class="grid">
-                <div class="testimonial-card">
-                    <p>"ILM Nexus gave me practical skills I couldn't get in school. I landed my first freelance project within a month!"</p>
-                    <div class="testimonial-author">
-                        <div class="testimonial-avatar">OJ</div>
-                        <div class="testimonial-info">
-                            <h4>Olujide</h4>
-                            <p>Web Developer</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="testimonial-card">
-                    <p>"The bootcamp experience was life-changing. The mentorship and job placement support set me up for success."</p>
-                    <div class="testimonial-author">
-                        <div class="testimonial-avatar">AK</div>
-                        <div class="testimonial-info">
-                            <h4>Amara</h4>
-                            <p>Digital Marketing Manager</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="testimonial-card">
-                    <p>"I didn't know anything about video editing before. Now I create content for brands. ILM Nexus made it possible."</p>
-                    <div class="testimonial-author">
-                        <div class="testimonial-avatar">CJ</div>
-                        <div class="testimonial-info">
-                            <h4>Chisom</h4>
-                            <p>Content Creator</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- FOOTER -->
-    <footer>
-        <div class="container">
-            <div class="footer-grid">
-                <div class="footer-col">
-                    <h3>About ILM Nexus</h3>
-                    <p style="color: rgba(255,255,255,0.7); line-height: 1.8;">Empowering students and young people across Nigeria with digital skills, innovation programs, and career opportunities. Building the future leaders of the digital economy.</p>
-                    <div class="footer-social">
-                        <a href="https://facebook.com/ilmnexus" target="_blank" title="Facebook">
-                            <i class="fab fa-facebook"></i>
-                        </a>
-                        <a href="https://twitter.com/ilm_Nexus" target="_blank" title="Twitter">
-                            <i class="fab fa-twitter"></i>
-                        </a>
-                        <a href="https://instagram.com/ilmnexus" target="_blank" title="Instagram">
-                            <i class="fab fa-instagram"></i>
-                        </a>
-                         <a href="https://www.linkedin.com/posts/ilm-nexus_ilmnexus-digitalskills-learnbuildlaunch-activity-7495242470755254272-tU54?utm_source=share&utm_medium=member_desktop&rcm=ACoAAEfC7PYBtYO5_9LT3l5p8FlqZYNQUTK8NOU" target="_blank" title="Linkedin">
-                            <i class="fab fa-linkedin"></i>
-                        </a>
-                        <a href="https://t.me/ilmNexus_bootcamp" target="_blank" title="Telegram">
-                            <i class="fab fa-telegram"></i>
-                        </a>
-                        <a href="https://chat.whatsapp.com/GBQIRobjMMCJvt7NK18OQ5" target="_blank" title="WhatsApp">
-                            <i class="fab fa-whatsapp"></i>
-                        </a>
-                    </div>
-                </div>
-                <div class="footer-col">
-                    <h3>Quick Links</h3>
-                    <ul>
-                        <li><a href="#home">Home</a></li>
-                        <li><a href="#what-we-offer">Academy</a></li>
-                        <li><a href="#courses">Courses</a></li>
-                        <li><a href="news.html">News & Updates</a></li>
-                        <li><a href="https://bit.ly/IlmNexustraining">Register for Training</a></li>
-                        <li><a href="https://ilmnexus-5oxknaa6.manus.space/join">Join ILM Nexus</a></li>
-                    </ul>
-                </div>
-                <div class="footer-col">
-                    <h3>Our Programs</h3>
-                    <ul>
-                        <li><a href="#courses">Digital Skills Training</a></li>
-                        <li><a href="#courses">Tech Bootcamps</a></li>
-                        <li><a href="#courses">Innovation Labs</a></li>
-                        <li><a href="#courses">Career Development</a></li>
-                        <li><a href="#courses">Certifications</a></li>
-                    </ul>
-                </div>
-                <div class="footer-col">
-                    <h3>Get in Touch</h3>
-                    <p style="color: rgba(255,255,255,0.7); line-height: 1.8;">
-                        <strong>Email:</strong><br>
-                        theilmnexus.com<br><br>
-                        <strong>Follow Us:</strong><br>
-                        Stay updated on new programs and opportunities
-                    </p>
-                </div>
-            </div>
-            <div class="footer-bottom">
-                <p>&copy; 2026 ILM Nexus. All rights reserved. | Empowering Nigeria's Digital Future</p>
-            </div>
-        </div>
-    </footer>
-
-    <!-- SCRIPTS -->
-    <script>
-        // Header scroll effect
-        const header = document.querySelector('header');
-        window.addEventListener('scroll', () => {
-            if (window.scrollY > 50) {
-                header.classList.add('scrolled');
-            } else {
-                header.classList.remove('scrolled');
-            }
-        });
-
-        // Smooth navigation
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                const href = this.getAttribute('href');
-                if (href !== '#') {
-                    e.preventDefault();
-                    const target = document.querySelector(href);
-                    if (target) {
-                        target.scrollIntoView({ behavior: 'smooth' });
-                    }
-                }
-            });
-        });
-
-        // Active nav link
-        window.addEventListener('scroll', () => {
-            let current = '';
-            document.querySelectorAll('section[id]').forEach(section => {
-                const sectionTop = section.offsetTop;
-                if (scrollY >= sectionTop - 200) {
-                    current = section.getAttribute('id');
-                }
-            });
-
-            document.querySelectorAll('.nav-links a').forEach(link => {
-                link.classList.remove('active');
-                if (link.getAttribute('href').slice(1) === current) {
-                    link.classList.add('active');
-                }
-            });
-        });
-    </script>
-</body>
-</html>
-   
-        <!-- IMPROVED SEO: Enhanced Schema.org JSON-LD -->
-        <script type="application/ld+json">
-        {
-            "@context": "https://schema.org",
-            "@type": "EducationalOrganization",
-            "@id": "https://nexus-learn.netlify.app/#organization",
-            "name": "Nexus-Learn",
-            "alternateName": ["Nexus-Learn Platform", "Ilm Nexus Digital Skills Academy"],
-            "legalName": "Ilm Nexus Limited",
-            "url": "https://nexus-learn.netlify.app",
-            "logo": "https://nexus-learn.netlify.app/image/nexus-learn-logo.png",
-            "description": "Nexus-Learn is a comprehensive digital skills education platform by Ilm Nexus Ltd, offering practical training in web development, video editing, digital marketing, graphics design, and entrepreneurship for students and professionals in Nigeria.",
-            "foundingDate": "2024",
-            "founder": {
-                "@type": "Organization",
-                "name": "Ilm Nexus Ltd"
-            },
-            "address": {
-                "@type": "PostalAddress",
-                "streetAddress": "8, Varsity Avenue",
-                "addressLocality": "Ilorin",
-                "addressRegion": "Kwara State",
-                "addressCountry": "Nigeria",
-                "postalCode": "240101"
-            },
-            "contactPoint": {
-                "@type": "ContactPoint",
-                "telephone": "+2349047957855",
-                "contactType": "customer service",
-                "email": "theilmnexus@gmail.com",
-                "availableLanguage": ["English"],
-                "hoursAvailable": "Mo-Fr 09:00-17:00"
-            },
-            "sameAs": [
-                "https://t.me/ilmNexus_bootcamp",
-                "https://www.facebook.com/profile.php?id=61558258106893",
-                "https://x.com/ilm_Nexus",
-                "https://chat.whatsapp.com/GVI2Zr3H5Bh8cNE7RcBQ1P"
-            ],
-            "taxID": "35603448-0001",
-            "vatID": "RC: 8071210",
-            "areaServed": {
-                "@type": "Country",
-                "name": "Nigeria"
-            },
-            "knowsAbout": [
-                "Digital Skills Training",
-                "Web Development",
-                "Video Editing",
-                "Digital Marketing",
-                "Graphics Design",
-                "Entrepreneurship",
-                "Tech Education",
-                "Student Training"
-            ],
-            "offers": {
-                "@type": "OfferCatalog",
-                "name": "Digital Skills Courses",
-                "itemListElement": [
-                    {
-                        "@type": "Offer",
-                        "itemOffered": {
-                            "@type": "Course",
-                            "name": "Web Development",
-                            "description": "Full-stack web development with modern technologies"
-                        }
-                    },
-                    {
-                        "@type": "Offer",
-                        "itemOffered": {
-                            "@type": "Course",
-                            "name": "Video Editing",
-                            "description": "Professional video editing for YouTube and social media"
-                        }
-                    },
-                    {
-                        "@type": "Offer",
-                        "itemOffered": {
-                            "@type": "Course",
-                            "name": "Digital Marketing",
-                            "description": "Social media marketing, SEO, and Google Ads"
-                        }
-                    },
-                    {
-                        "@type": "Offer",
-                        "itemOffered": {
-                            "@type": "Course",
-                            "name": "Graphics Design",
-                            "description": "Visual design with Adobe tools for print and digital media"
-                        }
-                    }
-                ]
-            },
-            "audience": {
-                "@type": "Audience",
-                "audienceType": "Students",
-                "educationalRole": "Learner"
-            },
-            "educationalLevel": "Beginner to Intermediate"
-        }
-        </script>
-        
-        <!-- IMPROVED SEO: Additional LocalBusiness Schema -->
-        <script type="application/ld+json">
-        {
-            "@context": "https://schema.org",
-            "@type": "LocalBusiness",
-            "@id": "https://nexus-learn.netlify.app/#localbusiness",
-            "name": "Ilm Nexus Limited",
-            "image": "https://nexus-learn.netlify.app/image/nexus-learn-logo.png",
-            "description": "Digital skills education company operating the Nexus-Learn platform for practical tech training in Nigeria.",
-            "url": "https://nexus-learn.netlify.app",
-            "telephone": "+2349047957855",
-            "address": {
-                "@type": "PostalAddress",
-                "streetAddress": "8, Varsity Avenue",
-                "addressLocality": "Ilorin",
-                "addressRegion": "Kwara",
-                "addressCountry": "NG",
-                "postalCode": "240101"
-            },
-            "geo": {
-                "@type": "GeoCoordinates",
-                "latitude": 8.4966,
-                "longitude": 4.5428
-            },
-            "openingHoursSpecification": {
-                "@type": "OpeningHoursSpecification",
-                "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
-                "opens": "09:00",
-                "closes": "17:00"
-            },
-            "priceRange": "₦₦",
-            "parentOrganization": {
-                "@type": "Organization",
-                "name": "Ilm Nexus Limited"
-            }
-        }
-        </script>
-        
-        <!-- IMPROVED SEO: Breadcrumb Schema -->
-        <script type="application/ld+json">
-        {
-            "@context": "https://schema.org",
-            "@type": "BreadcrumbList",
-            "itemListElement": [
-                {
-                    "@type": "ListItem",
-                    "position": 1,
-                    "name": "Home",
-                    "item": "https://nexus-learn.netlify.app"
-                },
-                {
-                    "@type": "ListItem",
-                    "position": 2,
-                    "name": "Courses",
-                    "item": "https://nexus-learn.netlify.app/#courses"
-                },
-                {
-                    "@type": "ListItem",
-                    "position": 3,
-                    "name": "Contact",
-                    "item": "https://nexus-learn.netlify.app/#contact"
-                }
-            ]
-        }
-        </script>
-    </footer>
-
-    <!-- Scripts -->
-    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-    <script>
-        // Initialize AOS
-        AOS.init({
-            duration: 800,
-            once: true,
-            offset: 100
-        });
-
-        // Mobile Menu Toggle
-        const menuToggle = document.getElementById('menuToggle');
-        const navLinks = document.getElementById('navLinks');
-        
-        menuToggle.addEventListener('click', () => {
-            navLinks.classList.toggle('active');
-            menuToggle.innerHTML = navLinks.classList.contains('active') 
-                ? '<i class="fas fa-times"></i>' 
-                : '<i class="fas fa-bars"></i>';
-        });
-
-        // Header Scroll Effect
-        const header = document.getElementById('header');
-        window.addEventListener('scroll', () => {
-            if (window.scrollY > 100) {
-                header.classList.add('scrolled');
-            } else {
-                header.classList.remove('scrolled');
-            }
-        });
-
-        // Chat Widget Toggle
-        const chatTrigger = document.getElementById('chatTrigger');
-        const chatPopup = document.getElementById('chatPopup');
-        const chatClose = document.getElementById('chatClose');
-        
-        chatTrigger.addEventListener('click', () => {
-            chatPopup.classList.toggle('active');
-        });
-        
-        chatClose.addEventListener('click', () => {
-            chatPopup.classList.remove('active');
-        });
-
-        // Close chat when clicking outside
-        document.addEventListener('click', (e) => {
-            if (!chatPopup.contains(e.target) && !chatTrigger.contains(e.target)) {
-                chatPopup.classList.remove('active');
-            }
-        });
-
-        // Smooth scrolling for anchor links
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                const targetId = this.getAttribute('href');
-                if (targetId === '#') return;
-                
-                const targetElement = document.querySelector(targetId);
-                if (targetElement) {
-                    window.scrollTo({
-                        top: targetElement.offsetTop - 80,
-                        behavior: 'smooth'
-                    });
-                    
-                    // Close mobile menu if open
-                    navLinks.classList.remove('active');
-                    menuToggle.innerHTML = '<i class="fas fa-bars"></i>';
-                }
-            });
-        });
-
-        // Form validation
-        const forms = document.querySelectorAll('form');
-        forms.forEach(form => {
-            form.addEventListener('submit', (e) => {
-                const inputs = form.querySelectorAll('input[required], textarea[required]');
-                let isValid = true;
-                
-                inputs.forEach(input => {
-                    if (!input.value.trim()) {
-                        isValid = false;
-                        input.style.borderColor = 'var(--accent)';
-                    } else {
-                        input.style.borderColor = '';
-                    }
-                });
-                
-                if (!isValid) {
-                    e.preventDefault();
-                    alert('Please fill in all required fields.');
-                }
-            });
-        });
-
-        // Add loading animation for buttons
-        const buttons = document.querySelectorAll('.cta-button, .submit-btn, .newsletter-btn');
-        buttons.forEach(button => {
-            button.addEventListener('click', function() {
-                if (this.closest('form')) {
-                    const originalText = this.innerHTML;
-                    this.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...';
-                    this.disabled = true;
-                    
-                    // Reset after 3 seconds if form doesn't submit
-                    setTimeout(() => {
-                        this.innerHTML = originalText;
-                        this.disabled = false;
-                    }, 3000);
-                }
-            });
-        });
-
-        // Contact card hover effects
-        const contactCards = document.querySelectorAll('.contact-card');
-        contactCards.forEach(card => {
-            card.addEventListener('mouseenter', () => {
-                card.style.transform = 'translateY(-5px)';
-            });
-            card.addEventListener('mouseleave', () => {
-                card.style.transform = 'translateY(0)';
-            });
-        });
-
-        // Newsletter form enhancement
-        const newsletterForms = document.querySelectorAll('.newsletter-form');
-        newsletterForms.forEach(form => {
-            form.addEventListener('submit', function(e) {
-                const submitBtn = this.querySelector('.newsletter-btn');
-                const originalText = submitBtn.innerHTML;
-                submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
-                submitBtn.disabled = true;
-                
-                setTimeout(() => {
-                    submitBtn.innerHTML = originalText;
-                    submitBtn.disabled = false;
-                }, 3000);
-            });
-        });
-    </script>
-
-    <!-- Tawk.to Script -->
-    <script type="text/javascript">
-        var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
-        (function(){
-        var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
-        s1.async=true;
-        s1.src='https://embed.tawk.to/6862a0b58f8fd61908e314cc/1iv0k7i7r';
-        s1.charset='UTF-8';
-        s1.setAttribute('crossorigin','*');
-        s0.parentNode.insertBefore(s1,s0);
-        })();
-    </script>
+  <button class="chat-trigger" id="chatTrigger" type="button"><i class="fas fa-comments"></i> Chat with us</button>
+  <script>
+    const menuToggle = document.getElementById('menuToggle');
+    const navLinks = document.getElementById('navLinks');
+    const portalDropdown = document.getElementById('portalDropdown');
+    menuToggle.addEventListener('click', () => { navLinks.classList.toggle('open'); menuToggle.innerHTML = navLinks.classList.contains('open') ? '<i class="fas fa-times"></i>' : '<i class="fas fa-bars"></i>'; });
+    portalDropdown.querySelector('.dropdown-trigger').addEventListener('click', () => { if (window.innerWidth <= 760) portalDropdown.classList.toggle('open'); });
+    navLinks.querySelectorAll('a').forEach(link => link.addEventListener('click', () => { navLinks.classList.remove('open'); menuToggle.innerHTML = '<i class="fas fa-bars"></i>'; }));
+    var Tawk_API = Tawk_API || {}, Tawk_LoadStart = new Date();
+    (function(){ var script = document.createElement('script'); script.async = true; script.src = 'https://embed.tawk.to/6862a0b58f8fd61908e314cc/1iv0k7i7r'; script.charset = 'UTF-8'; script.setAttribute('crossorigin', '*'); document.head.appendChild(script); })();
+    document.getElementById('chatTrigger').addEventListener('click', () => { if (window.Tawk_API && Tawk_API.maximize) Tawk_API.maximize(); });
+  </script>
 </body>
 </html>
