@@ -980,6 +980,175 @@
                 gap: var(--space-xs);
             }
         }
+
+        /* ILM Nexus editorial refinement */
+        body {
+            background: #f5f8fc;
+            color: #14213d;
+        }
+
+        .header {
+            background: rgba(255, 255, 255, 0.97);
+            border-bottom-color: #dbe3ef;
+            box-shadow: 0 4px 18px rgba(20, 33, 61, 0.06);
+        }
+
+        .nav-logo img {
+            width: 118px;
+            height: auto;
+        }
+
+        .news-hero {
+            position: relative;
+            overflow: hidden;
+            padding: 7rem var(--space-md) 4.5rem;
+            margin-top: 65px;
+            text-align: left;
+            color: white;
+            background: linear-gradient(120deg, #142d69 0%, #246bfe 72%, #ef9c18 160%);
+        }
+
+        .news-hero::after {
+            content: '';
+            position: absolute;
+            right: -160px;
+            bottom: -260px;
+            width: 480px;
+            height: 480px;
+            border: 70px solid rgba(255, 255, 255, 0.08);
+            border-radius: 50%;
+        }
+
+        .news-hero .container {
+            position: relative;
+            z-index: 1;
+        }
+
+        .news-hero h1 {
+            max-width: 760px;
+            margin-bottom: 1rem;
+            color: white;
+            font-size: clamp(2.2rem, 5vw, 4.2rem);
+            letter-spacing: -0.03em;
+        }
+
+        .news-hero p {
+            max-width: 680px;
+            margin: 0;
+            color: rgba(255, 255, 255, 0.82);
+        }
+
+        .breadcrumb {
+            justify-content: flex-start;
+            margin-top: 1.5rem;
+            color: rgba(255, 255, 255, 0.72);
+        }
+
+        .breadcrumb a {
+            color: #ffda91;
+        }
+
+        .publish-btn,
+        .migration-btn {
+            border-radius: 7px;
+        }
+
+        .publish-btn {
+            color: #14213d;
+            background: #ef9c18;
+        }
+
+        .migration-btn {
+            color: #246bfe;
+            background: white;
+        }
+
+        .news-section {
+            padding: 4.5rem 0;
+            background: #f5f8fc;
+        }
+
+        .news-grid {
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1rem;
+        }
+
+        .news-card {
+            border: 1px solid #dbe3ef;
+            border-radius: 10px;
+            box-shadow: 0 8px 24px rgba(20, 33, 61, 0.06);
+        }
+
+        .news-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 14px 30px rgba(20, 33, 61, 0.1);
+        }
+
+        .news-image-container {
+            height: 215px;
+        }
+
+        .news-card-title {
+            color: #14213d;
+            font-size: 1.2rem;
+        }
+
+        .news-category {
+            border-radius: 4px;
+            background: #246bfe;
+        }
+
+        .read-more,
+        .text-gradient {
+            color: #246bfe;
+        }
+
+        .add-news-section {
+            border-top: 1px solid #dbe3ef;
+            background: white;
+        }
+
+        .form-container {
+            max-width: 820px;
+            padding: 2rem;
+            border: 1px solid #dbe3ef;
+            border-radius: 12px;
+            background: #fff;
+            box-shadow: 0 12px 32px rgba(20, 33, 61, 0.07);
+        }
+
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            border-radius: 8px;
+            border-color: #dbe3ef;
+        }
+
+        @media (max-width: 768px) {
+            .news-hero {
+                padding: 5rem var(--space-md) 3.5rem;
+            }
+
+            .news-hero h1 {
+                font-size: 2.35rem;
+            }
+
+            .news-meta,
+            .news-actions,
+            .admin-actions {
+                align-items: stretch;
+            }
+
+            .news-action,
+            .admin-action {
+                flex: 1;
+                justify-content: center;
+            }
+
+            .form-container {
+                padding: 1rem;
+            }
+        }
     </style>
     
     <!-- FIREBASE SDK -->
@@ -987,7 +1156,6 @@
         // Import Firebase modules
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js";
         import { getFirestore } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js";
-        import { getStorage } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-storage.js";
         
         // Firebase web app configuration
         const firebaseConfig = {
@@ -1005,8 +1173,7 @@
         if (hasFirebaseConfig) {
             const app = initializeApp(firebaseConfig);
             const db = getFirestore(app);
-            const storage = getStorage(app);
-            window.firebase = { db, app, storage };
+            window.firebase = { db, app };
             window.firebaseReady = true;
         } else {
             window.firebaseError = new Error('Firebase is not configured. Replace the YOUR_* values in news.html with your Firebase web app configuration.');
@@ -1296,7 +1463,7 @@
                         <select id="videoSource" name="videoSource">
                             <option value="none">No video</option>
                             <option value="url">Use a video URL</option>
-                            <option value="upload">Upload a video file</option>
+                            <option value="upload">Upload a video file (requires Storage billing)</option>
                         </select>
                         <input type="url" id="newsVideoUrl" name="videoUrl" placeholder="https://www.youtube.com/watch?v=..." style="display: none; margin-top: var(--space-sm);">
                         <input type="file" id="newsVideoFile" name="videoFile" accept="video/*" style="display: none; margin-top: var(--space-sm);">
@@ -1847,12 +2014,24 @@
         }
 
         async function uploadMediaFile(file, folder) {
-            const { storage } = window.firebase;
-            const { getDownloadURL, ref, uploadBytes } = await import('https://www.gstatic.com/firebasejs/10.7.0/firebase-storage.js');
-            const safeName = file.name.replace(/[^a-z0-9._-]/gi, '-');
-            const fileRef = ref(storage, `${folder}/${Date.now()}-${safeName}`);
-            await uploadBytes(fileRef, file, { contentType: file.type });
-            return getDownloadURL(fileRef);
+            if (folder === 'news-images') {
+                return compressImage(file);
+            }
+
+            throw new Error('Video file uploads require Firebase Storage billing. Please use a video URL on the Spark plan.');
+        }
+
+        function describePublishError(error) {
+            if (error.code === 'storage/unauthorized' || error.code === 'storage/permission-denied') {
+                return 'Firebase Storage denied the upload. Publish the Storage rules provided below, then try again.';
+            }
+            if (error.code === 'permission-denied') {
+                return 'Firestore denied the article write. Publish the Firestore rules provided below, then try again.';
+            }
+            if (error.code === 'auth/invalid-credential' || error.code === 'auth/user-not-found') {
+                return 'The Firebase admin sign-in failed. Check the admin account and password.';
+            }
+            return error.message || 'The article could not be published.';
         }
 
         function compressImage(file) {
@@ -1942,7 +2121,7 @@
                 if (imageSource.value === 'url') {
                     imageUrl = newsImageUrl.value.trim();
                 } else if (imageFile) {
-                    imageUrl = await uploadMediaFile(imageFile, 'news-images');
+                    imageUrl = await compressImage(imageFile);
                 }
 
                 let articleVideoUrl = editingArticleId ? (loadedArticles.get(editingArticleId)?.videoUrl || '') : '';
@@ -2014,7 +2193,7 @@
                 formMessage.style.background = '#f8d7da';
                 formMessage.style.color = '#721c24';
                 formMessage.style.border = '1px solid #f5c6cb';
-                formMessage.textContent = '❌ Error: ' + error.message;
+                formMessage.textContent = '❌ Error: ' + describePublishError(error);
             }
         });
 
