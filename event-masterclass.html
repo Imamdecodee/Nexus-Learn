@@ -435,14 +435,45 @@
         }
 
         .certificate-preview {
-            border: 2px solid var(--line);
-            padding: 3rem 2rem;
-            border-radius: 10px;
+            border: 3px double #555;
+            padding: 2.5rem 3rem;
+            border-radius: 0;
             text-align: center;
             margin-top: 2rem;
-            box-shadow: 0 10px 30px rgba(20, 33, 61, 0.1);
+            box-shadow: 0 10px 30px rgba(20, 33, 61, 0.15);
             background: var(--white);
             display: none;
+            width: 1200px;
+            max-width: 100%;
+            aspect-ratio: 16 / 9;
+            position: relative;
+            overflow: hidden;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .certificate-preview::before {
+            content: '';
+            position: absolute;
+            top: -50px;
+            left: -50px;
+            width: 300px;
+            height: 300px;
+            background: linear-gradient(135deg, #173d9b 0%, #246bfe 50%, transparent 100%);
+            clip-path: polygon(0 0, 100% 0, 50% 100%, 0 50%);
+            opacity: 0.1;
+        }
+
+        .certificate-preview::after {
+            content: '';
+            position: absolute;
+            bottom: -80px;
+            right: -80px;
+            width: 350px;
+            height: 350px;
+            background: linear-gradient(225deg, #ef9c18 0%, #d88308 50%, transparent 100%);
+            clip-path: polygon(100% 100%, 0 100%, 50% 0, 100% 50%);
+            opacity: 0.1;
         }
 
         .certificate-preview.active {
@@ -701,13 +732,21 @@
             .certificate-preview {
                 display: block !important;
                 box-shadow: none;
-                border: none;
+                border: 3px double #555;
                 page-break-after: always;
+                width: 100%;
+                margin: 0;
+                padding: 2.5rem 3rem;
             }
 
             .certificate-section {
                 background: white;
                 padding: 0;
+            }
+
+            @page {
+                size: A4 landscape;
+                margin: 0;
             }
         }
     </style>
@@ -767,8 +806,20 @@
         </div>
     </section>
 
+    <!-- EVENT FLYER IMAGE SECTION -->
+    <section class="section section-white">
+        <div class="container" style="text-align: center;">
+            <div class="section-heading">
+                <p class="eyebrow" style="color: var(--blue)">Event Flyer</p>
+                <h2>Event Poster</h2>
+            </div>
+            <div style="max-width: 800px; margin: 2rem auto;">
+                <img src="./image/flyer.jpg" alt="ILM Nexus Event Flyer - Build Your Digital Identity" style="width: 100%; height: auto; border-radius: 12px; box-shadow: 0 10px 30px rgba(20, 33, 61, 0.15); display: block;">
+            </div>
+        </div>
+    </section>
+
     <!-- EVENT FLYER SECTION -->
-    <section class="section section-white" style="padding: 3rem 0;">
         <div class="container" style="text-align: center;">
             <div class="section-heading">
                 <p class="eyebrow" style="color: var(--blue)">Event Flyer</p>
@@ -1166,37 +1217,45 @@
 
                 <!-- Certificate Preview -->
                 <div class="certificate-preview" id="certificatePreview">
-                    <div style="padding: 2rem 0;">
-                        <div class="certificate-header">ILM NEXUS</div>
-                        <div class="certificate-subtitle">INTERNATIONAL DIGITAL SKILLS — COHORT 1.0</div>
+                    <div style="padding: 0; height: 100%; display: flex; flex-direction: column; justify-content: space-between; position: relative; z-index: 2;">
                         
-                        <div style="margin: 2rem 0; border-top: 2px solid var(--line); border-bottom: 2px solid var(--line); padding: 2rem 0;">
-                            <h2 style="color: var(--ink); font-size: 1.8rem; margin-bottom: 1rem; font-family: 'Space Grotesk', sans-serif;">CERTIFICATE OF PARTICIPATION</h2>
-                            <p style="color: var(--ink); margin-bottom: 1rem;">This certificate is proudly presented to</p>
-                            <div class="certificate-recipient" id="certRecipient">JOHN DOE</div>
+                        <!-- Header Section -->
+                        <div style="padding-top: 1.5rem;">
+                            <div style="color: #173d9b; font-weight: 700; font-size: 0.75rem; letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 0.3rem; font-family: 'Space Grotesk', sans-serif;">
+                                Certificate of Participation
+                            </div>
+                            <div class="certificate-header" style="font-size: 2rem; margin-bottom: 0.2rem;">ILM NEXUS</div>
+                            <div class="certificate-subtitle" style="font-size: 0.8rem; letter-spacing: 0.08em;">International Digital Skills — Cohort 1.0</div>
                         </div>
 
-                        <div class="certificate-event">
-                            <p>for participating in the</p>
-                            <p><strong>LinkedIn Optimization & Professional Visibility</strong></p>
-                            <p style="margin-top: 1rem;">masterclass.</p>
+                        <!-- Main Content -->
+                        <div style="flex: 1; display: flex; flex-direction: column; justify-content: center; padding: 1rem 0;">
+                            <p style="color: #555; margin: 0 0 0.8rem; font-size: 0.95rem;">This certificate is proudly presented to</p>
+                            <div class="certificate-recipient" id="certRecipient" style="font-size: 2.8rem; margin: 0.5rem 0 1rem; letter-spacing: 0.05em;">JOHN DOE</div>
+                            <div style="width: 60%; margin: 0 auto 1.5rem; height: 2px; background: #173d9b;"></div>
+                            <p style="color: #333; margin: 0; font-size: 1rem; line-height: 1.6;">for participating in the<br><strong>Build Your Digital Identity:<br>LinkedIn Optimization & Professional Visibility</strong><br>masterclass</p>
                         </div>
 
-                        <div class="certificate-date">
-                            <strong>September 5, 2026</strong><br>
-                            Guest Speaker: <strong>Abdulbasit Lukman</strong>
+                        <!-- Footer with Three Columns -->
+                        <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 2rem; padding-top: 1.5rem; border-top: 2px solid #ddd;">
+                            <div style="text-align: left; border-left: 2px solid #173d9b; padding-left: 1rem;">
+                                <p style="color: #888; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.1em; margin: 0 0 0.3rem; font-weight: 600;">Date</p>
+                                <p style="color: #333; font-size: 0.95rem; margin: 0; font-weight: 600;">September 5, 2026</p>
+                            </div>
+                            <div style="text-align: center; border-left: 2px solid #173d9b; padding-left: 1rem;">
+                                <p style="color: #888; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.1em; margin: 0 0 0.3rem; font-weight: 600;">Guest Speaker</p>
+                                <p style="color: #333; font-size: 0.95rem; margin: 0; font-weight: 600;">Abdulbasit Lukman</p>
+                            </div>
+                            <div style="text-align: right; border-left: 2px solid #173d9b; padding-left: 1rem;">
+                                <p style="color: #888; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.1em; margin: 0 0 0.3rem; font-weight: 600;">Certificate ID</p>
+                                <p class="certificate-id" id="certID" style="color: #333; font-size: 0.85rem; margin: 0; font-weight: 600;">ILM-2026-00001</p>
+                            </div>
                         </div>
 
-                        <div style="margin-top: 2rem; padding-top: 1rem; border-top: 2px solid var(--line);">
-                            <div style="color: var(--ink); font-weight: 700; font-size: 1rem; margin-top: 1rem;">ILM Nexus</div>
-                            <div style="color: var(--blue); font-size: 0.9rem;">International Digital Skills</div>
-                        </div>
-
-                        <div class="certificate-id" id="certID">
-                            Certificate ID: ILM-2026-00001
-                        </div>
                     </div>
+                </div>
 
+                <div style="margin-top: 2rem;">
                     <div class="button-group">
                         <button class="button button-gold" onclick="printCertificate()">🖨️ Print Certificate</button>
                         <button class="button button-primary" onclick="downloadCertificatePDF()">📥 Download PDF</button>
@@ -1299,6 +1358,8 @@
             document.getElementById('certificatePreview').classList.remove('active');
             document.getElementById('certificateError').style.display = 'none';
             document.getElementById('certificateForm').reset();
+            // Scroll to form
+            document.getElementById('certificateForm').scrollIntoView({ behavior: 'smooth' });
         }
 
         function printCertificate() {
