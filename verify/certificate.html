@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Verify an ILM Nexus certificate of participation.">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Verify Certificate | ILM Nexus</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root { --blue: #246bfe; --navy: #14213d; --muted: #667085; --line: #dbe3ef; --paper: #f5f8fc; --green: #147d5a; --red: #b42318; }
+        * { box-sizing: border-box; }
+        body { margin: 0; min-height: 100vh; display: grid; place-items: center; padding: 2rem 1rem; background: var(--paper); color: var(--navy); font-family: 'DM Sans', sans-serif; }
+        .verification-card { width: min(100%, 680px); padding: clamp(1.5rem, 5vw, 3rem); border: 1px solid var(--line); border-radius: 14px; background: #fff; box-shadow: 0 18px 50px rgba(20, 33, 61, 0.1); }
+        .verification-card::before { content: ''; display: block; width: 130px; height: 130px; position: fixed; top: -50px; left: -45px; background: rgba(36, 107, 254, 0.07); clip-path: polygon(0 0, 100% 0, 0 100%); pointer-events: none; }
+        .brand-logo { width: 135px; height: auto; margin-bottom: 2rem; }
+        .eyebrow { margin: 0 0 0.5rem; color: var(--blue); font-size: 0.72rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; }
+        h1 { margin: 0 0 1.2rem; font: 700 clamp(1.8rem, 4vw, 2.7rem)/1.1 'Space Grotesk', sans-serif; }
+        .status { display: flex; align-items: center; gap: 0.65rem; margin-bottom: 2rem; color: var(--green); font-size: 1.05rem; font-weight: 700; }
+        .status.invalid { color: var(--red); }
+        .status-dot { width: 10px; height: 10px; border-radius: 50%; background: currentColor; }
+        .details { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; padding-top: 1.4rem; border-top: 1px solid var(--line); }
+        .detail { padding: 0.9rem; border-left: 2px solid var(--blue); background: #fbfcff; }
+        .detail-label { display: block; margin-bottom: 0.3rem; color: var(--muted); font-size: 0.68rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; }
+        .detail-value { font-weight: 600; line-height: 1.45; }
+        .issuer { margin: 2rem 0 0; color: var(--muted); font-size: 0.88rem; }
+        .back-link { display: inline-block; margin-top: 1.5rem; color: var(--blue); font-weight: 700; text-decoration: none; }
+        @media (max-width: 520px) { .details { grid-template-columns: 1fr; } }
+    </style>
+</head>
+<body>
+    <main class="verification-card">
+        <img class="brand-logo" src="../image/nexus-learn logo.png" alt="ILM Nexus logo">
+        <p class="eyebrow">Certificate verification</p>
+        <h1>Certificate authenticity</h1>
+        <div class="status" id="verificationStatus"><span class="status-dot"></span><span>Checking certificate...</span></div>
+        <div class="details" id="verificationDetails" hidden>
+            <div class="detail"><span class="detail-label">Participant Name</span><span class="detail-value" id="participantName"></span></div>
+            <div class="detail"><span class="detail-label">Session</span><span class="detail-value" id="sessionName"></span></div>
+            <div class="detail"><span class="detail-label">Date</span><span class="detail-value" id="sessionDate"></span></div>
+            <div class="detail"><span class="detail-label">Guest Speaker</span><span class="detail-value" id="guestSpeaker"></span></div>
+            <div class="detail"><span class="detail-label">Certificate ID</span><span class="detail-value" id="certificateId"></span></div>
+        </div>
+        <p class="issuer" id="issuerText">Issued by ILM Nexus.</p>
+        <a class="back-link" href="../events/build-digital-identity.html">Back to event archive</a>
+    </main>
+    <script>
+        const certificateId = new URLSearchParams(location.search).get('id');
+        const status = document.getElementById('verificationStatus');
+        const details = document.getElementById('verificationDetails');
+        const record = certificateId ? localStorage.getItem(`ilmNexusCertificate_${certificateId}`) : null;
+        let certificate = null;
+        try { certificate = record ? JSON.parse(record) : null; } catch (error) { certificate = null; }
+        if (certificate && certificate.certificateID === certificateId) {
+            status.querySelector('span:last-child').textContent = 'Certificate Valid';
+            document.getElementById('participantName').textContent = certificate.name;
+            document.getElementById('sessionName').textContent = certificate.event;
+            document.getElementById('sessionDate').textContent = certificate.date;
+            document.getElementById('guestSpeaker').textContent = certificate.speaker;
+            document.getElementById('certificateId').textContent = certificate.certificateID;
+            details.hidden = false;
+        } else {
+            status.classList.add('invalid');
+            status.querySelector('span:last-child').textContent = 'Certificate could not be verified';
+            document.getElementById('issuerText').textContent = 'No matching ILM Nexus verification record was found for this certificate ID.';
+        }
+    </script>
+</body>
+</html>

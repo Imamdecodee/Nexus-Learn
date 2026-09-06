@@ -6,6 +6,27 @@
     <meta name="description" content="LinkedIn Optimization & Professional Visibility Masterclass - ILM Nexus International Digital Skills Cohort 1.0">
     <meta property="og:title" content="ILM Nexus Masterclass - LinkedIn Optimization & Professional Visibility">
     <meta property="og:description" content="Join us for an exclusive masterclass on LinkedIn optimization and professional visibility with guest speaker Abdulbasit Lukman">
+        <meta property="og:type" content="event">
+        <meta property="og:url" content="https://ilmnexus.pro/event-masterclass.html">
+        <meta property="og:image" content="https://ilmnexus.pro/image/flyer.jpg">
+        <link rel="canonical" href="https://ilmnexus.pro/event-masterclass.html">
+        <script type="application/ld+json">
+        {
+            "@context": "https://schema.org",
+            "@type": "Event",
+            "name": "Build Your Digital Identity: LinkedIn Optimization & Professional Visibility",
+            "description": "ILM Nexus masterclass on LinkedIn optimization and professional visibility.",
+            "startDate": "2026-09-05T20:20:00+01:00",
+            "endDate": "2026-09-05T21:30:00+01:00",
+            "eventStatus": "https://schema.org/EventScheduled",
+            "eventAttendanceMode": "https://schema.org/OnlineEventAttendanceMode",
+            "url": "https://ilmnexus.pro/event-masterclass.html",
+            "image": "https://ilmnexus.pro/image/flyer.jpg",
+            "organizer": { "@type": "Organization", "name": "ILM Nexus", "url": "https://ilmnexus.pro" },
+            "performer": { "@type": "Person", "name": "Abdulbasit Lukman" },
+            "location": { "@type": "VirtualLocation", "url": "https://meet.google.com/sso-aqbo-bsz" }
+        }
+        </script>
     <title>ILM Nexus Masterclass - LinkedIn Optimization & Professional Visibility</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -196,6 +217,30 @@
             display: flex;
             flex-wrap: wrap;
             gap: 0.75rem;
+        }
+
+        .event-status-banner {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.55rem;
+            margin: 0 0 1.25rem;
+            padding: 0.45rem 0.8rem;
+            border: 1px solid rgba(255, 255, 255, 0.32);
+            border-radius: 999px;
+            color: #fff;
+            background: rgba(20, 33, 61, 0.22);
+            font-size: 0.78rem;
+            font-weight: 700;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+        }
+
+        .event-status-banner i {
+            color: #ffda91;
+        }
+
+        .event-status-banner.ended {
+            background: rgba(20, 125, 90, 0.28);
         }
 
         /* SECTION STYLING */
@@ -763,15 +808,16 @@
                 <li><a href="#qa">Q&A</a></li>
                 <li><a href="#certificate">Certificate</a></li>
             </ul>
-            <a class="button button-primary" href="https://meet.google.com/sso-aqbo-bsz" target="_blank">Join Meet <i class="fas fa-arrow-right"></i></a>
+            <a class="button button-primary event-cta" id="headerEventCta" href="https://meet.google.com/sso-aqbo-bsz" target="_blank">Join Meet <i class="fas fa-arrow-right"></i></a>
         </nav>
     </header>
 
     <!-- HERO SECTION WITH SPEAKER -->
-    <section class="hero">
+    <section class="hero" id="speaker">
         <div class="container" style="display: grid; grid-template-columns: 1fr 1fr; align-items: center; gap: 3rem; position: relative; z-index: 2;">
             <div class="hero-content">
                 <p class="eyebrow">ILM Nexus Professional Development Series</p>
+                <div class="event-status-banner" id="eventStatusBanner"><i class="fas fa-circle"></i><span>Event status</span></div>
                 <h1 style="font-size: 2.5rem;">Build Your Digital Identity</h1>
                 <p style="font-size: 1rem; margin-bottom: 1.5rem;">LinkedIn Optimization & Professional Visibility</p>
                 
@@ -791,7 +837,7 @@
                 </div>
 
                 <div class="hero-actions">
-                    <a class="button button-gold" href="https://meet.google.com/sso-aqbo-bsz" target="_blank">Join Google Meet <i class="fas fa-arrow-right"></i></a>
+                    <a class="button button-gold event-cta" id="heroEventCta" href="https://meet.google.com/sso-aqbo-bsz" target="_blank">Join Google Meet <i class="fas fa-arrow-right"></i></a>
                 </div>
             </div>
 
@@ -815,35 +861,6 @@
             </div>
             <div style="max-width: 800px; margin: 2rem auto;">
                 <img src="./image/flyer.jpg" alt="ILM Nexus Event Flyer - Build Your Digital Identity" style="width: 100%; height: auto; border-radius: 12px; box-shadow: 0 10px 30px rgba(20, 33, 61, 0.15); display: block;">
-            </div>
-        </div>
-    </section>
-
-    <!-- EVENT FLYER SECTION -->
-        <div class="container" style="text-align: center;">
-            <div class="section-heading">
-                <p class="eyebrow" style="color: var(--blue)">Event Flyer</p>
-                <h2>Session Highlights</h2>
-            </div>
-            <div style="background: var(--paper); padding: 2rem; border-radius: 10px; border: 2px solid var(--line); max-width: 600px; margin: 2rem auto;">
-                <div style="background: var(--white); padding: 2rem; border-radius: 8px; box-shadow: 0 5px 20px rgba(20, 33, 61, 0.1);">
-                    <div style="color: var(--gold); font-weight: 700; font-size: 0.85rem; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 1rem;">
-                        🎓 Professional Development Series — Cohort 1.0
-                    </div>
-                    <h3 style="color: var(--ink); font-size: 1.8rem; margin-bottom: 1rem; font-family: 'Space Grotesk', sans-serif;">Build Your Digital Identity</h3>
-                    <p style="color: var(--blue); font-weight: 700; font-size: 1.1rem; margin-bottom: 1rem;">LinkedIn Optimization & Professional Visibility</p>
-                    <hr style="border: none; border-top: 2px solid var(--line); margin: 1.5rem 0;">
-                    <div style="text-align: left; font-size: 0.95rem; color: var(--ink); line-height: 2;">
-                        <div><strong>📅 Date:</strong> Saturday, September 5, 2026</div>
-                        <div><strong>⏰ Time:</strong> 8:20 PM – 9:30 PM</div>
-                        <div><strong>🎤 Speaker:</strong> Abdulbasit Lukman (Sincerely Abdul)</div>
-                        <div><strong>🎥 Platform:</strong> Google Meet</div>
-                        <div><strong>👥 Host:</strong> ILM Nexus Community</div>
-                    </div>
-                    <hr style="border: none; border-top: 2px solid var(--line); margin: 1.5rem 0;">
-                    <p style="color: var(--muted); font-size: 0.9rem; margin-bottom: 1.5rem;">In today's professional world, your digital presence can be just as important as your physical CV. Learn how to intentionally build your professional identity.</p>
-                    <a class="button button-gold" href="https://meet.google.com/sso-aqbo-bsz" target="_blank" style="width: 100%; justify-content: center;">Join Us on Google Meet</a>
-                </div>
             </div>
         </div>
     </section>
@@ -968,33 +985,6 @@
         </div>
     </section>
 
-    <!-- SPEAKER SECTION -->
-    <section class="section section-white" id="speaker">
-        <div class="container">
-            <div class="section-heading">
-                <p class="eyebrow" style="color: var(--blue)">Meet Our Speaker</p>
-                <h2>Abdulbasit Lukman</h2>
-                <p>Community Manager, Tech Community Builder & Digital Skills Expert</p>
-            </div>
-
-            <div class="founder-grid">
-                <div class="founder-image">
-                    <img src="./image/abdulpic.jpg" alt="Abdulbasit Lukman">
-                </div>
-                <div class="founder-copy">
-                    <p class="eyebrow" style="color: var(--blue)">About the Speaker</p>
-                    <h2 style="font-size: 2rem;">Abdulbasit Lukman</h2>
-                    <p class="founder-name">Sincerely Abdul</p>
-                    <div class="founder-bio">
-                        <p>Abdulbasit is a passionate community leader and tech enthusiast dedicated to building strong tech communities and fostering professional growth. With extensive experience in community management and digital skills development, he brings valuable insights on building a credible online presence and leveraging professional networks.</p>
-                        <p><strong>Current Roles:</strong> Community Manager • Tech Community Builder • NACOS KWASU Software Director</p>
-                        <p>Through his work with various tech communities, Abdulbasit has helped numerous young professionals enhance their digital visibility and unlock new opportunities in their careers. His expertise in LinkedIn optimization and professional branding makes him the perfect guide for this masterclass.</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
     <!-- WHAT YOU'LL LEARN SECTION -->
     <section class="section" id="learning">
         <div class="container">
@@ -1108,18 +1098,19 @@
         </div>
     </section>
 
-    <!-- LARGE THANK YOU SECTION -->
+    <!-- EVENT RECAP SECTION -->
     <section class="appreciation-section" style="padding: 8rem 0;">
         <div class="container">
             <div style="max-width: 900px; margin: 0 auto; text-align: center;">
                 
-                <!-- Main Thank You Message -->
+                <!-- Permanent archive summary -->
+                <p class="eyebrow" style="color: #ffda91;">Event Archive</p>
                 <h2 style="font-size: 3.5rem; margin-bottom: 1rem; font-weight: 700; line-height: 1.1;">
-                    Thank You for<br>Coming Today
+                    Build Your Digital<br>Identity: The Recap
                 </h2>
 
                 <div class="appreciation-quote" style="font-size: 1.3rem; margin: 3rem 0; color: rgba(255, 255, 255, 0.95); line-height: 1.9;">
-                    Your presence, participation, and commitment to professional growth is what makes the ILM Nexus International Digital Skills community thrive.
+                    This masterclass brought students and young professionals together for a practical conversation about LinkedIn, professional visibility, and building a credible digital identity.
                 </div>
 
                 <!-- Speaker Appreciation -->
@@ -1132,29 +1123,29 @@
 
                 <!-- Key Takeaways -->
                 <div style="margin: 4rem 0; padding: 2.5rem; background: rgba(255, 255, 255, 0.08); border-radius: 12px;">
-                    <h3 style="color: var(--white); font-size: 1.5rem; margin-bottom: 2rem; font-weight: 700;">What We Achieved Today</h3>
+                    <h3 style="color: var(--white); font-size: 1.5rem; margin-bottom: 2rem; font-weight: 700;">Session Takeaways</h3>
                     <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.5rem;">
                         <div>
                             <div style="font-size: 2.5rem; margin-bottom: 0.5rem;">✅</div>
                             <h4 style="color: var(--white); margin: 0 0 0.5rem;">Learned & Grew</h4>
-                            <p style="margin: 0; color: rgba(255, 255, 255, 0.85); font-size: 0.9rem;">Built knowledge on LinkedIn optimization & professional visibility</p>
+                            <p style="margin: 0; color: rgba(255, 255, 255, 0.85); font-size: 0.9rem;">Learned how to optimize a profile for professional opportunities</p>
                         </div>
                         <div>
                             <div style="font-size: 2.5rem; margin-bottom: 0.5rem;">🤝</div>
                             <h4 style="color: var(--white); margin: 0 0 0.5rem;">Connected & Engaged</h4>
-                            <p style="margin: 0; color: rgba(255, 255, 255, 0.85); font-size: 0.9rem;">Interacted directly with an expert in the field</p>
+                            <p style="margin: 0; color: rgba(255, 255, 255, 0.85); font-size: 0.9rem;">Connected through an open, practical Q&A session</p>
                         </div>
                         <div>
                             <div style="font-size: 2.5rem; margin-bottom: 0.5rem;">🚀</div>
                             <h4 style="color: var(--white); margin: 0 0 0.5rem;">Inspired & Motivated</h4>
-                            <p style="margin: 0; color: rgba(255, 255, 255, 0.85); font-size: 0.9rem;">Gained practical strategies to advance your career</p>
+                            <p style="margin: 0; color: rgba(255, 255, 255, 0.85); font-size: 0.9rem;">Left with clear actions for improving digital visibility</p>
                         </div>
                     </div>
                 </div>
 
                 <!-- Next Steps -->
                 <div style="margin: 4rem 0; padding: 2rem; background: rgba(255, 255, 255, 0.1); border-radius: 12px; border: 1px solid rgba(255, 255, 255, 0.2);">
-                    <h3 style="color: var(--white); font-size: 1.5rem; margin-bottom: 1rem; font-weight: 700;">What's Next?</h3>
+                    <h3 style="color: var(--white); font-size: 1.5rem; margin-bottom: 1rem; font-weight: 700;">Keep Building</h3>
                     <p style="color: rgba(255, 255, 255, 0.9); margin-bottom: 1.5rem; line-height: 1.8;">
                         Apply what you learned today. Update your LinkedIn profile, implement the strategies shared, and continue your journey with ILM Nexus International Digital Skills — Cohort 1.0.
                     </p>
@@ -1282,6 +1273,51 @@
     </footer>
 
     <script>
+        const eventData = {
+            id: 'build-your-digital-identity',
+            start: '2026-09-05T20:20:00+01:00',
+            end: '2026-09-05T21:30:00+01:00',
+            meetingLink: 'https://meet.google.com/sso-aqbo-bsz'
+        };
+
+        function getEventStatus(now = new Date()) {
+            const start = new Date(eventData.start);
+            const end = new Date(eventData.end);
+            if (now < start) return 'upcoming';
+            if (now < end) return 'live';
+            return 'ended';
+        }
+
+        function updateEventExperience() {
+            const status = getEventStatus();
+            const banner = document.getElementById('eventStatusBanner');
+            const ctas = document.querySelectorAll('.event-cta');
+
+            const statusCopy = {
+                upcoming: ['Upcoming event', 'Join Google Meet'],
+                live: ['Live now', 'Join live session'],
+                ended: ['Event completed', 'View certificate']
+            }[status];
+
+            if (banner) {
+                banner.classList.toggle('ended', status === 'ended');
+                banner.querySelector('span').textContent = statusCopy[0];
+            }
+
+            ctas.forEach((cta) => {
+                cta.innerHTML = `${statusCopy[1]} <i class="fas fa-arrow-right"></i>`;
+                if (status === 'ended') {
+                    cta.href = '#certificate';
+                    cta.removeAttribute('target');
+                    cta.classList.remove('button-gold');
+                    cta.classList.add('button-primary');
+                } else {
+                    cta.href = eventData.meetingLink;
+                    cta.target = '_blank';
+                }
+            });
+        }
+
         // Q&A Form Handler
         function handleQASubmit(event) {
             event.preventDefault();
@@ -1371,6 +1407,8 @@
         }
 
         // Smooth scrolling for navigation links
+        updateEventExperience();
+
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function (e) {
                 e.preventDefault();
