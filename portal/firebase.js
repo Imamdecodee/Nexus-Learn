@@ -16,6 +16,7 @@ const [{ initializeApp }, authModule, firestoreModule] = await Promise.all([
 
 const app = initializeApp(firebaseConfig);
 const auth = authModule.getAuth(app);
+await authModule.setPersistence(auth, authModule.browserLocalPersistence);
 const db = firestoreModule.getFirestore(app);
 
 export const portalAuth = {

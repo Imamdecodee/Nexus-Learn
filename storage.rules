@@ -1,0 +1,17 @@
+rules_version = '2';
+service firebase.storage {
+  match /b/{bucket}/o {
+    function isCoordinator() {
+      return request.auth != null
+        && (request.auth.token.email == 'theilmnexus@gmail.com'
+          || request.auth.token.role == 'coordinator');
+    }
+
+    match /campuses/unilorin/staff_images/{fileName} {
+      allow read: if true;
+      allow write: if isCoordinator()
+        && request.resource.size < 5 * 1024 * 1024
+        && request.resource.contentType.matches('image/.*');
+    }
+  }
+}

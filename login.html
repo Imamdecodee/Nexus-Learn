@@ -93,7 +93,7 @@
       const registeredStudent = JSON.parse(localStorage.getItem('registered_student') || 'null');
       const availableStudents = registeredStudent ? [...students, registeredStudent] : students;
       const matchedStudent = availableStudents.find(student => student.username === username && student.password === password);
-      if (matchedStudent) { localStorage.setItem('student_logged_in', 'yes'); localStorage.setItem('student_data', JSON.stringify(matchedStudent)); if (matchedStudent.password === matchedStudent.username || matchedStudent.forcePasswordReset) { localStorage.setItem('force_password_reset', 'yes'); } loginButton.disabled = true; loginButton.textContent = 'Opening dashboard...'; window.location.href = localStorage.getItem('force_password_reset') === 'yes' ? 'force-password-reset.html' : 'dashboard.html'; return; }
+      if (matchedStudent) { localStorage.removeItem('admin_role'); localStorage.removeItem('staff_role'); localStorage.setItem('student_logged_in', 'yes'); localStorage.setItem('student_data', JSON.stringify(matchedStudent)); if (matchedStudent.password === matchedStudent.username || matchedStudent.forcePasswordReset) { localStorage.setItem('force_password_reset', 'yes'); } loginButton.disabled = true; loginButton.textContent = 'Opening dashboard...'; window.location.href = localStorage.getItem('force_password_reset') === 'yes' ? 'force-password-reset.html' : 'dashboard.html'; return; }
       errorMessage.textContent = 'That username and password do not match. Check them and try again.';
     });
     document.getElementById('togglePassword').addEventListener('click', event => { const passwordInput = document.getElementById('password'); const showingPassword = passwordInput.type === 'password'; passwordInput.type = showingPassword ? 'text' : 'password'; event.currentTarget.textContent = showingPassword ? 'Hide' : 'Show'; event.currentTarget.setAttribute('aria-label', showingPassword ? 'Hide password' : 'Show password'); });
@@ -104,6 +104,16 @@
     const socialError = document.getElementById('errorMsg');
     const roleSelect = document.getElementById('role');
     const staffField = document.getElementById('staffAssignmentField');
+    function getLoginError(error) {
+      const messages = {
+        'auth/invalid-credential': 'The email or password is incorrect.',
+        'auth/user-not-found': 'No account was found for this email.',
+        'auth/wrong-password': 'The email or password is incorrect.',
+        'auth/too-many-requests': 'Too many attempts. Wait a moment and try again.',
+        'auth/network-request-failed': 'Network error. Check your internet connection and try again.'
+      };
+      return messages[error.code] || error.message || 'Sign in failed.';
+    }
     roleSelect.addEventListener('change', () => { const staff = roleSelect.value === 'Staff'; staffField.style.display = staff ? 'block' : 'none'; document.getElementById('username').type = roleSelect.value === 'Admin' ? 'email' : 'text'; document.getElementById('username').placeholder = roleSelect.value === 'Admin' ? 'admin email address' : 'Enter your username'; });
     document.getElementById('loginForm').addEventListener('submit', async event => {
       const role = roleSelect.value;
@@ -121,25 +131,27 @@
         const result = await portalAuth.signInWithEmail(username, password);
         if (role === 'Admin') {
           if (result.user.email.toLowerCase() !== 'theilmnexus@gmail.com') throw new Error('Unauthorized Admin Access.');
-          localStorage.setItem('admin_role', 'Super Admin'); localStorage.setItem('student_logged_in', 'yes'); localStorage.setItem('student_data', JSON.stringify({ uid: result.user.uid, email: result.user.email, name: 'ILM Nexus Administrator', role: 'Admin' })); window.location.href = 'admin.html'; return;
+          localStorage.removeItem('staff_role'); localStorage.setItem('admin_role', 'Super Admin'); localStorage.setItem('student_logged_in', 'yes'); localStorage.setItem('student_data', JSON.stringify({ uid: result.user.uid, email: result.user.email, name: 'ILM Nexus Administrator', role: 'Admin' })); window.location.href = 'admin.html'; return;
         }
         const staffSnapshot = await getDocs(collection(db, 'staff'));
         const staff = staffSnapshot.docs.map(item => ({ id: item.id, ...item.data() })).find(item => item.uid === result.user.uid || item.email?.toLowerCase() === username.toLowerCase());
         if (!staff) throw new Error('Staff profile is not provisioned by an administrator.');
         if (assignment !== 'instructor' && staff.campusId?.toLowerCase() !== assignment) throw new Error('This staff assignment does not match your authorized branch.');
-        localStorage.setItem('staff_role', staff.role || 'Staff'); localStorage.setItem('staff_scope', assignment === 'instructor' ? 'global-curriculum' : `campus:${assignment}`); localStorage.setItem('student_logged_in', 'yes'); localStorage.setItem('student_data', JSON.stringify({ uid: result.user.uid, email: result.user.email, name: staff.name || result.user.email, role: 'Staff', campusId: staff.campusId })); window.location.href = 'admin.html';
-      } catch (error) { button.disabled = false; button.textContent = 'Sign in'; socialError.textContent = error.message || 'Sign in failed.'; }
+        localStorage.removeItem('admin_role'); localStorage.setItem('staff_role', 'Staff'); localStorage.setItem('staff_scope', assignment === 'instructor' ? 'global-curriculum' : `campus:${assignment}`); localStorage.setItem('student_logged_in', 'yes'); localStorage.setItem('student_data', JSON.stringify({ uid: result.user.uid, email: result.user.email, name: staff.name || result.user.email, role: 'Staff', campusId: staff.campusId })); window.location.href = 'admin.html';
+      } catch (error) { button.disabled = false; button.textContent = 'Sign in'; socialError.textContent = getLoginError(error); }
     });
     async function signInWithProvider(provider) {
       try {
         const result = await provider();
         const user = result.user;
         const profile = { username: user.email || user.uid, name: user.displayName || user.email || 'ILM Nexus student', email: user.email || '', avatar: user.photoURL || '', uid: user.uid, course: 'Professional Learning' };
+        localStorage.removeItem('admin_role');
+        localStorage.removeItem('staff_role');
         localStorage.setItem('student_logged_in', 'yes');
         localStorage.setItem('student_data', JSON.stringify(profile));
         window.location.href = 'dashboard.html';
       } catch (error) {
-        socialError.textContent = error.message || 'Social sign-in could not be completed.';
+        socialError.textContent = getLoginError(error);
       }
     }
     document.getElementById('googleSignIn').addEventListener('click', () => signInWithProvider(portalAuth.signInWithGoogle));
