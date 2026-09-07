@@ -2022,6 +2022,9 @@
         let classroomDraftAttachment = null;
         let classroomCurrentPosts = [];
         let classroomUnsubscribe = null;
+        let classroomFirebaseApi = null;
+        const classroomCommentUnsubscribes = new Map();
+        const classroomComments = new Map();
 
         function readClassroomMember() {
             try { return JSON.parse(localStorage.getItem(classroomConfig.memberKey)) || null; } catch (error) { return null; }
@@ -2044,12 +2047,16 @@
         }
 
         async function ensureClassroomFirebase() {
-            if (window.classroomDb && window.classroomFirebaseReady) {
-                return { db: window.classroomDb, app: window.classroomApp };
+            if (classroomFirebaseApi) {
+                return classroomFirebaseApi;
+            }
+            if (window.classroomDb && window.classroomFirebaseReady && window.classroomFirebaseApi) {
+                classroomFirebaseApi = window.classroomFirebaseApi;
+                return classroomFirebaseApi;
             }
 
             const { initializeApp } = await import('https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js');
-            const { addDoc, collection, getFirestore, onSnapshot, orderBy, query, serverTimestamp } = await import('https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js');
+            const { addDoc, arrayRemove, arrayUnion, collection, doc, getFirestore, increment, onSnapshot, orderBy, query, serverTimestamp, updateDoc } = await import('https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js');
 
             const firebaseConfig = {
                 apiKey: 'AIzaSyBJKtNJDIxbo-_PxSwGTYcuS8gRjg9ReX8',
@@ -2065,8 +2072,9 @@
             window.classroomApp = app;
             window.classroomDb = db;
             window.classroomFirebaseReady = true;
-
-            return { db, app, addDoc, collection, onSnapshot, orderBy, query, serverTimestamp };
+            classroomFirebaseApi = { db, app, addDoc, arrayRemove, arrayUnion, collection, doc, increment, onSnapshot, orderBy, query, serverTimestamp, updateDoc };
+            window.classroomFirebaseApi = classroomFirebaseApi;
+            return classroomFirebaseApi;
         }
 
         async function initClassroomFeed() {
@@ -2077,6 +2085,7 @@
                 classroomUnsubscribe = onSnapshot(postsQuery, (snapshot) => {
                     const posts = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
                     classroomCurrentPosts = posts;
+                    syncClassroomCommentListeners(posts);
                     saveClassroomPosts(posts);
                     renderClassroomFeed(posts);
                 }, (error) => {
@@ -2239,7 +2248,37 @@
             const createdAtValue = post.createdAt && typeof post.createdAt.toDate === 'function' ? post.createdAt.toDate() : new Date(post.createdAt || Date.now());
             const time = createdAtValue.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' });
             const attachment = `${post.link ? `<p class="classroom-post-meta"><i class="fas fa-link"></i> Link attachment: ${escapeClassroomText(post.link)}</p>` : ''}${post.attachment ? `<p class="classroom-post-meta"><i class="fas fa-paperclip"></i> ${escapeClassroomText(post.attachment.type)} attachment: ${escapeClassroomText(post.attachment.name)}</p>` : ''}`;
-            return `<article class="classroom-post fade-in"><div class="classroom-post-header"><div class="classroom-avatar">${escapeClassroomText((post.memberName || 'A').charAt(0).toUpperCase())}</div><div><div class="classroom-post-author">${escapeClassroomText(post.memberName || 'Anonymous member')}${roleBadge}</div><div class="classroom-post-meta">${escapeClassroomText(post.memberRole || 'Student')} • ${escapeClassroomText(post.type || 'Discussion')} • ${time}</div></div></div><div style="margin-top: 0.8rem;"><span class="classroom-post-type">${escapeClassroomText(post.type || 'Discussion')}</span><div class="classroom-post-body">${escapeClassroomText(post.content || '')}</div>${attachment}<div class="classroom-post-meta">Shared across devices • visible to the whole classroom</div></div><div class="classroom-post-actions"><button type="button" onclick="reactToClassroomPost('${post.id}')"><i class="far fa-heart"></i> ${post.likes || 0}</button><button type="button" onclick="replyToClassroomPost('${post.id}')"><i class="far fa-comment"></i> Reply</button><button type="button" onclick="shareClassroomPost('${post.id}')"><i class="fas fa-share"></i> Share</button><button type="button" onclick="reportClassroomPost('${post.id}')"><i class="far fa-flag"></i> Report</button></div></article>`;
+            const comments = classroomComments.get(post.id) || [];
+            const member = readClassroomMember();
+            const liked = member && (post.likedBy || []).includes(member.id);
+            return `<article class="classroom-post fade-in"><div class="classroom-post-header"><div class="classroom-avatar">${escapeClassroomText((post.memberName || 'A').charAt(0).toUpperCase())}</div><div><div class="classroom-post-author">${escapeClassroomText(post.memberName || 'Anonymous member')}${roleBadge}</div><div class="classroom-post-meta">${escapeClassroomText(post.memberRole || 'Student')} • ${escapeClassroomText(post.type || 'Discussion')} • ${time}</div></div></div><div style="margin-top: 0.8rem;"><span class="classroom-post-type">${escapeClassroomText(post.type || 'Discussion')}</span><div class="classroom-post-body">${escapeClassroomText(post.content || '')}</div>${attachment}<div class="classroom-post-meta">Shared across devices • visible to the whole classroom</div></div>${renderClassroomComments(comments)}<div class="classroom-post-actions"><button type="button" onclick="reactToClassroomPost('${post.id}')"><i class="${liked ? 'fas' : 'far'} fa-heart"></i> ${post.likes || 0}</button><button type="button" onclick="replyToClassroomPost('${post.id}')"><i class="far fa-comment"></i> ${comments.length || 'Reply'}</button><button type="button" onclick="shareClassroomPost('${post.id}')"><i class="fas fa-share"></i> Share</button><button type="button" onclick="reportClassroomPost('${post.id}')"><i class="far fa-flag"></i> ${post.reports || 0}</button></div></article>`;
+        }
+
+        function renderClassroomComments(comments) {
+            if (!comments.length) return '';
+            return `<div class="classroom-comments">${comments.map(comment => `<div class="classroom-comment"><strong>${escapeClassroomText(comment.memberName || 'Classroom member')}</strong><span>${escapeClassroomText(comment.content || '')}</span></div>`).join('')}</div>`;
+        }
+
+        function syncClassroomCommentListeners(posts) {
+            const postIds = new Set(posts.map(post => post.id));
+            classroomCommentUnsubscribes.forEach((unsubscribe, postId) => {
+                if (!postIds.has(postId)) {
+                    unsubscribe();
+                    classroomCommentUnsubscribes.delete(postId);
+                    classroomComments.delete(postId);
+                }
+            });
+            posts.forEach(post => {
+                if (classroomCommentUnsubscribes.has(post.id)) return;
+                ensureClassroomFirebase().then(({ db, collection, onSnapshot, orderBy, query }) => {
+                    const commentsQuery = query(collection(db, 'classroom_events', classroomConfig.eventId, 'posts', post.id, 'comments'), orderBy('createdAt', 'asc'));
+                    const unsubscribe = onSnapshot(commentsQuery, snapshot => {
+                        classroomComments.set(post.id, snapshot.docs.map(comment => ({ id: comment.id, ...comment.data() })));
+                        renderClassroomFeed(classroomCurrentPosts);
+                    });
+                    classroomCommentUnsubscribes.set(post.id, unsubscribe);
+                }).catch(error => console.warn('Classroom comments unavailable:', error));
+            });
         }
 
         function updateClassroomPost(postId, updater) {
@@ -2251,9 +2290,59 @@
             renderClassroomFeed(posts);
         }
 
-        function reactToClassroomPost(postId) { updateClassroomPost(postId, post => { post.likes = (post.likes || 0) + 1; }); }
-        function replyToClassroomPost() { alert('Threaded replies are ready for the comments API and moderation queue.'); }
-        function reportClassroomPost(postId) { updateClassroomPost(postId, post => { post.reports = (post.reports || 0) + 1; }); alert('This post has been flagged for moderation.'); }
+        async function reactToClassroomPost(postId) {
+            const member = readClassroomMember();
+            if (!member) { openClassroomRegistration(); return; }
+            try {
+                const { db, arrayRemove, arrayUnion, doc, increment, updateDoc } = await ensureClassroomFirebase();
+                const post = classroomCurrentPosts.find(item => item.id === postId);
+                const liked = post && (post.likedBy || []).includes(member.id);
+                await updateDoc(doc(db, 'classroom_events', classroomConfig.eventId, 'posts', postId), liked
+                    ? { likedBy: arrayRemove(member.id), likes: increment(-1), updatedAt: new Date() }
+                    : { likedBy: arrayUnion(member.id), likes: increment(1), updatedAt: new Date() });
+            } catch (error) {
+                console.warn('Shared like failed:', error);
+            }
+        }
+
+        async function replyToClassroomPost(postId) {
+            const member = readClassroomMember();
+            if (!member) { openClassroomRegistration(); return; }
+            const content = window.prompt('Write a reply to this classroom post:');
+            if (!content || !content.trim() || content.trim().length > 1000) return;
+            try {
+                const { addDoc, collection, db, serverTimestamp } = await ensureClassroomFirebase();
+                await addDoc(collection(db, 'classroom_events', classroomConfig.eventId, 'posts', postId, 'comments'), {
+                    memberId: member.id,
+                    memberName: member.name,
+                    memberRole: member.role,
+                    content: content.trim(),
+                    createdAt: serverTimestamp()
+                });
+            } catch (error) {
+                console.warn('Shared comment failed:', error);
+                alert('This reply could not be shared. Please try again.');
+            }
+        }
+
+        async function reportClassroomPost(postId) {
+            const member = readClassroomMember();
+            if (!member) { openClassroomRegistration(); return; }
+            try {
+                const { arrayUnion, db, doc, increment, updateDoc } = await ensureClassroomFirebase();
+                const post = classroomCurrentPosts.find(item => item.id === postId);
+                if (post && (post.reportedBy || []).includes(member.id)) return;
+                await updateDoc(doc(db, 'classroom_events', classroomConfig.eventId, 'posts', postId), {
+                    reportedBy: arrayUnion(member.id),
+                    reports: increment(1),
+                    updatedAt: new Date()
+                });
+                alert('This post has been flagged for moderation.');
+            } catch (error) {
+                console.warn('Shared report failed:', error);
+                alert('This post could not be reported. Please try again.');
+            }
+        }
         async function shareClassroomPost(postId) { const url = `${location.href.split('#')[0]}#classroom-post-${postId}`; if (navigator.share) await navigator.share({ title: 'ILM Nexus Classroom post', url }); else await navigator.clipboard?.writeText(url); }
 
         async function requestClassroomNotifications() {
