@@ -29,12 +29,17 @@
     .subheading { margin: 0 0 2rem; color: var(--muted); }
     .field { margin-bottom: 1.15rem; }
     .field label { display: block; margin-bottom: .45rem; font-size: .9rem; font-weight: 600; }
+    .field select { width: 100%; padding: .9rem 1rem; color: var(--ink); border: 1px solid var(--line); border-radius: 10px; background: #fff; font: inherit; }
+    .field select:focus { border-color: var(--blue); outline: none; box-shadow: 0 0 0 4px rgba(36, 107, 254, .12); }
+    #staffAssignmentField { display: none; }
     .input-wrap { position: relative; }
     .login-form input { width: 100%; padding: .9rem 1rem; color: var(--ink); border: 1px solid var(--line); border-radius: 10px; background: #fff; font: inherit; transition: border-color .2s, box-shadow .2s; }
     .login-form input:focus { border-color: var(--blue); outline: none; box-shadow: 0 0 0 4px rgba(36, 107, 254, .12); }
     .toggle-password { position: absolute; top: 50%; right: .8rem; transform: translateY(-50%); border: 0; background: transparent; color: var(--muted); cursor: pointer; font: inherit; font-size: .85rem; font-weight: 600; }
     .submit-button { width: 100%; padding: .95rem 1rem; margin-top: .5rem; border: 0; border-radius: 10px; background: var(--blue); color: #fff; cursor: pointer; font: inherit; font-weight: 700; transition: background .2s, transform .2s; }
     .submit-button:hover { background: var(--blue-dark); transform: translateY(-1px); }
+    .social-button { padding: .75rem .8rem; border: 1px solid var(--line); border-radius: 10px; color: var(--ink); background: #fff; cursor: pointer; font: inherit; font-weight: 700; }
+    .social-button:hover { border-color: var(--blue); color: var(--blue); background: var(--blue-soft); }
     .submit-button:disabled { cursor: wait; opacity: .65; }
     .error { min-height: 1.4rem; margin: .8rem 0 0; color: #c62828; font-size: .9rem; }
     .helper-links { display: flex; justify-content: space-between; gap: 1rem; margin-top: 1.5rem; color: var(--muted); font-size: .9rem; }
@@ -55,9 +60,12 @@
     <section class="login-panel">
       <form class="login-form" id="loginForm">
         <h2>Welcome back</h2><p class="subheading">Sign in to open your student dashboard.</p>
-        <div class="field"><label for="username">Username</label><input type="text" id="username" placeholder="Enter your username" autocomplete="username" required></div>
+        <div class="field"><label for="role">Select role</label><select id="role" required><option value="Student">Student</option><option value="Staff">Staff</option><option value="Admin">Admin</option></select></div>
+        <div class="field" id="staffAssignmentField"><label for="staffAssignment">Staff type / access branch</label><input type="text" id="staffAssignment" placeholder="e.g. instructor or unilorin" autocomplete="organization"></div>
+        <div class="field"><label for="username">Username or email</label><input type="text" id="username" placeholder="Enter your username" autocomplete="username" required></div>
         <div class="field"><label for="password">Password</label><div class="input-wrap"><input type="password" id="password" placeholder="Enter your password" autocomplete="current-password" required><button type="button" class="toggle-password" id="togglePassword" aria-label="Show password">Show</button></div></div>
         <button type="submit" class="submit-button" id="loginButton">Sign in</button>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:.65rem;margin-top:.75rem;"><button type="button" class="social-button" id="googleSignIn"><i class="fab fa-google"></i> Google</button><button type="button" class="social-button" id="githubSignIn"><i class="fab fa-github"></i> GitHub</button></div>
         <p class="error" id="errorMsg" role="alert" aria-live="polite"></p>
         <div class="helper-links"><span>Need access to a course?</span><a href="get-access.html">Request access</a></div>
         <p class="secure-note"><i class="fas fa-lock"></i>Your learning dashboard is private to you.</p>
@@ -76,6 +84,7 @@
       { username: 'student8', password: 'stu456', name: 'Musa Ibrahim', course: 'Video Editing', avatar: 'https://i.pravatar.cc/150?img=2' }
     ];
     document.getElementById('loginForm').addEventListener('submit', event => {
+      if (document.getElementById('role').value !== 'Student') return;
       event.preventDefault();
       const username = document.getElementById('username').value.trim();
       const password = document.getElementById('password').value;
@@ -84,10 +93,57 @@
       const registeredStudent = JSON.parse(localStorage.getItem('registered_student') || 'null');
       const availableStudents = registeredStudent ? [...students, registeredStudent] : students;
       const matchedStudent = availableStudents.find(student => student.username === username && student.password === password);
-      if (matchedStudent) { localStorage.setItem('student_logged_in', 'yes'); localStorage.setItem('student_data', JSON.stringify(matchedStudent)); loginButton.disabled = true; loginButton.textContent = 'Opening dashboard...'; window.location.href = 'dashboard.html'; return; }
+      if (matchedStudent) { localStorage.setItem('student_logged_in', 'yes'); localStorage.setItem('student_data', JSON.stringify(matchedStudent)); if (matchedStudent.password === matchedStudent.username || matchedStudent.forcePasswordReset) { localStorage.setItem('force_password_reset', 'yes'); } loginButton.disabled = true; loginButton.textContent = 'Opening dashboard...'; window.location.href = localStorage.getItem('force_password_reset') === 'yes' ? 'force-password-reset.html' : 'dashboard.html'; return; }
       errorMessage.textContent = 'That username and password do not match. Check them and try again.';
     });
     document.getElementById('togglePassword').addEventListener('click', event => { const passwordInput = document.getElementById('password'); const showingPassword = passwordInput.type === 'password'; passwordInput.type = showingPassword ? 'text' : 'password'; event.currentTarget.textContent = showingPassword ? 'Hide' : 'Show'; event.currentTarget.setAttribute('aria-label', showingPassword ? 'Hide password' : 'Show password'); });
+  </script>
+  <script type="module">
+    import { portalAuth, db, firestoreModule } from './portal/firebase.js';
+    const { collection, getDocs } = firestoreModule;
+    const socialError = document.getElementById('errorMsg');
+    const roleSelect = document.getElementById('role');
+    const staffField = document.getElementById('staffAssignmentField');
+    roleSelect.addEventListener('change', () => { const staff = roleSelect.value === 'Staff'; staffField.style.display = staff ? 'block' : 'none'; document.getElementById('username').type = roleSelect.value === 'Admin' ? 'email' : 'text'; document.getElementById('username').placeholder = roleSelect.value === 'Admin' ? 'admin email address' : 'Enter your username'; });
+    document.getElementById('loginForm').addEventListener('submit', async event => {
+      const role = roleSelect.value;
+      if (role === 'Student') return;
+      event.preventDefault();
+      const username = document.getElementById('username').value.trim();
+      const password = document.getElementById('password').value;
+      const assignment = document.getElementById('staffAssignment').value.trim().toLowerCase();
+      const button = document.getElementById('loginButton');
+      socialError.textContent = '';
+      if (role === 'Admin' && username.toLowerCase() !== 'theilmnexus@gmail.com') { socialError.textContent = 'Unauthorized Admin Access.'; return; }
+      if (role === 'Staff' && !assignment) { socialError.textContent = 'Enter your staff type or campus assignment.'; return; }
+      button.disabled = true; button.textContent = 'Verifying access...';
+      try {
+        const result = await portalAuth.signInWithEmail(username, password);
+        if (role === 'Admin') {
+          if (result.user.email.toLowerCase() !== 'theilmnexus@gmail.com') throw new Error('Unauthorized Admin Access.');
+          localStorage.setItem('admin_role', 'Super Admin'); localStorage.setItem('student_logged_in', 'yes'); localStorage.setItem('student_data', JSON.stringify({ uid: result.user.uid, email: result.user.email, name: 'ILM Nexus Administrator', role: 'Admin' })); window.location.href = 'admin.html'; return;
+        }
+        const staffSnapshot = await getDocs(collection(db, 'staff'));
+        const staff = staffSnapshot.docs.map(item => ({ id: item.id, ...item.data() })).find(item => item.uid === result.user.uid || item.email?.toLowerCase() === username.toLowerCase());
+        if (!staff) throw new Error('Staff profile is not provisioned by an administrator.');
+        if (assignment !== 'instructor' && staff.campusId?.toLowerCase() !== assignment) throw new Error('This staff assignment does not match your authorized branch.');
+        localStorage.setItem('staff_role', staff.role || 'Staff'); localStorage.setItem('staff_scope', assignment === 'instructor' ? 'global-curriculum' : `campus:${assignment}`); localStorage.setItem('student_logged_in', 'yes'); localStorage.setItem('student_data', JSON.stringify({ uid: result.user.uid, email: result.user.email, name: staff.name || result.user.email, role: 'Staff', campusId: staff.campusId })); window.location.href = 'admin.html';
+      } catch (error) { button.disabled = false; button.textContent = 'Sign in'; socialError.textContent = error.message || 'Sign in failed.'; }
+    });
+    async function signInWithProvider(provider) {
+      try {
+        const result = await provider();
+        const user = result.user;
+        const profile = { username: user.email || user.uid, name: user.displayName || user.email || 'ILM Nexus student', email: user.email || '', avatar: user.photoURL || '', uid: user.uid, course: 'Professional Learning' };
+        localStorage.setItem('student_logged_in', 'yes');
+        localStorage.setItem('student_data', JSON.stringify(profile));
+        window.location.href = 'dashboard.html';
+      } catch (error) {
+        socialError.textContent = error.message || 'Social sign-in could not be completed.';
+      }
+    }
+    document.getElementById('googleSignIn').addEventListener('click', () => signInWithProvider(portalAuth.signInWithGoogle));
+    document.getElementById('githubSignIn').addEventListener('click', () => signInWithProvider(portalAuth.signInWithGithub));
   </script>
 </body>
 </html>

@@ -6,6 +6,22 @@ service cloud.firestore {
         && request.auth.token.email == 'theilmnexus@gmail.com';
     }
 
+    function isCoordinator() {
+      return isAdmin() || (request.auth != null && request.auth.token.role == 'coordinator');
+    }
+
+    function isInstructor() {
+      return isAdmin() || (request.auth != null && (request.auth.token.role == 'instructor' || request.auth.token.role == 'tutor'));
+    }
+
+    function isCampusPresident() {
+      return request.auth != null && request.auth.token.role == 'campus_president';
+    }
+
+    function canManageAcademic() {
+      return isCoordinator() || isInstructor();
+    }
+
     match /services/{serviceId} {
       allow read: if resource.data.status == 'published' || isAdmin();
       allow create, update, delete: if isAdmin();
@@ -55,6 +71,90 @@ service cloud.firestore {
         && request.resource.data.content.size() <= 1000;
         allow update, delete: if isAdmin();
       }
+    }
+
+    match /users/{userId} {
+      allow read: if request.auth != null && (request.auth.uid == userId || isCoordinator() || isInstructor() || isCampusPresident());
+      allow create: if request.auth != null && (request.auth.uid == userId || isAdmin());
+      allow update: if isCoordinator()
+        || (request.auth != null
+          && request.auth.uid == userId
+          && request.resource.data.diff(resource.data).affectedKeys().hasOnly([
+            'name', 'headline', 'bio', 'avatar', 'institution', 'level', 'format',
+            'linkedin', 'github', 'portfolio', 'timezone', 'updatedAt'
+          ]));
+      allow delete: if isAdmin();
+    }
+
+    match /courses/{courseId} {
+      allow read: if resource.data.status == 'published' || canManageAcademic();
+      allow create, update, delete: if canManageAcademic();
+    }
+
+    match /user_progress/{progressId} {
+      allow read: if request.auth != null
+        && (request.auth.uid == resource.data.userId || isAdmin());
+      allow create: if request.auth != null
+        && (request.auth.uid == request.resource.data.userId || isAdmin());
+      allow update: if request.auth != null
+        && (request.auth.uid == resource.data.userId
+          && request.resource.data.userId == resource.data.userId || isAdmin());
+      allow delete: if isAdmin();
+    }
+
+    match /live_sessions/{sessionId} {
+      allow read: if request.auth != null;
+      allow create, update, delete: if canManageAcademic();
+    }
+
+    match /timetables/{timetableId} {
+      allow read: if request.auth != null
+        && (request.auth.uid == resource.data.userId || canManageAcademic());
+      allow create, update, delete: if canManageAcademic();
+    }
+
+    match /attendance/{attendanceId} {
+      allow read: if request.auth != null
+        && (request.auth.uid == resource.data.userId || canManageAcademic());
+      allow create, update, delete: if canManageAcademic();
+    }
+
+    match /notices/{noticeId} {
+      allow read: if resource.data.status == 'published' || isCoordinator();
+      allow create, update, delete: if isCoordinator();
+    }
+
+    match /payment_records/{paymentId} {
+      allow read: if request.auth != null
+        && (request.auth.uid == resource.data.userId || isCoordinator());
+      allow create, update, delete: if isCoordinator();
+    }
+
+    match /project_reviews/{reviewId} {
+      allow read: if request.auth != null
+        && (request.auth.uid == resource.data.userId || isCoordinator());
+      allow create: if request.auth != null
+        && request.auth.uid == request.resource.data.userId;
+      allow update, delete: if isCoordinator();
+    }
+
+    match /certificates/{certificateId} {
+      allow read: if request.auth != null
+        && (request.auth.uid == resource.data.userId || isCoordinator());
+      allow create, update, delete: if isCoordinator();
+    }
+
+    match /staff/{staffId} {
+      allow read: if true;
+      allow create, update, delete: if isCoordinator();
+    }
+
+    match /fund_requests/{requestId} {
+      allow read: if request.auth != null
+        && (request.auth.uid == resource.data.requesterId || isCoordinator());
+      allow create: if request.auth != null
+        && request.auth.uid == request.resource.data.requesterId;
+      allow update, delete: if isCoordinator();
     }
   }
 }

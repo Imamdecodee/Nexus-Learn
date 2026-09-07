@@ -1,121 +1,29 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Edit Profile - NexusLearn</title>
-  <style>
-    body {
-      font-family: 'Segoe UI', sans-serif;
-      background: #f4f6f8;
-      margin: 0;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-    }
-
-    .profile-card {
-      background: white;
-      padding: 40px 30px;
-      border-radius: 12px;
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-      text-align: center;
-      width: 90%;
-      max-width: 450px;
-    }
-
-    .profile-card img {
-      width: 120px;
-      height: 120px;
-      border-radius: 50%;
-      border: 4px solid #0073e6;
-      margin-bottom: 15px;
-      object-fit: cover;
-    }
-
-    .profile-card input[type="text"],
-    .profile-card input[type="file"] {
-      width: 100%;
-      padding: 10px 14px;
-      margin: 10px 0;
-      border-radius: 6px;
-      border: 1px solid #ccc;
-    }
-
-    .btn {
-      margin-top: 20px;
-      padding: 10px 20px;
-      background: #0073e6;
-      color: white;
-      border: none;
-      border-radius: 6px;
-      cursor: pointer;
-    }
-
-    .btn:hover {
-      background: #005bb5;
-    }
-
-    .note {
-      font-size: 12px;
-      color: #777;
-    }
-
-    .back-link {
-      display: inline-block;
-      margin-top: 15px;
-      text-decoration: none;
-      color: #0073e6;
-    }
-  </style>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>My Profile | ILM Nexus Academy</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+<style>
+:root{--blue:#0758d8;--navy:#092b68;--ink:#132238;--muted:#687589;--paper:#f4f7fb;--line:#dbe4ef;--soft:#eaf2ff;--green:#11845b;--gold:#ef9c18;--red:#b42318}*{box-sizing:border-box}body{margin:0;color:var(--ink);background:var(--paper);font:15px/1.5 'DM Sans',sans-serif}a{text-decoration:none;color:inherit}button,input,select,textarea{font:inherit}button{cursor:pointer}.portal{min-height:100vh;display:grid;grid-template-columns:245px 1fr}.sidebar{position:sticky;top:0;height:100vh;display:flex;flex-direction:column;padding:1.4rem 1rem;color:#dce8ff;background:var(--navy)}.brand{display:flex;align-items:center;gap:.65rem;padding:.25rem .55rem 2rem;color:#fff;font:700 1.05rem 'Space Grotesk',sans-serif}.brand img{width:38px;height:38px;border-radius:50%;background:#fff;object-fit:contain}.nav-label{margin:0 .7rem .65rem;color:#93b5ed;font-size:.68rem;font-weight:700;letter-spacing:.13em;text-transform:uppercase}.nav{display:grid;gap:.25rem}.nav a{display:flex;align-items:center;gap:.8rem;padding:.75rem .8rem;border-radius:7px;color:#c4d6f5;font-weight:600}.nav a:hover,.nav a.active{color:#fff;background:#ffffff20}.nav i{width:1.1rem;text-align:center}.side-note{margin-top:auto;padding:.9rem;border:1px solid #ffffff22;border-radius:8px;color:#c4d6f5;font-size:.82rem}.side-note strong{display:block;color:#fff}.logout{width:100%;margin-top:.75rem;padding:.55rem;border:1px solid #ffffff33;border-radius:6px;color:#dce8ff;background:transparent}.content{min-width:0}.topbar{min-height:72px;display:flex;align-items:center;justify-content:space-between;padding:.8rem clamp(1rem,3vw,2.5rem);background:#fff;border-bottom:1px solid var(--line)}.back{display:flex;align-items:center;gap:.5rem;color:var(--blue);font-weight:700}.top-profile{display:flex;align-items:center;gap:.65rem;color:var(--muted);font-size:.82rem}.avatar{width:38px;height:38px;display:grid;place-items:center;overflow:hidden;border-radius:50%;color:#fff;background:var(--blue);font-weight:700}.avatar img{width:100%;height:100%;object-fit:cover}main{width:min(1160px,100%);margin:auto;padding:clamp(1.2rem,3vw,2.5rem)}.eyebrow{margin:0 0 .55rem;color:var(--blue);font-size:.72rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase}h1,h2,h3{margin:0;font-family:'Space Grotesk',sans-serif}h1{font-size:clamp(1.7rem,3vw,2.5rem)}h2{font-size:1.1rem}.muted{color:var(--muted)}.intro{margin-bottom:1.5rem}.intro p:last-child{max-width:700px;margin:.6rem 0 0;color:var(--muted)}.layout{display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:1.2rem}.column{display:grid;align-content:start;gap:1.2rem}.panel{padding:1.25rem;border:1px solid var(--line);border-radius:9px;background:#fff;box-shadow:0 7px 22px #1322380b}.heading{display:flex;justify-content:space-between;gap:1rem;margin-bottom:1rem}.form-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1rem}.field{display:grid;gap:.35rem}.field.full{grid-column:1/-1}.field label{font-size:.83rem;font-weight:700}.field input,.field select,.field textarea{width:100%;padding:.72rem .8rem;border:1px solid var(--line);border-radius:6px;outline:0;color:var(--ink);background:#fff}.field textarea{min-height:105px;resize:vertical}.field input:focus,.field select:focus,.field textarea:focus{border-color:var(--blue);box-shadow:0 0 0 3px #0758d81a}.readonly{color:var(--muted)!important;background:#f6f8fb!important}.avatar-row{display:flex;align-items:center;gap:1rem;margin-bottom:1.15rem;padding-bottom:1.15rem;border-bottom:1px solid var(--line)}.avatar-large{width:76px;height:76px;display:grid;place-items:center;overflow:hidden;border-radius:50%;color:#fff;background:var(--blue);font:700 1.8rem 'Space Grotesk',sans-serif}.avatar-large img{width:100%;height:100%;object-fit:cover}.upload{display:inline-flex;align-items:center;gap:.5rem;padding:.6rem .75rem;border:1px solid var(--line);border-radius:6px;color:var(--blue);background:#fff;font-weight:700;cursor:pointer}.upload input{display:none}.hint{margin:.35rem 0 0;color:var(--muted);font-size:.78rem}.actions{display:flex;align-items:center;justify-content:space-between;gap:1rem;margin-top:1.2rem}.button{display:inline-flex;align-items:center;justify-content:center;gap:.5rem;padding:.75rem 1rem;border:0;border-radius:6px;color:#fff;background:var(--blue);font-weight:700}.button:hover{background:var(--navy)}.full{width:100%}.status{min-height:1.3rem;font-size:.84rem}.success{color:var(--green)}.error{color:var(--red)}.completion{text-align:center}.ring{width:132px;height:132px;display:grid;place-items:center;margin:.5rem auto 1rem;border-radius:50%;background:conic-gradient(var(--blue) 0 68%,#e7edf5 68%)}.ring:after{content:'68%';width:98px;height:98px;display:grid;place-items:center;border-radius:50%;background:#fff;font:700 1.35rem 'Space Grotesk',sans-serif}.checks{display:grid;gap:.65rem;margin-top:1rem;text-align:left}.checks span{display:flex;gap:.55rem;color:var(--muted);font-size:.82rem}.checks i{color:var(--green)}.account-row{display:flex;justify-content:space-between;padding:.7rem 0;border-bottom:1px solid var(--line);font-size:.82rem}.account-row:last-of-type{border:0}@media(max-width:850px){.layout{grid-template-columns:1fr}.right{grid-template-columns:repeat(2,1fr)}}@media(max-width:650px){.portal{display:block}.sidebar{position:static;height:auto;padding:.9rem 1rem}.nav{grid-template-columns:repeat(2,1fr)}.side-note{display:none}.intro{margin-top:.5rem}.form-grid{grid-template-columns:1fr}.field.full{grid-column:auto}.right{grid-template-columns:1fr}.actions{align-items:stretch;flex-direction:column}.actions .button{width:100%}}
+</style>
 </head>
 <body>
-
-<div class="profile-card">
-  <img id="avatarPreview" src="" alt="Profile Picture">
-  <input type="file" id="avatarFile" accept="image/*">
-  <input type="text" id="nameInput" placeholder="Your Full Name">
-  <input type="text" id="courseInput" placeholder="Course Enrolled" disabled />
-  <button class="btn" onclick="saveProfile()">Save Changes</button>
-  <br>
-  <a href="dashboard.html" class="back-link">← Back to Dashboard</a>
-  <p class="note">Note: Changes are saved in your browser.</p>
-</div>
-
-<script>
-  let student = JSON.parse(localStorage.getItem("student_data"));
-  if (!student) window.location.href = "login.html";
-
-  // Set existing values
-  document.getElementById('nameInput').value = student.name;
-  document.getElementById('courseInput').value = student.course;
-  document.getElementById('avatarPreview').src = student.avatar;
-
-  // Image preview
-  document.getElementById('avatarFile').addEventListener('change', function () {
-    const file = this.files[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onload = function (e) {
-        document.getElementById('avatarPreview').src = e.target.result;
-        student.avatar = e.target.result; // Set base64 to avatar
-      }
-      reader.readAsDataURL(file);
-    }
-  });
-
-  function saveProfile() {
-    const newName = document.getElementById('nameInput').value.trim();
-    if (newName) {
-      student.name = newName;
-      localStorage.setItem("student_data", JSON.stringify(student));
-      alert("Profile updated!");
-    } else {
-      alert("Please enter your name.");
-    }
-  }
+<div class="portal"><aside class="sidebar"><a class="brand" href="index.html"><img src="./image/nexus-learn logo.png" alt="ILM Nexus logo"><span>ILM Nexus Academy</span></a><p class="nav-label">Workspace</p><nav class="nav" aria-label="Student navigation"><a href="dashboard.html"><i class="fa-solid fa-grid-2"></i> Dashboard</a><a href="dashboard.html#courses"><i class="fa-solid fa-play"></i> My classroom</a><a href="dashboard.html#session"><i class="fa-regular fa-calendar"></i> Live sessions</a><a href="dashboard.html#projects"><i class="fa-solid fa-folder-open"></i> Projects</a><a href="certificate.html"><i class="fa-solid fa-award"></i> Certificates</a><a class="active" href="profile.html"><i class="fa-regular fa-user"></i> Profile</a></nav><div class="side-note"><strong>Global learner profile</strong><span>Keep your professional identity current.</span><button class="logout" id="logoutButton" type="button">Sign out</button></div></aside><div class="content"><header class="topbar"><a class="back" href="dashboard.html"><i class="fa-solid fa-arrow-left"></i> Back to dashboard</a><div class="top-profile"><span id="topEmail">Student account</span><div class="avatar" id="topAvatar">S</div></div></header><main><section class="intro"><p class="eyebrow">Professional identity</p><h1>Build a profile people can trust.</h1><p>Keep your learner identity, portfolio links, and global preferences ready for mentors, cohort teams, and future opportunities.</p></section><div class="layout"><div class="column"><form class="panel" id="profileForm"><div class="heading"><h2>Profile details</h2><span class="muted">Required fields marked *</span></div><div class="avatar-row"><div class="avatar-large" id="avatarPreview">S</div><div><label class="upload"><i class="fa-solid fa-camera"></i> Change photo<input id="avatarInput" type="file" accept="image/png,image/jpeg,image/webp"></label><p class="hint">JPG, PNG or WebP · max 2 MB</p></div></div><div class="form-grid"><div class="field"><label for="fullName">Full name *</label><input id="fullName" maxlength="80" required></div><div class="field"><label for="headline">Professional headline</label><input id="headline" maxlength="120" placeholder="Frontend learner building for the web"></div><div class="field full"><label for="bio">Short professional bio</label><textarea id="bio" maxlength="500" placeholder="What are you learning, building, or working toward?"></textarea></div><div class="field"><label for="email">Account email</label><input id="email" class="readonly" readonly></div><div class="field"><label for="studentId">Student ID</label><input id="studentId" class="readonly" readonly></div></div><div class="heading" style="margin-top:2rem"><h2>Academic context</h2><span class="muted">Used to personalize learning</span></div><div class="form-grid"><div class="field"><label for="course">Primary learning track</label><input id="course" class="readonly" readonly></div><div class="field"><label for="institution">Institution</label><input id="institution" maxlength="120" placeholder="University or organization"></div><div class="field"><label for="level">Current level</label><select id="level"><option value="">Select level</option><option>Secondary student</option><option>Undergraduate</option><option>Graduate</option><option>Early career</option><option>Professional</option></select></div><div class="field"><label for="format">Learning format</label><select id="format"><option value="">Select format</option><option>Remote</option><option>Hybrid</option><option>In person</option></select></div></div><div class="heading" style="margin-top:2rem"><h2>Portfolio links</h2><span class="muted">Help opportunities find your work</span></div><div class="form-grid"><div class="field"><label for="linkedin">LinkedIn URL</label><input id="linkedin" type="url" placeholder="https://linkedin.com/in/your-name"></div><div class="field"><label for="github">GitHub URL</label><input id="github" type="url" placeholder="https://github.com/your-name"></div><div class="field full"><label for="portfolio">Portfolio URL</label><input id="portfolio" type="url" placeholder="https://yourportfolio.com"></div></div><div class="actions"><p class="status" id="status" role="status"></p><button class="button" id="saveButton" type="submit">Save profile <i class="fa-solid fa-check"></i></button></div></form></div><aside class="column right"><section class="panel completion"><p class="eyebrow">Profile strength</p><div class="ring" id="completionRing"></div><h2><span id="completionPercent">68</span>% complete</h2><p class="muted">A complete profile makes your learning record more useful globally.</p><div class="checks"><span><i class="fa-solid fa-circle-check"></i> Identity details</span><span><i class="fa-solid fa-circle-check"></i> Learning track</span><span><i class="fa-regular fa-circle"></i> Professional links</span><span><i class="fa-regular fa-circle"></i> Bio and headline</span></div></section><section class="panel"><div class="heading"><h2>Account context</h2><i class="fa-solid fa-shield-halved" style="color:var(--green)"></i></div><div class="account-row"><span>Access</span><strong>Student</strong></div><div class="account-row"><span>Timezone</span><strong id="timezone">Detecting...</strong></div><div class="account-row"><span>Profile storage</span><strong id="storageMode">Local profile</strong></div><p class="hint">Firebase-authenticated profiles sync across signed-in devices. Demo accounts remain local.</p></section></aside></div></main></div></div>
+<script type="module">
+import { portalAuth } from './portal/firebase.js';
+import { getUserProfile, saveUserProfile } from './portal/data.js';
+const student=JSON.parse(localStorage.getItem('student_data')||'null');
+if(!student||!student.name)window.location.href='login.html';
+const fieldIds=['fullName','headline','bio','email','studentId','course','institution','level','format','linkedin','github','portfolio'];
+const set=(id,value)=>{document.getElementById(id).value=value||''};const get=id=>document.getElementById(id).value;const first=(student.name||'Student').split(' ')[0];
+set('fullName',student.name);set('email',student.email);set('studentId',student.studentId||student.uid||'Not assigned');set('course',student.course||'Professional learning');['institution','level','format','headline','bio','linkedin','github','portfolio'].forEach(id=>set(id,student[id]));document.getElementById('topEmail').textContent=student.email||'Student account';document.getElementById('timezone').textContent=Intl.DateTimeFormat().resolvedOptions().timeZone;
+const avatarNodes=[document.getElementById('avatarPreview'),document.getElementById('topAvatar')];let avatarData=student.avatar||'';avatarNodes.forEach(node=>{node.textContent=first.charAt(0).toUpperCase();if(avatarData)node.innerHTML=`<img src="${avatarData}" alt="${student.name}">`});let activeUser=null;
+function status(message,type){const node=document.getElementById('status');node.textContent=message;node.className=`status ${type||''}`}
+function completion(){const count=['fullName','headline','bio','linkedin','github'].filter(id=>get(id).trim()).length;const percent=Math.min(100,45+count*11);document.getElementById('completionPercent').textContent=percent;document.getElementById('completionRing').style.background=`conic-gradient(var(--blue) 0 ${percent}%,#e7edf5 ${percent}% 100%)`}
+fieldIds.forEach(id=>document.getElementById(id)?.addEventListener('input',completion));completion();
+document.getElementById('avatarInput').addEventListener('change',event=>{const file=event.target.files[0];if(!file)return;if(file.size>2*1024*1024){status('Choose an image smaller than 2 MB.','error');event.target.value='';return}const reader=new FileReader();reader.onload=()=>{avatarData=reader.result;avatarNodes.forEach(node=>{node.innerHTML=`<img src="${avatarData}" alt="Profile preview">`})};reader.readAsDataURL(file)});
+try{activeUser=await new Promise(resolve=>{let settled=false;const stop=portalAuth.onAuthStateChanged(user=>{if(!settled){settled=true;stop();resolve(user)}});setTimeout(()=>{if(!settled){settled=true;stop();resolve(null)}},1800)});if(activeUser){document.getElementById('storageMode').textContent='Firebase profile';const remote=await getUserProfile(activeUser.uid);if(remote){fieldIds.forEach(id=>{if(remote[id]!==undefined&&!['email','studentId','course'].includes(id))set(id,remote[id])});if(remote.avatar){avatarData=remote.avatar;avatarNodes.forEach(node=>{node.innerHTML=`<img src="${avatarData}" alt="Profile photo">`})}completion()}}}catch(error){console.warn('Profile sync unavailable:',error)}
+document.getElementById('profileForm').addEventListener('submit',async event=>{event.preventDefault();const profile={name:get('fullName'),headline:get('headline'),bio:get('bio'),email:get('email'),studentId:get('studentId'),course:get('course'),institution:get('institution'),level:get('level'),format:get('format'),linkedin:get('linkedin'),github:get('github'),portfolio:get('portfolio'),avatar:avatarData,timezone:Intl.DateTimeFormat().resolvedOptions().timeZone};const next={...student,...profile};localStorage.setItem('student_data',JSON.stringify(next));if(student.username)localStorage.setItem('registered_student',JSON.stringify(next));try{if(activeUser){await saveUserProfile(activeUser.uid,{...profile,uid:activeUser.uid});document.getElementById('storageMode').textContent='Firebase profile'}status('Profile saved successfully.','success')}catch(error){status('Saved locally. Cloud sync needs attention.','error');console.warn('Profile save failed:',error)}});
+document.getElementById('logoutButton').addEventListener('click',async()=>{await portalAuth.signOut().catch(()=>{});localStorage.removeItem('student_logged_in');localStorage.removeItem('student_data');window.location.href='login.html'});
 </script>
-
-</body>
-</html>
+</body></html>

@@ -103,7 +103,11 @@
   <button class="chat-help" type="button" onclick="if (window.Tawk_API && Tawk_API.maximize) Tawk_API.maximize();"><i class="fas fa-comments"></i> Chat with support</button>
   <footer><div class="container">ILM Nexus Academy · Need help? <a href="mailto:theilmnexus@gmail.com">theilmnexus@gmail.com</a></div></footer>
 
-  <script>
+  <script type="module">
+    import { getRequiredFee } from './portal/fees.js';
+    import { portalAuth } from './portal/firebase.js';
+    import { saveUserProfile } from './portal/data.js';
+
     var Tawk_API = Tawk_API || {}, Tawk_LoadStart = new Date();
     (function(){ var script = document.createElement('script'); script.async = true; script.src = 'https://embed.tawk.to/6862a0b58f8fd61908e314cc/1iv0k7i7r'; script.charset = 'UTF-8'; script.setAttribute('crossorigin', '*'); document.head.appendChild(script); })();
 
@@ -130,15 +134,24 @@
     courses.forEach(course => course.addEventListener('click', () => { selected.course = course.querySelector('input').value; updateSelection(); }));
     continueButton.addEventListener('click', () => { registration.classList.add('active'); document.getElementById('registrationSelection').textContent = `${selected.course} · ${selected.plan} plan`; registration.scrollIntoView({ behavior: 'smooth' }); });
 
-    document.getElementById('registrationForm').addEventListener('submit', event => {
+    document.getElementById('registrationForm').addEventListener('submit', async event => {
       event.preventDefault();
       const form = new FormData(event.currentTarget);
       const error = document.getElementById('formError');
       if (!selected.course || !selected.plan) { error.textContent = 'Select a course and plan before creating your account.'; return; }
       if (form.get('password') !== form.get('confirmPassword')) { error.textContent = 'Passwords do not match.'; return; }
       const username = form.get('username').trim().toLowerCase().replace(/[^a-z0-9_]/g, '');
-      const student = { username, password: form.get('password'), name: form.get('fullName'), campusId: selected.campus, course: selected.course, plan: selected.plan, email: form.get('email'), phone: form.get('phone'), dob: form.get('dob'), country: form.get('country'), state: form.get('state'), institution: form.get('institution'), level: form.get('level'), format: form.get('format'), heard: form.get('heard'), paymentStatus: 'Payment Pending', receiptStatus: 'Not submitted', certificateStatus: 'Not yet eligible', progress: 0, studentId: `ILM-${Date.now().toString(36).toUpperCase()}`, registeredAt: new Date().toISOString(), avatar: 'https://i.pravatar.cc/150?img=12' };
+      const requiredFee = getRequiredFee(selected.course, selected.plan);
+      const student = { username, password: form.get('password'), name: form.get('fullName'), campusId: selected.campus, course: selected.course, plan: selected.plan, requiredFee, scholarshipPercent: 0, discountAmount: 0, amountPaid: 0, outstandingBalance: requiredFee, feeStatus: 'Payment Pending', paymentStatus: 'Payment Pending', receiptStatus: 'Not submitted', certificateStatus: 'Not yet eligible', projectSubmitted: false, projectReviewStatus: 'Not Submitted', attendancePercent: 0, progress: 0, studentId: `ILM-${Date.now().toString(36).toUpperCase()}`, registeredAt: new Date().toISOString(), avatar: 'https://i.pravatar.cc/150?img=12' };
       if (!student.username) { error.textContent = 'Choose a username using letters, numbers, or underscores.'; return; }
+      try {
+        const authResult = await portalAuth.createUserWithEmail(student.email, student.password);
+        student.uid = authResult.user.uid;
+        const { password: ignoredPassword, ...profileData } = student;
+        await saveUserProfile(student.uid, profileData);
+      } catch (authError) {
+        if (authError.code && authError.code !== 'auth/email-already-in-use') console.warn('Firebase account creation unavailable; keeping legacy registration.', authError);
+      }
       localStorage.setItem('registered_student', JSON.stringify(student));
       localStorage.setItem('student_logged_in', 'yes');
       localStorage.setItem('student_data', JSON.stringify(student));
