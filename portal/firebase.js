@@ -26,6 +26,7 @@ export const portalAuth = {
   onAuthStateChanged: callback => authModule.onAuthStateChanged(auth, callback),
   createUserWithEmail: (email, password) => authModule.createUserWithEmailAndPassword(auth, email, password),
   signInWithEmail: (email, password) => authModule.signInWithEmailAndPassword(auth, email, password),
+  sendPasswordReset: email => authModule.sendPasswordResetEmail(auth, email),
   signInWithGoogle: () => authModule.signInWithPopup(auth, new authModule.GoogleAuthProvider()),
   signInWithGithub: () => authModule.signInWithPopup(auth, new authModule.GithubAuthProvider()),
   signOut: () => authModule.signOut(auth)
