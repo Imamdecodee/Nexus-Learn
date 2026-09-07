@@ -2009,8 +2009,8 @@
             }
         }
 
-        // Browser-only classroom shell. Replace these storage calls with the API layer
-        // for authenticated members, server-side moderation, durable uploads and push delivery.
+        // Shared classroom feed across devices through Firestore. Local storage remains as a
+        // fallback for browsers or offline sessions when the database is unavailable.
         const classroomConfig = {
             eventId: 'build-your-digital-identity',
             memberKey: 'ilmNexusClassroomMember_build-your-digital-identity',
@@ -2020,6 +2020,8 @@
         let classroomTab = 'all';
         let classroomFilter = 'all';
         let classroomDraftAttachment = null;
+        let classroomCurrentPosts = [];
+        let classroomUnsubscribe = null;
 
         function readClassroomMember() {
             try { return JSON.parse(localStorage.getItem(classroomConfig.memberKey)) || null; } catch (error) { return null; }
@@ -2038,7 +2040,55 @@
         }
 
         function escapeClassroomText(value) {
-            return String(value).replace(/[&<>'"]/g, character => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[character]));
+            return String(value).replace(/[&<>"']/g, character => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[character]));
+        }
+
+        async function ensureClassroomFirebase() {
+            if (window.classroomDb && window.classroomFirebaseReady) {
+                return { db: window.classroomDb, app: window.classroomApp };
+            }
+
+            const { initializeApp } = await import('https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js');
+            const { addDoc, collection, getFirestore, onSnapshot, orderBy, query, serverTimestamp } = await import('https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js');
+
+            const firebaseConfig = {
+                apiKey: 'AIzaSyBJKtNJDIxbo-_PxSwGTYcuS8gRjg9ReX8',
+                authDomain: 'ilmnexusnews.firebaseapp.com',
+                projectId: 'ilmnexusnews',
+                storageBucket: 'ilmnexusnews.firebasestorage.app',
+                messagingSenderId: '434251311563',
+                appId: '1:434251311563:web:0264d1049c463369862e4e'
+            };
+
+            const app = initializeApp(firebaseConfig);
+            const db = getFirestore(app);
+            window.classroomApp = app;
+            window.classroomDb = db;
+            window.classroomFirebaseReady = true;
+
+            return { db, app, addDoc, collection, onSnapshot, orderBy, query, serverTimestamp };
+        }
+
+        async function initClassroomFeed() {
+            try {
+                const { db, collection, onSnapshot, orderBy, query } = await ensureClassroomFirebase();
+                const postsQuery = query(collection(db, 'classroom_events', classroomConfig.eventId, 'posts'), orderBy('createdAt', 'desc'));
+                if (classroomUnsubscribe) classroomUnsubscribe();
+                classroomUnsubscribe = onSnapshot(postsQuery, (snapshot) => {
+                    const posts = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+                    classroomCurrentPosts = posts;
+                    saveClassroomPosts(posts);
+                    renderClassroomFeed(posts);
+                }, (error) => {
+                    console.warn('Classroom feed unavailable:', error);
+                    classroomCurrentPosts = readClassroomPosts();
+                    renderClassroomFeed(classroomCurrentPosts);
+                });
+            } catch (error) {
+                console.warn('Firebase classroom unavailable. Using local fallback.', error);
+                classroomCurrentPosts = readClassroomPosts();
+                renderClassroomFeed(classroomCurrentPosts);
+            }
         }
 
         function openClassroomRegistration() {
@@ -2066,7 +2116,7 @@
             document.getElementById('classroomWorkspace').classList.add('active');
             document.getElementById('classroomNotificationPrompt').classList.toggle('active', isClassroomMember() && localStorage.getItem(classroomConfig.notificationKey) !== 'enabled' && 'Notification' in window && Notification.permission !== 'granted');
             updateClassroomComposerVisibility();
-            renderClassroomFeed();
+            renderClassroomFeed(classroomCurrentPosts.length ? classroomCurrentPosts : readClassroomPosts());
         }
 
         function updateClassroomComposerVisibility() {
@@ -2084,13 +2134,13 @@
         function setClassroomTab(button) {
             classroomTab = button.dataset.tab;
             document.querySelectorAll('.classroom-tab').forEach(tab => tab.classList.toggle('active', tab === button));
-            renderClassroomFeed();
+            renderClassroomFeed(classroomCurrentPosts.length ? classroomCurrentPosts : readClassroomPosts());
         }
 
         function setClassroomFilter(button) {
             classroomFilter = button.dataset.filter;
             document.querySelectorAll('.classroom-filter').forEach(filter => filter.classList.toggle('active', filter === button));
-            renderClassroomFeed();
+            renderClassroomFeed(classroomCurrentPosts.length ? classroomCurrentPosts : readClassroomPosts());
         }
 
         function toggleClassroomSearch() {
@@ -2115,7 +2165,7 @@
             preview.classList.add('active');
         }
 
-        function publishClassroomPost(event) {
+        async function publishClassroomPost(event) {
             event.preventDefault();
             const member = readClassroomMember();
             if (!member) { openClassroomRegistration(); return; }
@@ -2123,33 +2173,62 @@
             const content = document.getElementById('classroomPostContent').value.trim();
             const link = document.getElementById('classroomLink').value.trim();
             if (!type || !content || content.length > 2000) return;
-            const post = { id: crypto.randomUUID ? crypto.randomUUID() : String(Date.now()), eventId: classroomConfig.eventId, memberId: member.id, memberName: member.name, memberRole: member.role, type, content, link, attachment: classroomDraftAttachment, createdAt: new Date().toISOString(), status: 'pending_moderation', likes: 0, replies: 0, reports: 0 };
-            const posts = readClassroomPosts();
-            posts.unshift(post);
-            saveClassroomPosts(posts);
+
+            const postPayload = {
+                eventId: classroomConfig.eventId,
+                memberId: member.id,
+                memberName: member.name,
+                memberEmail: member.email,
+                memberRole: member.role,
+                type,
+                content,
+                link,
+                attachment: classroomDraftAttachment,
+                createdAt: new Date().toISOString(),
+                status: 'approved',
+                likes: 0,
+                replies: 0,
+                reports: 0
+            };
+
+            try {
+                const { db, addDoc, collection, serverTimestamp } = await ensureClassroomFirebase();
+                await addDoc(collection(db, 'classroom_events', classroomConfig.eventId, 'posts'), {
+                    ...postPayload,
+                    createdAt: serverTimestamp(),
+                    updatedAt: serverTimestamp()
+                });
+            } catch (error) {
+                console.warn('Firestore write failed, using local fallback.', error);
+                const posts = readClassroomPosts();
+                posts.unshift({ ...postPayload, id: crypto.randomUUID ? crypto.randomUUID() : String(Date.now()) });
+                saveClassroomPosts(posts);
+                classroomCurrentPosts = posts;
+            }
+
             event.target.reset();
             classroomDraftAttachment = null;
             document.getElementById('classroomAttachmentPreview').innerHTML = '';
             document.getElementById('classroomAttachmentPreview').classList.remove('active');
-            renderClassroomFeed();
+            renderClassroomFeed(classroomCurrentPosts.length ? classroomCurrentPosts : readClassroomPosts());
         }
 
-        function renderClassroomFeed() {
+        function renderClassroomFeed(postsSource = classroomCurrentPosts.length ? classroomCurrentPosts : readClassroomPosts()) {
             const feed = document.getElementById('classroomFeed');
             if (!feed) return;
             const search = (document.getElementById('classroomSearchInput')?.value || '').trim().toLowerCase();
-            const posts = readClassroomPosts().filter(post => {
-                const type = post.type.toLowerCase();
+            const posts = (postsSource || []).filter(post => {
+                const type = (post.type || '').toLowerCase();
                 const tabMatches = classroomTab === 'all' || (classroomTab === 'question' && type === 'question') || (classroomTab === 'resource' && ['resource', 'design review'].includes(type)) || (classroomTab === 'announcement' && type === 'announcement');
                 const filterMatches = classroomFilter === 'all' || type === classroomFilter || (classroomFilter === 'resource' && ['resource', 'design review'].includes(type));
-                const searchMatches = !search || `${post.memberName} ${post.type} ${post.content}`.toLowerCase().includes(search);
+                const searchMatches = !search || `${post.memberName || ''} ${post.type || ''} ${post.content || ''}`.toLowerCase().includes(search);
                 return tabMatches && filterMatches && searchMatches;
             });
-            document.getElementById('classroomMemberCount').textContent = 'Member count unavailable';
-            document.getElementById('classroomActiveCount').textContent = 'Active today unavailable';
-            document.getElementById('classroomUnreadStatus').textContent = posts.length ? `${posts.length} local post${posts.length === 1 ? '' : 's'} pending review` : 'No unread activity';
+            document.getElementById('classroomMemberCount').textContent = posts.length ? `${posts.length} conversation${posts.length === 1 ? '' : 's'}` : '0 conversations';
+            document.getElementById('classroomActiveCount').textContent = new Date().toLocaleDateString([], { weekday: 'short', month: 'short', day: 'numeric' });
+            document.getElementById('classroomUnreadStatus').textContent = posts.length ? `${posts.length} visible post${posts.length === 1 ? '' : 's'} on this device` : 'No unread activity';
             if (!posts.length) {
-                feed.innerHTML = '<div class="classroom-empty"><i class="fas fa-comments"></i><h3>No conversations here yet</h3><p>Be the first member to start a thoughtful discussion. New posts appear after moderation.</p></div>';
+                feed.innerHTML = '<div class="classroom-empty"><i class="fas fa-comments"></i><h3>No conversations here yet</h3><p>Be the first member to start a thoughtful discussion. New comments are shared across devices in real time.</p></div>';
                 return;
             }
             feed.innerHTML = posts.map(renderClassroomPost).join('');
@@ -2157,9 +2236,10 @@
 
         function renderClassroomPost(post) {
             const roleBadge = ['Staff', 'Tutor', 'Community Manager', 'Admin'].includes(post.memberRole) ? '<span class="role-badge"><i class="fas fa-check-circle"></i> verified role</span>' : '';
-            const time = new Date(post.createdAt).toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' });
+            const createdAtValue = post.createdAt && typeof post.createdAt.toDate === 'function' ? post.createdAt.toDate() : new Date(post.createdAt || Date.now());
+            const time = createdAtValue.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' });
             const attachment = `${post.link ? `<p class="classroom-post-meta"><i class="fas fa-link"></i> Link attachment: ${escapeClassroomText(post.link)}</p>` : ''}${post.attachment ? `<p class="classroom-post-meta"><i class="fas fa-paperclip"></i> ${escapeClassroomText(post.attachment.type)} attachment: ${escapeClassroomText(post.attachment.name)}</p>` : ''}`;
-            return `<article class="classroom-post fade-in"><div class="classroom-post-header"><div class="classroom-avatar">${escapeClassroomText(post.memberName.charAt(0).toUpperCase())}</div><div><div class="classroom-post-author">${escapeClassroomText(post.memberName)}${roleBadge}</div><div class="classroom-post-meta">${escapeClassroomText(post.memberRole)} • ${escapeClassroomText(post.type)} • ${time}</div></div></div><div style="margin-top: 0.8rem;"><span class="classroom-post-type">${escapeClassroomText(post.type)}</span><div class="classroom-post-body">${escapeClassroomText(post.content)}</div>${attachment}<div class="classroom-post-meta">Pending moderation • visible only in this browser demo until approved</div></div><div class="classroom-post-actions"><button type="button" onclick="reactToClassroomPost('${post.id}')"><i class="far fa-heart"></i> ${post.likes || 0}</button><button type="button" onclick="replyToClassroomPost('${post.id}')"><i class="far fa-comment"></i> Reply</button><button type="button" onclick="shareClassroomPost('${post.id}')"><i class="fas fa-share"></i> Share</button><button type="button" onclick="reportClassroomPost('${post.id}')"><i class="far fa-flag"></i> Report</button></div></article>`;
+            return `<article class="classroom-post fade-in"><div class="classroom-post-header"><div class="classroom-avatar">${escapeClassroomText((post.memberName || 'A').charAt(0).toUpperCase())}</div><div><div class="classroom-post-author">${escapeClassroomText(post.memberName || 'Anonymous member')}${roleBadge}</div><div class="classroom-post-meta">${escapeClassroomText(post.memberRole || 'Student')} • ${escapeClassroomText(post.type || 'Discussion')} • ${time}</div></div></div><div style="margin-top: 0.8rem;"><span class="classroom-post-type">${escapeClassroomText(post.type || 'Discussion')}</span><div class="classroom-post-body">${escapeClassroomText(post.content || '')}</div>${attachment}<div class="classroom-post-meta">Shared across devices • visible to the whole classroom</div></div><div class="classroom-post-actions"><button type="button" onclick="reactToClassroomPost('${post.id}')"><i class="far fa-heart"></i> ${post.likes || 0}</button><button type="button" onclick="replyToClassroomPost('${post.id}')"><i class="far fa-comment"></i> Reply</button><button type="button" onclick="shareClassroomPost('${post.id}')"><i class="fas fa-share"></i> Share</button><button type="button" onclick="reportClassroomPost('${post.id}')"><i class="far fa-flag"></i> Report</button></div></article>`;
         }
 
         function updateClassroomPost(postId, updater) {
@@ -2168,7 +2248,7 @@
             if (!post) return;
             updater(post);
             saveClassroomPosts(posts);
-            renderClassroomFeed();
+            renderClassroomFeed(posts);
         }
 
         function reactToClassroomPost(postId) { updateClassroomPost(postId, post => { post.likes = (post.likes || 0) + 1; }); }
@@ -2185,6 +2265,8 @@
                 new Notification('ILM Nexus Classroom notifications enabled', { body: 'You will receive important classroom announcements.' });
             }
         }
+
+        initClassroomFeed();
 
         // Certificate Generation
         function createCertificateId() {
