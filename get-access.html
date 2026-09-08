@@ -141,8 +141,41 @@
       if (!selected.course || !selected.plan) { error.textContent = 'Select a course and plan before creating your account.'; return; }
       if (form.get('password') !== form.get('confirmPassword')) { error.textContent = 'Passwords do not match.'; return; }
       const username = form.get('username').trim().toLowerCase().replace(/[^a-z0-9_]/g, '');
+      const email = form.get('email').trim();
       const requiredFee = getRequiredFee(selected.course, selected.plan);
-      const student = { username, password: form.get('password'), name: form.get('fullName'), campusId: selected.campus, course: selected.course, plan: selected.plan, requiredFee, scholarshipPercent: 0, discountAmount: 0, amountPaid: 0, outstandingBalance: requiredFee, feeStatus: 'Payment Pending', paymentStatus: 'Payment Pending', receiptStatus: 'Not submitted', certificateStatus: 'Not yet eligible', projectSubmitted: false, projectReviewStatus: 'Not Submitted', attendancePercent: 0, progress: 0, studentId: `ILM-${Date.now().toString(36).toUpperCase()}`, registeredAt: new Date().toISOString(), avatar: 'https://i.pravatar.cc/150?img=12' };
+      const student = {
+        username,
+        email,
+        password: form.get('password'),
+        name: form.get('fullName').trim(),
+        phone: form.get('phone').trim(),
+        dob: form.get('dob'),
+        country: form.get('country').trim(),
+        state: form.get('state').trim(),
+        institution: form.get('institution').trim(),
+        level: form.get('level'),
+        format: form.get('format'),
+        heard: form.get('heard'),
+        campusId: selected.campus,
+        course: selected.course,
+        plan: selected.plan,
+        requiredFee,
+        scholarshipPercent: 0,
+        discountAmount: 0,
+        amountPaid: 0,
+        outstandingBalance: requiredFee,
+        feeStatus: 'Payment Pending',
+        paymentStatus: 'Payment Pending',
+        receiptStatus: 'Not submitted',
+        certificateStatus: 'Not yet eligible',
+        projectSubmitted: false,
+        projectReviewStatus: 'Not Submitted',
+        attendancePercent: 0,
+        progress: 0,
+        studentId: `ILM-${Date.now().toString(36).toUpperCase()}`,
+        registeredAt: new Date().toISOString(),
+        avatar: 'https://i.pravatar.cc/150?img=12'
+      };
       if (!student.username) { error.textContent = 'Choose a username using letters, numbers, or underscores.'; return; }
       try {
         const authResult = await portalAuth.createUserWithEmail(student.email, student.password);
