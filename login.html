@@ -93,6 +93,18 @@
       return messages[error.code] || error.message || 'Sign in failed.';
     }
 
+    function normalizeApprovalStatus(value) {
+      return String(value || '').trim().toUpperCase();
+    }
+
+    function getBlockedStudentMessage(profile) {
+      const status = normalizeApprovalStatus(profile?.approvalStatus || profile?.status || 'APPROVED');
+      if (status === 'PENDING') return 'Your student account is currently pending approval. Please wait for admin approval.';
+      if (status === 'SUSPENDED' || status === 'SUSPEND') return 'Your student account has been suspended. Please contact ILM Nexus support.';
+      if (status === 'REJECTED' || status === 'DISABLED') return 'Your student account has been disabled. Please contact ILM Nexus support.';
+      return '';
+    }
+
     async function lookupStudentProfileByLoginValue(loginValue) {
       const normalized = String(loginValue || '').trim();
       if (!normalized) return null;
@@ -147,6 +159,15 @@
             name: result.user.displayName || result.user.email || 'Student',
             role: 'Student'
           };
+
+          const blockedMessage = getBlockedStudentMessage(finalProfile);
+          if (blockedMessage) {
+            await portalAuth.signOut().catch(() => {});
+            socialError.textContent = blockedMessage;
+            button.disabled = false;
+            button.textContent = 'Sign in';
+            return;
+          }
 
           localStorage.removeItem('admin_role');
           localStorage.removeItem('staff_role');

@@ -27,7 +27,13 @@
   <script type="module">
     import { startPortalState, sessionLabel } from './portal/dashboard-state.js';
     const student = JSON.parse(localStorage.getItem('student_data') || 'null');
+    const status = String(student?.approvalStatus || student?.status || 'APPROVED').toUpperCase();
     if (!student || !student.name) window.location.href = 'login.html';
+    if (status === 'PENDING' || status === 'SUSPENDED' || status === 'SUSPEND' || status === 'REJECTED' || status === 'DISABLED') {
+      localStorage.removeItem('student_logged_in');
+      localStorage.removeItem('student_data');
+      window.location.href = 'login.html';
+    }
     const firstName = (student?.name || 'Student').split(' ')[0];
     const setText = (id, value) => { document.getElementById(id).textContent = value; };
     setText('studentName', student.name); setText('welcomeName', firstName); setText('profileName', student.name);
