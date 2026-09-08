@@ -41,6 +41,7 @@
     document.getElementById('menuButton').addEventListener('click', () => document.getElementById('sidebar').classList.toggle('open'));
     document.getElementById('logoutButton').addEventListener('click', () => { localStorage.removeItem('student_logged_in'); localStorage.removeItem('student_data'); window.location.href = 'login.html'; });
     document.getElementById('sessionJoin').addEventListener('click', () => window.open('https://meet.google.com/sso-aqbo-bsz', '_blank'));
+    const chatLink = document.createElement('a'); chatLink.href = 'nexus-chat.html'; chatLink.innerHTML = '<i class="fa-solid fa-comments"></i> Nexus Chat'; document.querySelector('.nav')?.append(chatLink);
     startPortalState({
       onUser: user => { if (user && !student?.name) { setText('studentName', user.displayName || user.email); setText('welcomeName', (user.displayName || user.email || 'student').split(' ')[0]); } },
       onCourses: remoteCourses => { if (!remoteCourses.length) return; courses = remoteCourses; setText('courseCount', String(remoteCourses.length).padStart(2, '0')); renderCourses(document.getElementById('searchInput').value); },

@@ -2056,7 +2056,8 @@
             }
 
             const { initializeApp } = await import('https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js');
-            const { addDoc, arrayRemove, arrayUnion, collection, doc, getFirestore, increment, onSnapshot, orderBy, query, serverTimestamp, updateDoc } = await import('https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js');
+            const { addDoc, arrayRemove, arrayUnion, collection, deleteDoc, doc, getFirestore, increment, onSnapshot, orderBy, query, serverTimestamp, updateDoc } = await import('https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js');
+            const { getAuth } = await import('https://www.gstatic.com/firebasejs/10.7.0/firebase-auth.js');
 
             const firebaseConfig = {
                 apiKey: 'AIzaSyBJKtNJDIxbo-_PxSwGTYcuS8gRjg9ReX8',
@@ -2072,7 +2073,7 @@
             window.classroomApp = app;
             window.classroomDb = db;
             window.classroomFirebaseReady = true;
-            classroomFirebaseApi = { db, app, addDoc, arrayRemove, arrayUnion, collection, doc, increment, onSnapshot, orderBy, query, serverTimestamp, updateDoc };
+            classroomFirebaseApi = { db, app, auth: getAuth(app), addDoc, arrayRemove, arrayUnion, collection, deleteDoc, doc, increment, onSnapshot, orderBy, query, serverTimestamp, updateDoc };
             window.classroomFirebaseApi = classroomFirebaseApi;
             return classroomFirebaseApi;
         }
@@ -2251,12 +2252,14 @@
             const comments = classroomComments.get(post.id) || [];
             const member = readClassroomMember();
             const liked = member && (post.likedBy || []).includes(member.id);
-            return `<article class="classroom-post fade-in"><div class="classroom-post-header"><div class="classroom-avatar">${escapeClassroomText((post.memberName || 'A').charAt(0).toUpperCase())}</div><div><div class="classroom-post-author">${escapeClassroomText(post.memberName || 'Anonymous member')}${roleBadge}</div><div class="classroom-post-meta">${escapeClassroomText(post.memberRole || 'Student')} • ${escapeClassroomText(post.type || 'Discussion')} • ${time}</div></div></div><div style="margin-top: 0.8rem;"><span class="classroom-post-type">${escapeClassroomText(post.type || 'Discussion')}</span><div class="classroom-post-body">${escapeClassroomText(post.content || '')}</div>${attachment}<div class="classroom-post-meta">Shared across devices • visible to the whole classroom</div></div>${renderClassroomComments(comments)}<div class="classroom-post-actions"><button type="button" onclick="reactToClassroomPost('${post.id}')"><i class="${liked ? 'fas' : 'far'} fa-heart"></i> ${post.likes || 0}</button><button type="button" onclick="replyToClassroomPost('${post.id}')"><i class="far fa-comment"></i> ${comments.length || 'Reply'}</button><button type="button" onclick="shareClassroomPost('${post.id}')"><i class="fas fa-share"></i> Share</button><button type="button" onclick="reportClassroomPost('${post.id}')"><i class="far fa-flag"></i> ${post.reports || 0}</button></div></article>`;
+            const adminDelete = classroomFirebaseApi?.auth?.currentUser?.email?.toLowerCase() === 'theilmnexus@gmail.com' ? `<button type="button" onclick="deleteClassroomPost('${post.id}')" title="Delete post"><i class="fas fa-trash"></i> Delete</button>` : '';
+            return `<article class="classroom-post fade-in"><div class="classroom-post-header"><div class="classroom-avatar">${escapeClassroomText((post.memberName || 'A').charAt(0).toUpperCase())}</div><div><div class="classroom-post-author">${escapeClassroomText(post.memberName || 'Anonymous member')}${roleBadge}</div><div class="classroom-post-meta">${escapeClassroomText(post.memberRole || 'Student')} • ${escapeClassroomText(post.type || 'Discussion')} • ${time}</div></div></div><div style="margin-top: 0.8rem;"><span class="classroom-post-type">${escapeClassroomText(post.type || 'Discussion')}</span><div class="classroom-post-body">${escapeClassroomText(post.content || '')}</div>${attachment}<div class="classroom-post-meta">Shared across devices • visible to the whole classroom</div></div>${renderClassroomComments(comments)}<div class="classroom-post-actions"><button type="button" onclick="reactToClassroomPost('${post.id}')"><i class="${liked ? 'fas' : 'far'} fa-heart"></i> ${post.likes || 0}</button><button type="button" onclick="replyToClassroomPost('${post.id}')"><i class="far fa-comment"></i> ${comments.length || 'Reply'}</button><button type="button" onclick="shareClassroomPost('${post.id}')"><i class="fas fa-share"></i> Share</button><button type="button" onclick="reportClassroomPost('${post.id}')"><i class="far fa-flag"></i> ${post.reports || 0}</button>${adminDelete}</div></article>`;
         }
 
         function renderClassroomComments(comments) {
             if (!comments.length) return '';
-            return `<div class="classroom-comments">${comments.map(comment => `<div class="classroom-comment"><strong>${escapeClassroomText(comment.memberName || 'Classroom member')}</strong><span>${escapeClassroomText(comment.content || '')}</span></div>`).join('')}</div>`;
+            const admin = classroomFirebaseApi?.auth?.currentUser?.email?.toLowerCase() === 'theilmnexus@gmail.com';
+            return `<div class="classroom-comments">${comments.map(comment => `<div class="classroom-comment"><strong>${escapeClassroomText(comment.memberName || 'Classroom member')}</strong><span>${escapeClassroomText(comment.content || '')}</span>${admin ? `<button type="button" onclick="deleteClassroomComment('${comment.postId || ''}','${comment.id}')" title="Delete reply"><i class="fas fa-trash"></i></button>` : ''}</div>`).join('')}</div>`;
         }
 
         function syncClassroomCommentListeners(posts) {
@@ -2273,7 +2276,7 @@
                 ensureClassroomFirebase().then(({ db, collection, onSnapshot, orderBy, query }) => {
                     const commentsQuery = query(collection(db, 'classroom_events', classroomConfig.eventId, 'posts', post.id, 'comments'), orderBy('createdAt', 'asc'));
                     const unsubscribe = onSnapshot(commentsQuery, snapshot => {
-                        classroomComments.set(post.id, snapshot.docs.map(comment => ({ id: comment.id, ...comment.data() })));
+                        classroomComments.set(post.id, snapshot.docs.map(comment => ({ id: comment.id, postId: post.id, ...comment.data() })));
                         renderClassroomFeed(classroomCurrentPosts);
                     });
                     classroomCommentUnsubscribes.set(post.id, unsubscribe);
@@ -2288,6 +2291,20 @@
             updater(post);
             saveClassroomPosts(posts);
             renderClassroomFeed(posts);
+        }
+
+        async function deleteClassroomPost(postId) {
+            const { auth, db, deleteDoc, doc } = await ensureClassroomFirebase();
+            if (auth.currentUser?.email?.toLowerCase() !== 'theilmnexus@gmail.com') return;
+            if (!window.confirm('Delete this classroom post and its replies?')) return;
+            await deleteDoc(doc(db, 'classroom_events', classroomConfig.eventId, 'posts', postId));
+        }
+
+        async function deleteClassroomComment(postId, commentId) {
+            const { auth, db, deleteDoc, doc } = await ensureClassroomFirebase();
+            if (auth.currentUser?.email?.toLowerCase() !== 'theilmnexus@gmail.com' || !postId) return;
+            if (!window.confirm('Delete this reply?')) return;
+            await deleteDoc(doc(db, 'classroom_events', classroomConfig.eventId, 'posts', postId, 'comments', commentId));
         }
 
         async function reactToClassroomPost(postId) {

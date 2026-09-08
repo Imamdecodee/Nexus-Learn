@@ -27,12 +27,26 @@ service cloud.firestore {
       allow create, update, delete: if isAdmin();
     }
 
+    match /campus_feedback/{feedbackId} {
+      allow create: if request.auth != null
+        && request.resource.data.campusId == 'unilorin'
+        && request.resource.data.message is string
+        && request.resource.data.message.size() > 0
+        && request.resource.data.message.size() <= 2000;
+      allow read, update, delete: if isCoordinator();
+    }
+
     match /campuses/{campusId}/courses/{courseId} {
       allow read: if true;
       allow create, update, delete: if isCoordinator();
     }
 
     match /campuses/{campusId}/staff/{staffId} {
+      allow read: if true;
+      allow create, update, delete: if isCoordinator();
+    }
+
+    match /campuses/{campusId}/staff_profiles/{profileId} {
       allow read: if true;
       allow create, update, delete: if isCoordinator();
     }
@@ -86,6 +100,17 @@ service cloud.firestore {
         && request.resource.data.content.size() <= 1000;
         allow update, delete: if isAdmin();
       }
+    }
+
+    match /channels/{channelId}/messages/{messageId} {
+      allow read: if request.auth != null;
+      allow create: if request.auth != null
+        && request.resource.data.memberId == request.auth.uid
+        && request.resource.data.memberRole in ['Student', 'Staff']
+        && request.resource.data.content is string
+        && request.resource.data.content.size() > 0
+        && request.resource.data.content.size() <= 2000;
+      allow update, delete: if isAdmin();
     }
 
     match /users/{userId} {

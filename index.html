@@ -106,11 +106,27 @@
     .skill-list li, .service-list li { font-size:.92rem; }
     .skill-list li::before, .service-list li::before { content:'+'; margin-right:.45rem; color:var(--gold); font-weight:700; }
     .university-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:1rem; }
+    .university-grid.primary { grid-template-columns:repeat(4, minmax(0,1fr)); }
+    .presence-shell { display:grid; gap:1rem; }
+    .presence-drawer { display:grid; overflow:hidden; max-height:0; opacity:0; transform:translateY(-8px); transition:max-height .5s ease-in-out, opacity .35s ease-in-out, transform .35s ease-in-out; }
+    .presence-drawer.is-open { opacity:1; transform:translateY(0); }
+    .presence-secondary-grid { display:grid; grid-template-columns:repeat(4, minmax(0,1fr)); gap:1rem; }
+    .presence-toggle { display:inline-flex; align-items:center; justify-content:center; gap:.5rem; margin:0 auto; padding:.75rem 1.2rem; border:1px solid rgba(36,107,254,.28); border-radius:999px; background:rgba(36,107,254,.04); color:var(--blue); font:inherit; font-weight:700; cursor:pointer; transition:all .2s ease; }
+    .presence-toggle:hover { border-color:var(--blue); background:#eef4ff; }
+    .presence-toggle i { transition:transform .35s ease; }
+    .presence-toggle.is-open i { transform:rotate(180deg); }
     .university { display:flex; flex-direction:column; min-width:0; padding:1rem; border:1px solid var(--line); background:var(--white); }
     .university img { width:100%; height:105px; object-fit:contain; margin-bottom:.9rem; }
     .university h3 { min-height:2.5rem; margin:0 0 .2rem; font-size:1rem; }
     .university p { min-height:2.8rem; margin:0 0 1rem; color:var(--muted); font-size:.84rem; }
     .university .button { width:100%; margin-top:auto; padding:.65rem .7rem; font-size:.82rem; }
+    .fpc-section { background:linear-gradient(180deg,#ffffff 0%,#f5f8fc 100%); border-block:1px solid var(--line); }
+    .fpc-grid { display:grid; grid-template-columns:repeat(4, minmax(0,1fr)); gap:1rem; }
+    .fpc-card { display:flex; flex-direction:column; align-items:center; padding:1.25rem 1rem; border:1px solid var(--line); border-radius:14px; background:var(--white); box-shadow:0 10px 26px rgba(20,33,61,.04); }
+    .fpc-avatar { width:108px; height:108px; margin-bottom:1rem; border-radius:50%; border:3px solid rgba(36,107,254,.2); background-position:center; background-size:cover; background-repeat:no-repeat; box-shadow:0 10px 20px rgba(20,33,61,.08); }
+    .fpc-card h3 { margin:0; text-align:center; font-size:1rem; letter-spacing:.03em; }
+    .fpc-card p { margin:.45rem 0 0; color:var(--blue); font-size:.78rem; font-weight:700; letter-spacing:.11em; text-transform:uppercase; text-align:center; }
+    .fpc-alert { margin-top:1.4rem; padding:1rem 1.15rem; border:1px solid rgba(36,107,254,.2); border-left:4px solid var(--blue); border-radius:10px; color:var(--ink); background:rgba(36,107,254,.03); font-size:.96rem; }
     .partners-section { background:#f5f8fc; }
     .partner-grid { display:grid; grid-template-columns:repeat(6,1fr); gap:.3rem 1rem; }
     .partner-logo { display:flex; align-items:center; justify-content:center; min-height:76px; padding:.35rem; transition:transform .2s ease; }
@@ -169,22 +185,11 @@
 
     <section class="section" id="what-we-offer"><div class="container"><div class="section-heading"><p class="eyebrow" style="color:var(--blue)">What we offer</p><h2>Practical skills. Digital solutions.</h2><p>ILM Nexus trains people for the work ahead and helps organizations bring their ideas to life.</p></div><div class="offer-grid"><article class="offer primary"><p class="offer-kicker">Learning</p><h3>Digital Skills Courses</h3><p>Build practical, industry-relevant skills through structured training, hands-on projects, mentorship, and real-world learning.</p><ul class="skill-list"><li>Social Media Management</li><li>Front-End Web Development</li><li>AI Automation</li><li>Graphic Design</li><li>Video Editing</li><li>Intro to Cybersecurity</li><li>Digital Marketing</li><li>Programme Management</li><li>Data Science / Analysis</li><li>Content Creation</li></ul><a class="button button-gold" href="programs.html">Explore Programs <i class="fas fa-arrow-right"></i></a></article><article class="offer"><p class="offer-kicker">Services</p><h3>Creative & Digital Services</h3><p>From creative production to digital solutions, we help individuals, organizations, and businesses bring their ideas to life.</p><ul class="service-list"><li>T-shirt printing & customization</li><li>Graphic design</li><li>Branding & visual identity</li><li>Website design & development</li><li>Digital design</li><li>Content and creative production</li></ul><a class="button button-primary" href="services.html">Explore Services <i class="fas fa-arrow-right"></i></a></article></div></div></section>
 
+    <section class="section fpc-section" id="fpc"><div class="container"><div class="section-heading"><p class="eyebrow" style="color:var(--blue)">The Institutional Authority of ILM Nexus</p><h2>ILM Nexus Founders &amp; Pioneers Council (FPC)</h2><p>Strategic leadership anchored in continuity, governance, and institutional integrity.</p></div><div class="fpc-grid"><article class="fpc-card"><div class="fpc-avatar" style="background-image:url('https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=500&q=80');"></div><h3>MIQDAD BADA AKOREDE</h3><p>FOUNDER</p></article><article class="fpc-card"><div class="fpc-avatar" style="background-image:url('https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=500&q=80');"></div><h3>SARAH D. SHEHU</h3><p>CO-FOUNDER</p></article><article class="fpc-card"><div class="fpc-avatar" style="background-image:url('https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?auto=format&fit=crop&w=500&q=80');"></div><h3>ALIYAH ABDURASHEED</h3><p>FOUNDING PIONEER</p></article><article class="fpc-card"><div class="fpc-avatar" style="background-image:url('https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=500&q=80');"></div><h3>F. TIHAMIYYU ADEDOLAPO</h3><p>FOUNDING PIONEER</p></article></div><div class="fpc-alert">As pioneers of our mission, the FPC provides the strategic guidance and active leadership that fuels our organization's ongoing success, Through their enduring vision and dedication, the Council continues to drive innovation and inspire excellence across all departments of ILM Nexus.</div></div></section>
+
     <section class="section founder-section" id="founder"><div class="container founder-grid"><div class="founder-image"><img src="./image/about.png" alt="Engr. Miqdad Bada Akorede, Founder and CEO of ILM Nexus, working on a laptop"></div><div class="founder-copy"><p class="eyebrow" style="color:var(--blue)">Meet Our Visionary</p><h2>Engr. Miqdad Bada Akorede</h2><p class="founder-name">Founder & CEO, Ilm Nexus Ltd | Tech Entrepreneur & Software Engineer</p><div class="founder-bio"><p>Engr. Miqdad Bada Akorede is a forward-thinking technology entrepreneur, software engineer, and digital ecosystem architect dedicated to building scalable solutions and future-proofing human capital across emerging markets.</p><p>As the Founder and CEO of Ilm Nexus Ltd, Miqdad has pioneered a venture-backed pedagogical framework that addresses the critical digital skills deficit within African higher education. His organization has successfully upskilled thousands of youth, established robust academic-industry pipelines, and secured strategic collaborations across public institutions and corporate enterprises.</p><p>Operating at the intersection of technology development and academic innovation, Miqdad leads technical program partnerships at Summit University's College of Innovation and Computing Technology (COICT). In this role, he has converted advanced academic concepts into high-yielding, market-driven training programs hosted out of the NITDA Learning Centre. An active researcher in educational tech alignment, his recent empirical work featured at the 4th KU8+ International Conference champions actionable methodologies to bridge the graduate employability gap.</p><p>Beyond digital education, Miqdad is a cross-disciplinary strategist serving as the Managing Director of Hamars Ride and Director of Nexvory Brand, demonstrating a proven execution record in product management, brand positioning, and operational leadership. A full-stack engineer proficient in React, Laravel, and user experience design, he translates complex technology infrastructures into commercially viable, high-impact ventures.</p></div><div class="founder-links"><a class="founder-link" href="https://www.linkedin.com/in/miqdad-akorede/" target="_blank" rel="noopener" aria-label="Connect with Engr. Miqdad Bada Akorede on LinkedIn"><i class="fab fa-linkedin-in" aria-hidden="true"></i> LinkedIn</a><a class="founder-link" href="web-design.html" aria-label="View the ILM Nexus engineering and product portfolio"><i class="fas fa-code" aria-hidden="true"></i> Portfolio</a><a class="founder-link" href="https://instagram.com/ilmnexus" target="_blank" rel="noopener" aria-label="Follow ILM Nexus on Instagram"><i class="fab fa-instagram" aria-hidden="true"></i> Instagram</a><a class="founder-link whatsapp" href="https://wa.me/2347086808302?text=Hello%20Engr.%20Miqdad%2C%20I%20would%20love%20to%20connect%20regarding%20Ilm%20Nexus..." target="_blank" rel="noopener" aria-label="Chat with Engr. Miqdad about ILM Nexus on WhatsApp"><i class="fab fa-whatsapp" aria-hidden="true"></i> WhatsApp</a></div></div></div></section>
 
-    <section class="section section-white" id="states"><div class="container"><div class="section-heading"><p class="eyebrow" style="color:var(--blue)">Our presence</p><h2>Active in leading universities across Nigeria.</h2><p>Our campus presence continues to grow through practical training, community, and partnerships.</p></div><div class="university-grid">
-      <article class="university"><img src="./image/university-logo/kwasu.jpg" alt="Kwara State University logo"><h3>KWASU</h3><p>Kwara State University · Kwara State</p><a class="button button-outline" href="state/kwara/kwasu/">Explore KWASU</a></article>
-      <article class="university"><img src="./image/university-logo/fss%20oyo.jpg" alt="Federal School of Surveying logo"><h3>Federal School of Survey</h3><p>Oyo State</p><a class="button button-outline" href="state/oyo/federal-school-of-survey/">Explore FSS</a></article>
-      <article class="university"><img src="./image/university-logo/University_of_Ilorin_logo.jpg" alt="University of Ilorin logo"><h3>University of Ilorin</h3><p>Ilorin · Kwara State</p><a class="button button-outline" href="state/kwara/unilorin/">Explore UNILORIN</a></article>
-      <article class="university"><img src="./image/university-logo/al-hikmauniveristylogo.jpg" alt="Al-Hikma University logo"><h3>Al-Hikmah University</h3><p>Ilorin · Kwara State</p><a class="button button-outline" href="state/kwara/alhikmah/">Explore campus</a></article>
-      <article class="university"><img src="./image/university-logo/University%20of%20Lagoslogo.jpg" alt="University of Lagos logo"><h3>UNILAG</h3><p>Akoka · Lagos State</p><a class="button button-outline" href="state/lagos/unilag/">Explore UNILAG</a></article>
-      <article class="university"><img src="./image/university-logo/LASUlogo.jpg" alt="Lagos State University logo"><h3>LASU</h3><p>Lagos State</p><a class="button button-outline" href="state/lagos/lasu/">Explore LASU</a></article>
-      <article class="university"><img src="./image/university-logo/YABATECHlogo.jpg" alt="Yaba College of Technology logo"><h3>YABATECH</h3><p>Yaba · Lagos State</p><a class="button button-outline" href="state/lagos/yabatech/">Explore YABATECH</a></article>
-      <article class="university"><img src="./image/university-logo/Summit%20Universitylogo.jpg" alt="Summit University logo"><h3>Summit University</h3><p>Offa · Kwara State</p><a class="button button-outline" href="state/kwara/summit-university/">Explore campus</a></article>
-      <article class="university"><img src="./image/university-logo/fuhsalogo.jpg" alt="FUHSA logo"><h3>Federal University of Health Sciences, Azare (FUHSA)</h3><p>Azare, Bauchi State</p><a class="button button-outline" href="state/bauchi/fuhsa/">Explore campus</a></article>
-      <article class="university"><img src="./image/university-logo/mku%20logo.jpg" alt="Muhamad Kalmardeen University logo"><h3>Muhamad Kalmardeen University</h3><p>Offa · Kwara State</p><a class="button button-outline" href="state/kwara/muhamad-kalmardeen/">Explore campus</a></article>
-      <article class="university"><img src="./image/university-logo/aatulogo.jpg" alt="Abdulrasq Abubakar Toyyin University logo"><h3>Abdulrasq Abubakar Toyyin University</h3><p>Offa · Kwara State</p><a class="button button-outline" href="state/kwara/aatu/">Explore campus</a></article>
-      <article class="university"><img src="./image/university-logo/fpdlogo.jpg" alt="Federal Polytechnic Offa logo"><h3>Federal Polytechnic Offa</h3><p>Offa · Kwara State</p><a class="button button-outline" href="state/kwara/federal-polytechnic-offa/">Explore campus</a></article>
-    </div></div></section>
+    <section class="section section-white" id="states"><div class="container"><div class="section-heading"><p class="eyebrow" style="color:var(--blue)">Our presence</p><h2>Active in leading universities across Nigeria.</h2><p>Our campus presence continues to grow through practical training, community, and partnerships.</p></div><div class="presence-shell" id="presenceGrid"></div></div></section>
 
     <section class="section partners-section" id="partners"><div class="container"><div class="section-heading"><p class="eyebrow" style="color:var(--blue)">Our sponsors & partners</p><h2>Meet the organizations building with ILM Nexus.</h2><p>We are grateful to the organizations, businesses, and communities supporting practical digital skills and opportunity across Nigeria.</p></div><div class="partner-grid"><div class="partner-logo"><img src="./image/partners%26sponsors/a.jpg" alt="Al-Ameen Spark partner logo"></div><div class="partner-logo promotional"><img src="./image/partners%26sponsors/ace.jpg" alt="ACEBrand partner logo"></div><div class="partner-logo"><img src="./image/partners%26sponsors/blanet.png" alt="Blanet partner logo"></div><div class="partner-logo"><img src="./image/partners%26sponsors/esusu.jpg" alt="Esusu Africa partner logo"></div><div class="partner-logo"><img src="./image/partners%26sponsors/ifbs.png" alt="Ilorin Future Builders Summit partner logo"></div><div class="partner-logo"><img src="./image/partners%26sponsors/investija.jpg" alt="InvestNaija partner logo"></div><div class="partner-logo"><img src="./image/partners%26sponsors/kolector.jpg" alt="Kolektor partner logo"></div><div class="partner-logo promotional"><img src="./image/partners%26sponsors/lustertouchjpg.jpg" alt="Luster Touch partner logo"></div><div class="partner-logo"><img src="./image/partners%26sponsors/nexvory.jpg" alt="Nexvory partner logo"></div><div class="partner-logo"><img src="./image/partners%26sponsors/ngm.jpg" alt="Platform partner logo"></div><div class="partner-logo promotional"><img src="./image/partners%26sponsors/quicktap.jpg" alt="QuickTap 247 Prints Yolax partner logo"></div><div class="partner-logo"><img src="./image/partners%26sponsors/v%20club.jpg" alt="V-Club partner logo"></div></div><div class="partner-cta"><div><h3>Partner with the next generation.</h3><p>Support digital skills, campus innovation, and practical opportunity with ILM Nexus.</p></div><a class="button button-gold" href="services.html#request">Become a Sponsor <i class="fas fa-arrow-right"></i></a></div></div></section>
 
@@ -209,6 +214,88 @@
       appId: "1:434251311563:web:0264d1049c463369862e4e",
       measurementId: "G-PDKW8N221Z"
     };
+
+    const campusNodes = [
+      { name: 'KWASU', label: 'Kwara State University · Kwara State', image: './image/university-logo/kwasu.jpg', route: 'state/kwara/kwasu/' },
+      { name: 'Federal School of Surveying', label: 'Oyo State', image: './image/university-logo/fss%20oyo.jpg', route: 'state/oyo/federal-school-of-survey/' },
+      { name: 'University of Ilorin', label: 'Ilorin · Kwara State', image: './image/university-logo/University_of_Ilorin_logo.jpg', route: 'state/kwara/unilorin/' },
+      { name: 'Al-Hikmah University', label: 'Ilorin · Kwara State', image: './image/university-logo/al-hikmauniveristylogo.jpg', route: 'state/kwara/alhikmah/' },
+      { name: 'UNILAG', label: 'Akoka · Lagos State', image: './image/university-logo/University%20of%20Lagoslogo.jpg', route: 'state/lagos/unilag/' },
+      { name: 'LASU', label: 'Lagos State', image: './image/university-logo/LASUlogo.jpg', route: 'state/lagos/lasu/' },
+      { name: 'YABATECH', label: 'Yaba · Lagos State', image: './image/university-logo/YABATECHlogo.jpg', route: 'state/lagos/yabatech/' },
+      { name: 'Summit University', label: 'Offa · Kwara State', image: './image/university-logo/Summit%20Universitylogo.jpg', route: 'state/kwara/summit-university/' },
+      { name: 'Federal University of Health Sciences, Azare (FUHSA)', label: 'Azare, Bauchi State', image: './image/university-logo/fuhsalogo.jpg', route: 'state/bauchi/fuhsa/' },
+      { name: 'Muhammad Kamaldeen University', label: 'Offa · Kwara State', image: './image/university-logo/mku%20logo.jpg', route: 'state/kwara/muhamad-kalmardeen/' },
+      { name: 'Abdulrazaq Abubakar Toyyib University', label: 'Offa · Kwara State', image: './image/university-logo/aatulogo.jpg', route: 'state/kwara/aatu/' },
+      { name: 'Federal Polytechnic Offa', label: 'Offa · Kwara State', image: './image/university-logo/fpdlogo.jpg', route: 'state/kwara/federal-polytechnic-offa/' }
+    ];
+
+    function createUniversityCard(entry) {
+      const article = document.createElement('article');
+      article.className = 'university';
+      article.innerHTML = `
+        <img src="${entry.image}" alt="${entry.name} logo">
+        <h3>${entry.name}</h3>
+        <p>${entry.label}</p>
+        <a class="button button-outline" href="${entry.route}">Explore ${entry.name.includes('University of') || entry.name.includes('Federal') || entry.name.includes('University') ? entry.name.split(' ').slice(0, 2).join(' ') : entry.name.split(' ')[0]}</a>
+      `;
+      return article;
+    }
+
+    function renderPresenceGrid() {
+      const presenceGrid = document.querySelector('#presenceGrid');
+      if (!presenceGrid) return;
+
+      const primaryBlock = campusNodes.slice(0, 4);
+      const secondaryBlock = campusNodes.slice(4);
+
+      const primaryGrid = document.createElement('div');
+      primaryGrid.className = 'university-grid primary';
+      primaryGrid.append(...primaryBlock.map(createUniversityCard));
+
+      const drawer = document.createElement('div');
+      drawer.className = 'presence-drawer';
+
+      const secondaryGrid = document.createElement('div');
+      secondaryGrid.className = 'university-grid presence-secondary-grid';
+      secondaryGrid.append(...secondaryBlock.map(createUniversityCard));
+      drawer.appendChild(secondaryGrid);
+
+      const toggle = document.createElement('button');
+      toggle.type = 'button';
+      toggle.className = 'presence-toggle';
+      toggle.innerHTML = 'View More <i class="fas fa-chevron-down"></i>';
+
+      let isExpanded = false;
+
+      const syncDrawer = () => {
+        if (isExpanded) {
+          drawer.classList.add('is-open');
+          toggle.classList.add('is-open');
+          toggle.innerHTML = 'View Less <i class="fas fa-chevron-down"></i>';
+          drawer.style.maxHeight = `${drawer.scrollHeight + 10}px`;
+        } else {
+          drawer.classList.remove('is-open');
+          toggle.classList.remove('is-open');
+          toggle.innerHTML = 'View More <i class="fas fa-chevron-down"></i>';
+          drawer.style.maxHeight = '0px';
+        }
+      };
+
+      toggle.addEventListener('click', () => {
+        isExpanded = !isExpanded;
+        syncDrawer();
+      });
+
+      window.addEventListener('resize', () => {
+        if (isExpanded) {
+          drawer.style.maxHeight = `${drawer.scrollHeight + 10}px`;
+        }
+      });
+
+      presenceGrid.append(primaryGrid, toggle, drawer);
+      syncDrawer();
+    }
 
     function createNewsCard(article, id) {
       const card = document.createElement('article');
@@ -256,6 +343,7 @@
       }
     }
 
+    renderPresenceGrid();
     loadLatestNews();
   </script>
   <script>
