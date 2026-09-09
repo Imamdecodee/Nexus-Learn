@@ -64,6 +64,7 @@
         <div class="field" id="staffAssignmentField"><label for="staffAssignment">Staff type / access branch</label><input type="text" id="staffAssignment" placeholder="e.g. instructor or unilorin" autocomplete="organization"></div>
         <div class="field"><label for="username">Username or email</label><input type="text" id="username" placeholder="Enter your username" autocomplete="username" required></div>
         <div class="field"><label for="password">Password</label><div class="input-wrap"><input type="password" id="password" placeholder="Enter your password" autocomplete="current-password" required><button type="button" class="toggle-password" id="togglePassword" aria-label="Show password">Show</button></div></div>
+        <div class="secure-note" id="studentPasswordHint" style="display:none; margin-top:-.35rem; margin-bottom:1rem; color:#1a5dd1; font-size:.82rem; font-weight:600;"><i class="fas fa-key" style="margin-right:.35rem;"></i>Student default temporary password: <strong>ilmnexusds2026!</strong></div>
         <button type="submit" class="submit-button" id="loginButton">Sign in</button>
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:.65rem;margin-top:.75rem;"><button type="button" class="social-button" id="googleSignIn"><i class="fab fa-google"></i> Google</button><button type="button" class="social-button" id="githubSignIn"><i class="fab fa-github"></i> GitHub</button></div>
         <p class="error" id="errorMsg" role="alert" aria-live="polite"></p>
@@ -126,7 +127,14 @@
       }
     }
 
-    roleSelect.addEventListener('change', () => { const staff = roleSelect.value === 'Staff'; staffField.style.display = staff ? 'block' : 'none'; document.getElementById('username').type = roleSelect.value === 'Admin' ? 'email' : 'text'; document.getElementById('username').placeholder = roleSelect.value === 'Admin' ? 'admin email address' : roleSelect.value === 'Student' ? 'Enter your email or username' : 'Enter your username'; });
+    roleSelect.addEventListener('change', () => {
+      const staff = roleSelect.value === 'Staff';
+      staffField.style.display = staff ? 'block' : 'none';
+      document.getElementById('username').type = roleSelect.value === 'Admin' ? 'email' : 'text';
+      document.getElementById('username').placeholder = roleSelect.value === 'Admin' ? 'admin email address' : roleSelect.value === 'Student' ? 'Enter your email or username' : 'Enter your username';
+      const hint = document.getElementById('studentPasswordHint');
+      hint.style.display = roleSelect.value === 'Student' ? 'block' : 'none';
+    });
 
     document.getElementById('loginForm').addEventListener('submit', async event => {
       const role = roleSelect.value;
