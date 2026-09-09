@@ -1,31 +1,31 @@
-fullName,email,username,phone,course,campusId,plan,approvalStatus,temporaryPassword,notes
-Student 01,student01@example.com,student01,08000000001,Front-End Web Development,unilorin,Standard,APPROVED,ilmnexusds2026!,Default login
-Student 02,student02@example.com,student02,08000000002,Social Media Management,unilorin,Basic,APPROVED,ilmnexusds2026!,Default login
-Student 03,student03@example.com,student03,08000000003,Graphic Design,unilorin,Standard,APPROVED,ilmnexusds2026!,Default login
-Student 04,student04@example.com,student04,08000000004,Video Editing,unilorin,Basic,APPROVED,ilmnexusds2026!,Default login
-Student 05,student05@example.com,student05,08000000005,Digital Marketing,unilorin,Premium,APPROVED,ilmnexusds2026!,Default login
-Student 06,student06@example.com,student06,08000000006,AI Automation,unilorin,Standard,APPROVED,ilmnexusds2026!,Default login
-Student 07,student07@example.com,student07,08000000007,Data Science / Analysis,unilorin,Premium,APPROVED,ilmnexusds2026!,Default login
-Student 08,student08@example.com,student08,08000000008,Content Creation,unilorin,Basic,APPROVED,ilmnexusds2026!,Default login
-Student 09,student09@example.com,student09,08000000009,Intro to Cybersecurity,unilorin,Standard,APPROVED,ilmnexusds2026!,Default login
-Student 10,student10@example.com,student10,08000000010,Programme Management,unilorin,Basic,APPROVED,ilmnexusds2026!,Default login
-Student 11,student11@example.com,student11,08000000011,Front-End Web Development,unilorin,Standard,APPROVED,ilmnexusds2026!,Default login
-Student 12,student12@example.com,student12,08000000012,Social Media Management,unilorin,Basic,APPROVED,ilmnexusds2026!,Default login
-Student 13,student13@example.com,student13,08000000013,Graphic Design,unilorin,Premium,APPROVED,ilmnexusds2026!,Default login
-Student 14,student14@example.com,student14,08000000014,Video Editing,unilorin,Standard,APPROVED,ilmnexusds2026!,Default login
-Student 15,student15@example.com,student15,08000000015,Digital Marketing,unilorin,Basic,APPROVED,ilmnexusds2026!,Default login
-Student 16,student16@example.com,student16,08000000016,AI Automation,unilorin,Premium,APPROVED,ilmnexusds2026!,Default login
-Student 17,student17@example.com,student17,08000000017,Data Science / Analysis,unilorin,Standard,APPROVED,ilmnexusds2026!,Default login
-Student 18,student18@example.com,student18,08000000018,Content Creation,unilorin,Basic,APPROVED,ilmnexusds2026!,Default login
-Student 19,student19@example.com,student19,08000000019,Intro to Cybersecurity,unilorin,Standard,APPROVED,ilmnexusds2026!,Default login
-Student 20,student20@example.com,student20,08000000020,Programme Management,unilorin,Premium,APPROVED,ilmnexusds2026!,Default login
-Student 21,student21@example.com,student21,08000000021,Front-End Web Development,unilorin,Basic,APPROVED,ilmnexusds2026!,Default login
-Student 22,student22@example.com,student22,08000000022,Social Media Management,unilorin,Standard,APPROVED,ilmnexusds2026!,Default login
-Student 23,student23@example.com,student23,08000000023,Graphic Design,unilorin,Basic,APPROVED,ilmnexusds2026!,Default login
-Student 24,student24@example.com,student24,08000000024,Video Editing,unilorin,Premium,APPROVED,ilmnexusds2026!,Default login
-Student 25,student25@example.com,student25,08000000025,Digital Marketing,unilorin,Standard,APPROVED,ilmnexusds2026!,Default login
-Student 26,student26@example.com,student26,08000000026,AI Automation,unilorin,Basic,APPROVED,ilmnexusds2026!,Default login
-Student 27,student27@example.com,student27,08000000027,Data Science / Analysis,unilorin,Premium,APPROVED,ilmnexusds2026!,Default login
-Student 28,student28@example.com,student28,08000000028,Content Creation,unilorin,Standard,APPROVED,ilmnexusds2026!,Default login
-Student 29,student29@example.com,student29,08000000029,Intro to Cybersecurity,unilorin,Basic,APPROVED,ilmnexusds2026!,Default login
-Student 30,student30@example.com,student30,08000000030,Programme Management,unilorin,Premium,APPROVED,ilmnexusds2026!,Default login
+"id","fullName","email","phone","university","learningTrack","temporaryPassword","approvalStatus","role"
+"1","Miqdad ","theilmnexus@gmail.com","0987654 op9","Bbbb","Social Media Management","ilmnexusds2026!","Pending","Student"
+"2","Notify User","notify@example.com","08012345678","UNILORIN","Frontend Development","ilmnexusds2026!","Pending","Student"
+"3","Hassan Summayah","hassansummayat@gmail.com","+2348102708061","Summit university offa, Kwara state.","Video Editing","ilmnexusds2026!","Pending","Student"
+"4","Abdul-jeleel Roheemah Adenike ","abduljeleelroheemoh9ischs@gmail.com","09165608770","Summit University Offa Kwara State ","Graphics Design (Mobile & Laptop)","ilmnexusds2026!","Pending","Student"
+"5","Abubakar usman","usmanlawal0505@gmail.com","08065686788","university of ibadan","Intro to Cybersecurity","ilmnexusds2026!","Pending","Student"
+"6","Darlington Oluwajuwon Ademola ","darlingtonoluwajuwon@gmail.com","08160707731","Abdulrasaq Abubakar Toyin University ","Social Media Management","ilmnexusds2026!","Pending","Student"
+"180001","BALIQEES AYOMIDE GBAIYE","gbaiyebaliqess123@gmail.com","09070373132","Al-Hikmah University ","Content Creation","ilmnexusds2026!","Pending","Student"
+"210001","Adeboye oluwatosin yvonne ","ytadeboye@gmail.com","09045364022","university of lagos","Graphics Design (Mobile & Laptop)","ilmnexusds2026!","Pending","Student"
+"240001","Abdulmusawwir Moukhtar Nasale","nasaleabdulmusawwir@gmail.com","08162088676","None ","Graphics Design (Mobile & Laptop)","ilmnexusds2026!","Pending","Student"
+"270001","YAKUBU ALHAJI ALI ","yakubualhajiali@gmail.com","08148149192","FEDERAL UNIVERSITY OF HEALTH SCIENCES AZARE ","Backend Development","ilmnexusds2026!","Pending","Student"
+"300001","Yusrah Sani-Giwa ","yusrah0508@gmail.com","0707 043 2046 ","Al-Hikmah University ","Data Science","ilmnexusds2026!","Pending","Student"
+"330001","Adeniyi Inioluwa victor","vadeniyi277@gmail.com","09162949742","University of ilorin ","AI for Productivity","ilmnexusds2026!","Pending","Student"
+"360001","Omagbemi Best. ","omagbemibest004@gmail.com","07083580046","University of Ilorin ","Digital Marketing","ilmnexusds2026!","Pending","Student"
+"390001","Kolade Daniel","koladedaniel101@gmail.com","08120375396","Lagos state university of science and technology ","Intro to Cybersecurity","ilmnexusds2026!","Pending","Student"
+"420001","Balogun Maryam Ololade ","balogunmariam0003@gmail.com","09161806896","Summit university offa ","Intro to Cybersecurity","ilmnexusds2026!","Pending","Student"
+"450001","Fatima Sagir imam","fatimasagirimamv@gmail.com","07043636556","Federal university of health sciences azare ","Frontend Development","ilmnexusds2026!","Pending","Student"
+"480001","Pheobe Ngwamdai Joshua ","joshuapheobe14@gmail.com","07080980798","Borno state university ","Graphics Design (Mobile & Laptop)","ilmnexusds2026!","Approved","Student"
+"510001","Adamu Halima Ajeje","ajejehalima9@gmail.com","09130179174 ","Federal university of health sciences Azare ","Backend Development","ilmnexusds2026!","Pending","Student"
+"540001","AJAYI OLUWAFEMILOLA JOHN-RITA ","johnritaajayi22@gmail.com","09160251263 ","Kwara State Polytechnic ","Social Media Management","ilmnexusds2026!","Pending","Student"
+"570001","Yussuf Ishola Abdulwarit","yussufabdulwarith@gmail.com","07042210477","Kwara state university ","Intro to Cybersecurity","ilmnexusds2026!","Pending","Student"
+"600001","Aisha Abdulrahman ","visitisha9@gmail.com","08067077979","Alhikmah university ","Graphics Design (Mobile & Laptop)","ilmnexusds2026!","Pending","Student"
+"630001","Ayuba Abdulsalam Ayobami","ayubaabdulsalam06@gmail.com","09115700106","Kwara state university ","Backend Development","ilmnexusds2026!","Pending","Student"
+"660001","Muhammedjamiu abdulazeez","muhammedjamiuabdulazeez2@gmail.com","09079948303","Kwara start university of ilorin malete","Data Science","ilmnexusds2026!","Pending","Student"
+"690001","Osofisan Ajibola Elijah","osofisanajibolaelijah@gmail.com","08121168189","Lagos State University of Science and Technology Lasustech Ikorodu Lagos State.","Social Media Management","ilmnexusds2026!","Pending","Student"
+"720001","Norman Alamin","normanalamin103@gmail.com","0728616580","Don Bosco technical institute ","Digital Marketing","ilmnexusds2026!","Pending","Student"
+"750001","Lagbalu Haleemah ","lagbaluhalimat@gmail.com","09078224271","Kwara state university ","AI for Productivity","ilmnexusds2026!","Pending","Student"
+"780001","Abubakri Abdullahi","abdullahiabubakri4@gmail.com","09041966146","Kwara state university ","Data Science","ilmnexusds2026!","Pending","Student"
+"810001","Femi Emmanuel ","femie561@gmail.com","07015027995","Kwara State University ","Frontend Development","ilmnexusds2026!","Pending","Student"
+"840001","Tajudeen ","careerbuilderspecialist@gmail.com","07059748298","KWASU","AI for Productivity","ilmnexusds2026!","Pending","Student"
+"870001","Shalwar Fawaz Olawale ","tobisalawu4@gmail.com","08162072904","Kwara state university ","Social Media Management","ilmnexusds2026!","Pending","Student"
