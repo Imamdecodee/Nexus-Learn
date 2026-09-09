@@ -83,6 +83,8 @@
     const roleSelect = document.getElementById('role');
     const staffField = document.getElementById('staffAssignmentField');
 
+    const DEFAULT_STUDENT_PASSWORD = 'ilmnexusds2026!';
+
     function getLoginError(error) {
       const messages = {
         'auth/invalid-credential': 'The email or password is incorrect.',
@@ -156,6 +158,11 @@
               throw Object.assign(new Error('Student account not found. Use the email on your Firebase account or create a new student registration.'), { code: 'auth/user-not-found' });
             }
             emailToUse = profile.email;
+          }
+
+          const sharedPasswordAllowed = password === DEFAULT_STUDENT_PASSWORD;
+          if (!sharedPasswordAllowed && !password) {
+            throw Object.assign(new Error('Password is required.'), { code: 'auth/invalid-credential' });
           }
 
           const result = await portalAuth.signInWithEmail(emailToUse, password);
