@@ -1,0 +1,959 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Tutor Dashboard | ILM Nexus</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+  <style>
+    :root {
+      --blue: #0758d8;
+      --blue-dark: #0b3f9a;
+      --navy: #092b68;
+      --ink: #132238;
+      --muted: #687589;
+      --line: #dbe4ef;
+      --paper: #f4f7fb;
+      --soft: #edf4ff;
+      --gold: #ef9c18;
+      --green: #11845b;
+      --red: #b42318;
+      --shadow: 0 18px 40px rgba(19, 34, 56, 0.08);
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      background: var(--paper);
+      color: var(--ink);
+      font: 14px/1.5 'DM Sans', sans-serif;
+    }
+
+    a { color: inherit; text-decoration: none; }
+    button, input, select, textarea { font: inherit; }
+    button { cursor: pointer; }
+
+    .app {
+      min-height: 100vh;
+      display: grid;
+      grid-template-columns: 245px 1fr;
+    }
+
+    .sidebar {
+      position: sticky;
+      top: 0;
+      min-height: 100vh;
+      padding: 1.3rem 1rem;
+      color: #dce8ff;
+      background: var(--navy);
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: .7rem;
+      color: #fff;
+      font: 700 1rem 'Space Grotesk', sans-serif;
+      padding: .3rem .5rem 1.8rem;
+    }
+
+    .brand img {
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      object-fit: contain;
+      background: #fff;
+    }
+
+    .sidebar small {
+      display: block;
+      margin: .7rem 0 .9rem;
+      color: #9bbaf0;
+      font-weight: 700;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+    }
+
+    .nav {
+      display: grid;
+      gap: .25rem;
+    }
+
+    .nav-button {
+      display: flex;
+      align-items: center;
+      gap: .7rem;
+      width: 100%;
+      padding: .75rem .8rem;
+      border: 0;
+      border-radius: 7px;
+      color: #c4d6f5;
+      background: transparent;
+      text-align: left;
+      font-weight: 600;
+      transition: .2s ease;
+    }
+
+    .nav-button:hover,
+    .nav-button.active {
+      background: rgba(255,255,255,0.12);
+      color: #fff;
+    }
+
+    .sidebar-footer {
+      margin-top: 1rem;
+      padding: .85rem;
+      border: 1px solid rgba(255,255,255,0.18);
+      border-radius: 8px;
+      color: #c4d6f5;
+      font-size: .8rem;
+      line-height: 1.5;
+    }
+
+    .main {
+      min-width: 0;
+    }
+
+    .topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      min-height: 72px;
+      padding: .8rem clamp(1rem, 3vw, 2.5rem);
+      background: #fff;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .topbar h1 {
+      margin: 0;
+      font: 700 1.35rem 'Space Grotesk', sans-serif;
+    }
+
+    .user-meta {
+      display: flex;
+      align-items: center;
+      gap: .8rem;
+      color: var(--muted);
+      font-size: .82rem;
+    }
+
+    .status-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: .45rem;
+      padding: .38rem .72rem;
+      border-radius: 999px;
+      background: rgba(17, 132, 91, .08);
+      color: var(--green);
+      font-weight: 700;
+    }
+
+    .status-pill::before {
+      content: '';
+      width: .55rem;
+      height: .55rem;
+      border-radius: 50%;
+      background: var(--green);
+    }
+
+    .page {
+      width: min(1400px, 100%);
+      margin: auto;
+      padding: clamp(1rem, 3vw, 2.5rem);
+    }
+
+    .section {
+      display: none;
+    }
+
+    .section.active {
+      display: block;
+    }
+
+    .section-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: end;
+      gap: 1rem;
+      margin-bottom: 1.15rem;
+    }
+
+    .eyebrow {
+      margin: 0 0 .45rem;
+      color: var(--blue);
+      font-size: .72rem;
+      font-weight: 700;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+    }
+
+    .section-head h2,
+    .panel h3,
+    .panel h4 {
+      margin: 0;
+      font-family: 'Space Grotesk', sans-serif;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 1rem;
+    }
+
+    .panel {
+      padding: 1.15rem;
+      margin-bottom: 1rem;
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      box-shadow: var(--shadow);
+    }
+
+    .panel-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: .75rem;
+      margin-bottom: 1rem;
+    }
+
+    .field {
+      display: grid;
+      gap: .45rem;
+    }
+
+    .field label {
+      font-size: .85rem;
+      font-weight: 700;
+      color: var(--ink);
+    }
+
+    input, select, textarea {
+      width: 100%;
+      padding: .8rem .9rem;
+      border: 1px solid var(--line);
+      border-radius: 9px;
+      background: #fff;
+      color: var(--ink);
+      transition: border-color .2s ease, box-shadow .2s ease;
+    }
+
+    input:focus, select:focus, textarea:focus {
+      border-color: var(--blue);
+      outline: none;
+      box-shadow: 0 0 0 4px rgba(36,107,254,0.08);
+    }
+
+    textarea {
+      min-height: 120px;
+      resize: vertical;
+    }
+
+    .button-row,
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: .7rem;
+      margin-top: 1rem;
+    }
+
+    .btn {
+      border: 0;
+      border-radius: 9px;
+      padding: .8rem 1rem;
+      font-weight: 700;
+      transition: transform .15s ease, opacity .2s ease;
+    }
+
+    .btn:hover { transform: translateY(-1px); }
+    .btn:disabled { opacity: .6; cursor: not-allowed; }
+
+    .btn-primary {
+      background: var(--blue);
+      color: #fff;
+    }
+
+    .btn-secondary {
+      background: var(--soft);
+      color: var(--blue);
+    }
+
+    .btn-ghost {
+      background: #fff;
+      color: var(--ink);
+      border: 1px solid var(--line);
+    }
+
+    .chat-box {
+      display: grid;
+      gap: 1rem;
+    }
+
+    .message-list {
+      display: grid;
+      gap: .7rem;
+      max-height: 260px;
+      overflow: auto;
+      padding-right: .3rem;
+    }
+
+    .message-item {
+      padding: .85rem .9rem;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: linear-gradient(180deg, #fff 0%, #f9fbff 100%);
+    }
+
+    .message-meta {
+      display: flex;
+      justify-content: space-between;
+      gap: .8rem;
+      margin-bottom: .35rem;
+      color: var(--muted);
+      font-size: .78rem;
+      font-weight: 700;
+    }
+
+    .message-item p {
+      margin: 0;
+      color: var(--ink);
+      line-height: 1.6;
+    }
+
+    .resource-list {
+      display: grid;
+      gap: .8rem;
+      margin-top: 1rem;
+    }
+
+    .resource-item {
+      display: flex;
+      justify-content: space-between;
+      gap: 1rem;
+      padding: .85rem .9rem;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #fefefe;
+    }
+
+    .resource-item strong {
+      display: block;
+      margin-bottom: .2rem;
+    }
+
+    .resource-item small {
+      color: var(--muted);
+    }
+
+    .resource-badge {
+      display: inline-flex;
+      align-items: center;
+      padding: .35rem .55rem;
+      border-radius: 999px;
+      background: rgba(7, 88, 216, .08);
+      color: var(--blue);
+      font-size: .72rem;
+      font-weight: 700;
+    }
+
+    .roster-table-wrap {
+      overflow-x: auto;
+      margin-top: 1rem;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 680px;
+    }
+
+    th, td {
+      padding: .85rem .7rem;
+      border-bottom: 1px solid var(--line);
+      text-align: left;
+      vertical-align: middle;
+    }
+
+    th {
+      color: var(--muted);
+      font-size: .8rem;
+      font-weight: 700;
+      letter-spacing: .04em;
+      text-transform: uppercase;
+      background: #f9fbff;
+    }
+
+    td select {
+      min-width: 130px;
+    }
+
+    .summary-card {
+      display: grid;
+      gap: .7rem;
+      padding: .9rem 1rem;
+      border: 1px solid var(--line);
+      border-radius: 9px;
+      background: linear-gradient(180deg, #f8fbff 0%, #eff5ff 100%);
+    }
+
+    .summary-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: .75rem;
+    }
+
+    .summary-stat {
+      padding: .85rem;
+      border-radius: 9px;
+      background: #fff;
+      border: 1px solid var(--line);
+    }
+
+    .summary-stat strong {
+      display: block;
+      font-size: 1.3rem;
+      margin-bottom: .2rem;
+    }
+
+    .summary-stat span {
+      color: var(--muted);
+      font-size: .8rem;
+      font-weight: 600;
+    }
+
+    @media (max-width: 900px) {
+      .app { grid-template-columns: 1fr; }
+      .sidebar { position: static; min-height: auto; }
+      .grid, .summary-grid { grid-template-columns: 1fr; }
+      .topbar { flex-wrap: wrap; }
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <aside class="sidebar">
+      <a class="brand" href="index.html">
+        <img src="./image/nexus-learn logo.png" alt="ILM Nexus logo">
+        <span>ILM Nexus</span>
+      </a>
+      <small>Tutor workspace</small>
+      <nav class="nav">
+        <button class="nav-button active" data-section="overview"><i class="fa-solid fa-chart-pie"></i> Overview</button>
+        <button class="nav-button" data-section="chat"><i class="fa-solid fa-comments"></i> Nexus Chat</button>
+        <button class="nav-button" data-section="resources"><i class="fa-solid fa-folder-open"></i> Resources</button>
+        <button class="nav-button" data-section="attendance"><i class="fa-solid fa-clipboard-user"></i> Attendance</button>
+      </nav>
+      <div class="sidebar-footer">
+        <strong id="tutorName">Tutor</strong><br>
+        <span id="tutorEmail">staff@ilmnexus.com</span>
+      </div>
+    </aside>
+
+    <main class="main">
+      <header class="topbar">
+        <h1 id="pageTitle">Tutor Dashboard</h1>
+        <div class="user-meta">
+          <span class="status-pill">Online</span>
+          <button id="logoutButton" class="btn btn-ghost" type="button"><i class="fa-solid fa-right-from-bracket"></i> Logout</button>
+        </div>
+      </header>
+
+      <div class="page">
+        <section class="section active" id="overview">
+          <div class="section-head">
+            <div>
+              <p class="eyebrow">Control centre</p>
+              <h2>Teaching overview</h2>
+            </div>
+          </div>
+
+          <div class="summary-card">
+            <div class="summary-grid">
+              <div class="summary-stat">
+                <strong id="studentsCount">0</strong>
+                <span>Students</span>
+              </div>
+              <div class="summary-stat">
+                <strong id="presentCount">0</strong>
+                <span>Present</span>
+              </div>
+              <div class="summary-stat">
+                <strong id="lateCount">0</strong>
+                <span>Late</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="panel">
+            <h3>Today's teaching snapshot</h3>
+            <div class="resource-list" id="overviewFeed"></div>
+          </div>
+        </section>
+
+        <section class="section" id="chat">
+          <div class="section-head">
+            <div>
+              <p class="eyebrow">Communication</p>
+              <h2>Nexus Chat</h2>
+            </div>
+          </div>
+
+          <div class="panel chat-box">
+            <div class="field">
+              <label for="broadcastScope">Audience</label>
+              <select id="broadcastScope">
+                <option value="All Students">All Students</option>
+                <option value="Students Enrolled in My Courses">Students Enrolled in My Courses</option>
+              </select>
+            </div>
+
+            <div class="field">
+              <label for="chatMessage">Post an announcement</label>
+              <textarea id="chatMessage" placeholder="Share a class update, deadline, or important announcement..."></textarea>
+            </div>
+
+            <div class="button-row">
+              <button class="btn btn-primary" id="sendChat" type="button">Send to chat</button>
+            </div>
+
+            <div class="message-list" id="messageList"></div>
+          </div>
+        </section>
+
+        <section class="section" id="resources">
+          <div class="section-head">
+            <div>
+              <p class="eyebrow">Course delivery</p>
+              <h2>Resource & assignment hub</h2>
+            </div>
+          </div>
+
+          <div class="grid">
+            <div class="panel">
+              <h3>Upload document</h3>
+              <div class="field">
+                <label for="documentTitle">Document title</label>
+                <input id="documentTitle" type="text" placeholder="Week 2 assignment brief">
+              </div>
+              <div class="field" style="margin-top: 1rem;">
+                <label for="documentUpload">Upload PDF or Docx</label>
+                <input id="documentUpload" type="file" accept=".pdf,.doc,.docx,.ppt,.pptx">
+              </div>
+              <div class="button-row">
+                <button class="btn btn-primary" id="uploadDocument" type="button">Save document</button>
+              </div>
+            </div>
+
+            <div class="panel">
+              <h3>Post text assignment</h3>
+              <div class="field">
+                <label for="assignmentText">Assignment instructions</label>
+                <textarea id="assignmentText" placeholder="Write the assignment prompt or instructions here..."></textarea>
+              </div>
+              <div class="button-row">
+                <button class="btn btn-primary" id="sendAssignment" type="button">Publish assignment</button>
+              </div>
+            </div>
+
+            <div class="panel" style="grid-column: 1 / -1;">
+              <h3>Class link</h3>
+              <div class="field">
+                <label for="classLink">Zoom / GitHub / Meeting URL</label>
+                <input id="classLink" type="url" placeholder="https://zoom.us/j/123456789 or https://github.com/...">
+              </div>
+              <div class="button-row">
+                <button class="btn btn-primary" id="publishLink" type="button">Post class link</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="panel">
+            <div class="panel-header">
+              <h3>Recent resources</h3>
+            </div>
+            <div class="resource-list" id="resourceList"></div>
+          </div>
+        </section>
+
+        <section class="section" id="attendance">
+          <div class="section-head">
+            <div>
+              <p class="eyebrow">Class tracking</p>
+              <h2>Attendance management</h2>
+            </div>
+          </div>
+
+          <div class="panel">
+            <div class="panel-header">
+              <h3>Student roster</h3>
+              <div class="actions">
+                <button class="btn btn-secondary" id="exportAttendance" type="button"><i class="fa-solid fa-download"></i> Export</button>
+                <button class="btn btn-primary" id="shareAttendance" type="button"><i class="fa-solid fa-share-nodes"></i> Share</button>
+              </div>
+            </div>
+
+            <div class="roster-table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>#</th>
+                    <th>Student</th>
+                    <th>Course</th>
+                    <th>Attendance</th>
+                  </tr>
+                </thead>
+                <tbody id="rosterBody"></tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+      </div>
+    </main>
+  </div>
+
+  <script type="module">
+    import { db, firestoreModule } from './portal/firebase.js';
+
+    const { addDoc, collection, onSnapshot, serverTimestamp } = firestoreModule;
+    const storageKey = 'tutor_dashboard_state';
+    const rosterSeed = [
+      { id: 1, name: 'Ada Okafor', course: 'Frontend Development', status: 'Present' },
+      { id: 2, name: 'Samuel Bello', course: 'Frontend Development', status: 'Late' },
+      { id: 3, name: 'Ifeoma Dada', course: 'UI/UX Strategy', status: 'Absent' },
+      { id: 4, name: 'Tobi Adebayo', course: 'Data Analysis', status: 'Present' },
+      { id: 5, name: 'Halimah Yusuf', course: 'Digital Marketing', status: 'Present' },
+      { id: 6, name: 'Musa Ibrahim', course: 'Cybersecurity', status: 'Absent' },
+      { id: 7, name: 'Mia Bello', course: 'Frontend Development', status: 'Present' },
+      { id: 8, name: 'Aisha Abdullahi', course: 'Digital Marketing', status: 'Present' },
+      { id: 9, name: 'Daniel Okoye', course: 'Cybersecurity', status: 'Late' },
+      { id: 10, name: 'Zainab Yusuf', course: 'Data Analysis', status: 'Present' },
+      { id: 11, name: 'Chinedu Eze', course: 'UI/UX Strategy', status: 'Absent' },
+      { id: 12, name: 'Sarah Adebisi', course: 'Frontend Development', status: 'Present' },
+      { id: 13, name: 'Bolu Adekunle', course: 'Content Creation', status: 'Present' },
+      { id: 14, name: 'Grace Ojo', course: 'Graphics Design', status: 'Late' },
+      { id: 15, name: 'Kehinde Folarin', course: 'Video Editing', status: 'Present' },
+      { id: 16, name: 'Umar Suleiman', course: 'Backend Development', status: 'Absent' },
+      { id: 17, name: 'Maryam Lawal', course: 'AI for Productivity', status: 'Present' },
+      { id: 18, name: 'Tunde Afolabi', course: 'Social Media Management', status: 'Present' },
+      { id: 19, name: 'Rukayat Musa', course: 'Frontend Development', status: 'Late' },
+      { id: 20, name: 'Ayo Martins', course: 'UI/UX Strategy', status: 'Present' },
+      { id: 21, name: 'Nafisa Sule', course: 'Digital Marketing', status: 'Present' },
+      { id: 22, name: 'Gift Ibrahim', course: 'Data Science', status: 'Absent' },
+      { id: 23, name: 'Jummai Abdullahi', course: 'Content Creation', status: 'Present' },
+      { id: 24, name: 'Temitope Ajayi', course: 'Graphics Design', status: 'Present' },
+      { id: 25, name: 'Mohammed Ali', course: 'Cybersecurity', status: 'Late' },
+      { id: 26, name: 'Damilola Olanrewaju', course: 'Video Editing', status: 'Present' },
+      { id: 27, name: 'Fatima Danjuma', course: 'AI for Productivity', status: 'Absent' },
+      { id: 28, name: 'Abdulrazaq Sanni', course: 'Frontend Development', status: 'Present' },
+      { id: 29, name: 'Ibrahim Bello', course: 'Social Media Management', status: 'Present' },
+      { id: 30, name: 'Amina Garba', course: 'Data Science', status: 'Late' }
+    ];
+
+    const defaultResourceItems = [
+      { type: 'Document', title: 'Week 2 assignment brief', detail: 'Uploaded by tutor • PDF', time: 'Today, 8:30 AM' },
+      { type: 'Class Link', title: 'Live session link', detail: 'Zoom meeting for project review', time: 'Today, 9:00 AM' },
+      { type: 'Text Assignment', title: 'Mini project sprint task', detail: 'Build a landing page and submit before 5PM', time: 'Today, 10:15 AM' }
+    ];
+
+    const tutor = JSON.parse(localStorage.getItem('student_data') || 'null');
+    if (!tutor || tutor.role !== 'Staff') {
+      window.location.href = 'login.html';
+    }
+
+    const currentUser = tutor || { name: 'Tutor Staff', email: 'allcourse_ilmnexus@gmail.com' };
+    document.getElementById('tutorName').textContent = currentUser.name || 'Tutor Staff';
+    document.getElementById('tutorEmail').textContent = currentUser.email || 'allcourse_ilmnexus@gmail.com';
+
+    document.getElementById('logoutButton').addEventListener('click', () => {
+      localStorage.removeItem('student_logged_in');
+      localStorage.removeItem('student_data');
+      window.location.href = 'login.html';
+    });
+
+    function loadPersistedState() {
+      const saved = JSON.parse(localStorage.getItem(storageKey) || 'null');
+      if (!saved) {
+        return {
+          roster: rosterSeed,
+          messages: [
+            { author: 'Tutor', scope: 'All Students', text: 'Welcome to today\'s cohort update. Please complete the design task before 5:00 PM.', time: 'Today, 9:00 AM' },
+            { author: 'Tutor', scope: 'Students Enrolled in My Courses', text: 'Frontend Dev students: join the live session link shared in the resources section.', time: 'Today, 9:30 AM' }
+          ],
+          resources: defaultResourceItems
+        };
+      }
+      return saved;
+    }
+
+    let appState = loadPersistedState();
+
+    function saveState() {
+      localStorage.setItem(storageKey, JSON.stringify(appState));
+    }
+
+    function formatTime() {
+      const now = new Date();
+      return now.toLocaleString([], { month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit' });
+    }
+
+    function renderOverview() {
+      const presentCount = appState.roster.filter(item => item.status === 'Present').length;
+      const lateCount = appState.roster.filter(item => item.status === 'Late').length;
+      document.getElementById('studentsCount').textContent = appState.roster.length;
+      document.getElementById('presentCount').textContent = presentCount;
+      document.getElementById('lateCount').textContent = lateCount;
+
+      const overviewFeed = document.getElementById('overviewFeed');
+      overviewFeed.innerHTML = [
+        { label: 'Attendance today', detail: `${presentCount} present • ${lateCount} late • ${appState.roster.length - presentCount - lateCount} absent` },
+        { label: 'Announcements', detail: `${appState.messages.length} active messages posted` },
+        { label: 'Shared resources', detail: `${appState.resources.length} learning items available` }
+      ].map(item => `
+        <div class="resource-item">
+          <div>
+            <strong>${item.label}</strong>
+            <small>${item.detail}</small>
+          </div>
+          <span class="resource-badge">Live</span>
+        </div>
+      `).join('');
+    }
+
+    function renderMessages() {
+      const list = document.getElementById('messageList');
+      list.innerHTML = appState.messages.length ? appState.messages.map(message => `
+        <div class="message-item">
+          <div class="message-meta">
+            <span>${message.author}</span>
+            <span>${message.scope}</span>
+            <span>${message.time}</span>
+          </div>
+          <p>${message.text}</p>
+        </div>
+      `).join('') : '<div class="message-item"><p>No public updates yet.</p></div>';
+    }
+
+    async function publishToGeneralChat(content, category = 'Announcements', link = '') {
+      const payload = {
+        memberId: currentUser.uid || 'tutor',
+        memberName: currentUser.name || 'Tutor',
+        memberEmail: currentUser.email || 'staff@ilmnexus.com',
+        memberRole: 'Staff',
+        category,
+        content,
+        link,
+        createdAt: serverTimestamp()
+      };
+
+      try {
+        await addDoc(collection(db, 'channels', 'general-chat', 'messages'), payload);
+        return true;
+      } catch (error) {
+        console.warn('Firebase general chat publish failed, saving locally:', error);
+        appState.messages.unshift({
+          author: currentUser.name || 'Tutor',
+          scope: 'All Students',
+          text: content,
+          time: formatTime()
+        });
+        saveState();
+        return false;
+      }
+    }
+
+    function syncMessagesFromFirebase() {
+      onSnapshot(collection(db, 'channels', 'general-chat', 'messages'), snapshot => {
+        const items = snapshot.docs.map(item => item.data()).sort((a, b) => {
+          const aTime = a.createdAt?.seconds ?? 0;
+          const bTime = b.createdAt?.seconds ?? 0;
+          return bTime - aTime;
+        }).map(item => ({
+          author: item.memberName || 'Tutor',
+          scope: item.memberRole === 'Staff' ? 'Tutor' : 'All Students',
+          text: item.content,
+          time: item.createdAt?.toDate ? item.createdAt.toDate().toLocaleString([], { month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit' }) : 'Recently'
+        }));
+
+        appState.messages = items.length ? items : appState.messages;
+        renderMessages();
+        renderOverview();
+      }, () => {
+        appState.messages = appState.messages || [];
+      });
+    }
+
+    function renderResources() {
+      const target = document.getElementById('resourceList');
+      target.innerHTML = appState.resources.map(item => `
+        <div class="resource-item">
+          <div>
+            <strong>${item.title}</strong>
+            <small>${item.detail}</small>
+          </div>
+          <div style="display:grid; gap:.35rem; justify-items:end;">
+            <span class="resource-badge">${item.type}</span>
+            <small>${item.time}</small>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function renderRoster() {
+      const body = document.getElementById('rosterBody');
+      body.innerHTML = appState.roster.map((student, index) => `
+        <tr>
+          <td>${index + 1}</td>
+          <td>${student.name}</td>
+          <td>${student.course}</td>
+          <td>
+            <select data-student-id="${student.id}" class="attendance-select">
+              <option value="Present" ${student.status === 'Present' ? 'selected' : ''}>Present</option>
+              <option value="Absent" ${student.status === 'Absent' ? 'selected' : ''}>Absent</option>
+              <option value="Late" ${student.status === 'Late' ? 'selected' : ''}>Late</option>
+            </select>
+          </td>
+        </tr>
+      `).join('');
+    }
+
+    function updateNavigation() {
+      document.querySelectorAll('.nav-button').forEach(button => {
+        const target = button.dataset.section;
+        const isActive = target === document.querySelector('.section.active')?.id;
+        button.classList.toggle('active', Boolean(isActive));
+      });
+    }
+
+    document.querySelectorAll('.nav-button').forEach(button => {
+      button.addEventListener('click', () => {
+        document.querySelectorAll('.section').forEach(section => section.classList.remove('active'));
+        document.getElementById(button.dataset.section).classList.add('active');
+        updateNavigation();
+      });
+    });
+
+    document.getElementById('sendChat').addEventListener('click', async () => {
+      const text = document.getElementById('chatMessage').value.trim();
+      const scope = document.getElementById('broadcastScope').value;
+      if (!text) return;
+
+      await publishToGeneralChat(text, scope === 'All Students' ? 'Announcements' : 'Questions', '');
+
+      document.getElementById('chatMessage').value = '';
+      renderMessages();
+      renderOverview();
+    });
+
+    document.getElementById('uploadDocument').addEventListener('click', async () => {
+      const title = document.getElementById('documentTitle').value.trim();
+      const file = document.getElementById('documentUpload').files[0];
+      if (!title || !file) return;
+
+      const content = `Document uploaded: ${title} • ${file.name}`;
+      await publishToGeneralChat(content, 'Resources', '');
+
+      appState.resources.unshift({
+        type: 'Document',
+        title,
+        detail: `${file.name} • ${file.type || 'PDF / Docx'}`,
+        time: formatTime()
+      });
+
+      document.getElementById('documentTitle').value = '';
+      document.getElementById('documentUpload').value = '';
+      saveState();
+      renderResources();
+      renderOverview();
+    });
+
+    document.getElementById('sendAssignment').addEventListener('click', async () => {
+      const text = document.getElementById('assignmentText').value.trim();
+      if (!text) return;
+
+      await publishToGeneralChat(`Assignment posted: ${text}`, 'Announcements', '');
+
+      appState.resources.unshift({
+        type: 'Text Assignment',
+        title: 'New assignment task',
+        detail: text,
+        time: formatTime()
+      });
+
+      document.getElementById('assignmentText').value = '';
+      saveState();
+      renderResources();
+      renderOverview();
+    });
+
+    document.getElementById('publishLink').addEventListener('click', async () => {
+      const link = document.getElementById('classLink').value.trim();
+      if (!link) return;
+
+      await publishToGeneralChat(`Class link shared: ${link}`, 'Resources', link);
+
+      appState.resources.unshift({
+        type: 'Class Link',
+        title: 'Classroom access link',
+        detail: link,
+        time: formatTime()
+      });
+
+      document.getElementById('classLink').value = '';
+      saveState();
+      renderResources();
+      renderOverview();
+    });
+
+    document.getElementById('rosterBody').addEventListener('change', event => {
+      const select = event.target.closest('.attendance-select');
+      if (!select) return;
+      const id = Number(select.dataset.studentId);
+      const student = appState.roster.find(item => item.id === id);
+      if (!student) return;
+      student.status = select.value;
+      saveState();
+      renderOverview();
+    });
+
+    function exportAttendanceCsv() {
+      const rows = [
+        ['Student', 'Course', 'Status'],
+        ...appState.roster.map(item => [item.name, item.course, item.status])
+      ];
+
+      const csv = rows.map(row => row.map(value => '"' + String(value).replace(/"/g, '""') + '"').join(',')).join('\n');
+      const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'attendance_report.csv';
+      a.click();
+      URL.revokeObjectURL(url);
+    }
+
+    async function shareAttendanceToChat() {
+      const summary = appState.roster.map(item => `${item.name}: ${item.status}`).join(' • ');
+      await publishToGeneralChat(`Attendance report: ${summary}`, 'Announcements', '');
+
+      renderMessages();
+      renderOverview();
+      document.querySelector('.nav-button[data-section="chat"]').click();
+    }
+
+    document.getElementById('exportAttendance').addEventListener('click', exportAttendanceCsv);
+    document.getElementById('shareAttendance').addEventListener('click', shareAttendanceToChat);
+
+    renderOverview();
+    renderMessages();
+    renderResources();
+    renderRoster();
+    syncMessagesFromFirebase();
+    updateNavigation();
+  </script>
+</body>
+</html>

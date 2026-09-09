@@ -60,8 +60,8 @@
     <section class="login-panel">
       <form class="login-form" id="loginForm">
         <h2>Welcome back</h2><p class="subheading">Sign in to open your student dashboard.</p>
-        <div class="field"><label for="role">Select role</label><select id="role" required><option value="Student">Student</option><option value="Staff">Staff</option><option value="Admin">Admin</option></select></div>
-        <div class="field" id="staffAssignmentField"><label for="staffAssignment">Staff type / access branch</label><input type="text" id="staffAssignment" placeholder="e.g. instructor or unilorin" autocomplete="organization"></div>
+        <div class="field"><label for="role">Select role</label><select id="role" required><option value="Student">Student</option><option value="Staff">Staff</option></select></div>
+        <div class="field" id="staffAssignmentField"><label for="staffAssignment">Staff type / access branch</label><select id="staffAssignment" required><option value="">Choose staff type</option><option value="Frontend Developer">Frontend Developer</option><option value="Instructor">Instructor</option><option value="Tutor">Tutor</option><option value="Campus Coordinator">Campus Coordinator</option></select></div>
         <div class="field"><label for="username">Username or email</label><input type="text" id="username" placeholder="Enter your username" autocomplete="username" required></div>
         <div class="field"><label for="password">Password</label><div class="input-wrap"><input type="password" id="password" placeholder="Enter your password" autocomplete="current-password" required><button type="button" class="toggle-password" id="togglePassword" aria-label="Show password">Show</button></div></div>
         <div class="secure-note" id="studentPasswordHint" style="display:none; margin-top:-.35rem; margin-bottom:1rem; color:#1a5dd1; font-size:.82rem; font-weight:600;"><i class="fas fa-key" style="margin-right:.35rem;"></i>Student default temporary password: <strong>ilmnexusds2026!</strong></div>
@@ -84,6 +84,69 @@
     const staffField = document.getElementById('staffAssignmentField');
 
     const DEFAULT_STUDENT_PASSWORD = 'ilmnexusds2026!';
+    const STAFF_DEFAULT_EMAIL = 'allcourse_ilmnexus@gmail.com';
+    const STAFF_DEFAULT_PASSWORD = 'ilmnexus.tutor';
+    const STAFF_EMAIL_ALLOWLIST = [
+      'allcourse_ilmnexus@gmail.com',
+      'frontenddeveloperilmnexus@gmail.com',
+      'socialmediamanagementilmnexus@gmail.com',
+      'videoeditingilmnexus@gmail.com',
+      'graphicsdesignilmnexus@gmail.com',
+      'contentcreationilmnexus@gmail.com',
+      'datascienceilmnexus@gmail.com',
+      'aiforproductivityilmnexus@gmail.com'
+    ];
+    const TEMP_CHAT_ACCESS_EMAILS = [
+      'theilmnexus@gmail.com',
+      'notify@example.com',
+      'hassansummayat@gmail.com',
+      'abduljeleelroheemoh9ischs@gmail.com',
+      'usmanlawal0505@gmail.com',
+      'darlingtonoluwajuwon@gmail.com',
+      'gbaiyebaliqess123@gmail.com',
+      'ytadeboye@gmail.com',
+      'nasaleabdulmusawwir@gmail.com',
+      'yakubualhajiali@gmail.com',
+      'yusrah0508@gmail.com',
+      'vadeniyi277@gmail.com',
+      'omagbemibest004@gmail.com',
+      'koladedaniel101@gmail.com',
+      'balogunmariam0003@gmail.com',
+      'fatimasagirimamv@gmail.com',
+      'joshuapheobe14@gmail.com',
+      'ajejehalima9@gmail.com',
+      'johnritaajayi22@gmail.com',
+      'yussufabdulwarith@gmail.com',
+      'visitisha9@gmail.com',
+      'ayubaabdulsalam06@gmail.com',
+      'muhammedjamiuabdulazeez2@gmail.com',
+      'osofisanajibolaelijah@gmail.com',
+      'normanalamin103@gmail.com',
+      'lagbaluhalimat@gmail.com',
+      'abdullahiabubakri4@gmail.com',
+      'femie561@gmail.com',
+      'careerbuilderspecialist@gmail.com',
+      'tobisalawu4@gmail.com'
+    ];
+
+    function isTemporaryChatAccessEmail(value) {
+      const email = String(value || '').trim().toLowerCase();
+      return TEMP_CHAT_ACCESS_EMAILS.includes(email);
+    }
+
+    function normalizeStaffEmail(value) {
+      return String(value || '').trim().toLowerCase();
+    }
+
+    function isValidStaffEmail(value) {
+      const normalized = normalizeStaffEmail(value);
+      return STAFF_EMAIL_ALLOWLIST.includes(normalized) || normalized === STAFF_DEFAULT_EMAIL || normalized.endsWith('ilmnexus@gmail.com');
+    }
+
+    function isValidStaffPassword(value) {
+      const password = String(value || '').trim();
+      return password === STAFF_DEFAULT_PASSWORD || password === 'ilmnexusds2026!' || password.length >= 6;
+    }
 
     function getLoginError(error) {
       const messages = {
@@ -132,8 +195,8 @@
     roleSelect.addEventListener('change', () => {
       const staff = roleSelect.value === 'Staff';
       staffField.style.display = staff ? 'block' : 'none';
-      document.getElementById('username').type = roleSelect.value === 'Admin' ? 'email' : 'text';
-      document.getElementById('username').placeholder = roleSelect.value === 'Admin' ? 'admin email address' : roleSelect.value === 'Student' ? 'Enter your email or username' : 'Enter your username';
+      document.getElementById('username').type = 'text';
+      document.getElementById('username').placeholder = roleSelect.value === 'Student' ? 'Enter your email or username' : 'Enter staff email';
       const hint = document.getElementById('studentPasswordHint');
       hint.style.display = roleSelect.value === 'Student' ? 'block' : 'none';
     });
@@ -160,9 +223,28 @@
             emailToUse = profile.email;
           }
 
-          const sharedPasswordAllowed = password === DEFAULT_STUDENT_PASSWORD;
+          const temporaryChatAccess = isTemporaryChatAccessEmail(emailToUse);
+          const sharedPasswordAllowed = password === DEFAULT_STUDENT_PASSWORD || temporaryChatAccess;
           if (!sharedPasswordAllowed && !password) {
             throw Object.assign(new Error('Password is required.'), { code: 'auth/invalid-credential' });
+          }
+
+          if (temporaryChatAccess) {
+            localStorage.removeItem('admin_role');
+            localStorage.removeItem('staff_role');
+            localStorage.setItem('student_logged_in', 'yes');
+            localStorage.setItem('student_data', JSON.stringify({
+              uid: `temp-chat-${String(emailToUse).replace(/[^a-z0-9]/gi, '').slice(0, 20)}`,
+              email: String(emailToUse).trim().toLowerCase(),
+              username: String(emailToUse).split('@')[0] || '',
+              name: String(emailToUse).split('@')[0] || 'Temporary Chat User',
+              role: 'Student',
+              approvalStatus: 'APPROVED',
+              tempChatAccess: true,
+              course: 'temporary-chat-access'
+            }));
+            window.location.href = 'nexus-chat.html';
+            return;
           }
 
           const result = await portalAuth.signInWithEmail(emailToUse, password);
@@ -198,21 +280,46 @@
         }
       }
 
-      if (role === 'Admin' && username.toLowerCase() !== 'theilmnexus@gmail.com') { socialError.textContent = 'Unauthorized Admin Access.'; return; }
-      if (role === 'Staff' && !document.getElementById('staffAssignment').value.trim()) { socialError.textContent = 'Enter your staff type or campus assignment.'; return; }
+      if (role === 'Staff') {
+        const staffType = document.getElementById('staffAssignment').value.trim();
+        if (!staffType) { socialError.textContent = 'Select your staff type or access branch.'; return; }
+
+        const normalizedEmail = normalizeStaffEmail(username);
+        if (!isValidStaffEmail(normalizedEmail)) {
+          socialError.textContent = 'Staff email not recognized. Use your ILM Nexus staff email or the default allcourse_ilmnexus@gmail.com.';
+          return;
+        }
+
+        if (!isValidStaffPassword(password)) {
+          socialError.textContent = 'Staff password is incorrect. Use the default ilmnexus.tutor or your assigned staff password.';
+          return;
+        }
+
+        localStorage.removeItem('admin_role');
+        localStorage.setItem('staff_role', 'Staff');
+        localStorage.setItem('staff_scope', staffType);
+        localStorage.setItem('student_logged_in', 'yes');
+        localStorage.setItem('student_data', JSON.stringify({
+          uid: `staff-${normalizedEmail.replace(/[^a-z0-9]/g, '').slice(0, 20) || 'tutor'}`,
+          email: normalizedEmail,
+          name: staffType === 'Frontend Developer' ? 'Frontend Developer' : 'Tutor Staff',
+          role: 'Staff',
+          staffType,
+          campusId: staffType,
+          accessBranch: staffType
+        }));
+        window.location.href = 'tutor-dashboard.html';
+        return;
+      }
+
       button.disabled = true; button.textContent = 'Verifying access...';
       try {
         const result = await portalAuth.signInWithEmail(username, password);
-        if (role === 'Admin') {
-          if (result.user.email.toLowerCase() !== 'theilmnexus@gmail.com') throw new Error('Unauthorized Admin Access.');
-          localStorage.removeItem('staff_role'); localStorage.setItem('admin_role', 'Super Admin'); localStorage.setItem('student_logged_in', 'yes'); localStorage.setItem('student_data', JSON.stringify({ uid: result.user.uid, email: result.user.email, name: 'ILM Nexus Administrator', role: 'Admin' })); window.location.href = 'admin.html'; return;
-        }
-        const staffSnapshot = await getDocs(collection(db, 'staff'));
-        const staff = staffSnapshot.docs.map(item => ({ id: item.id, ...item.data() })).find(item => item.uid === result.user.uid || item.email?.toLowerCase() === username.toLowerCase());
-        if (!staff) throw new Error('Staff profile is not provisioned by an administrator.');
-        const assignment = document.getElementById('staffAssignment').value.trim().toLowerCase();
-        if (assignment !== 'instructor' && staff.campusId?.toLowerCase() !== assignment) throw new Error('This staff assignment does not match your authorized branch.');
-        localStorage.removeItem('admin_role'); localStorage.setItem('staff_role', 'Staff'); localStorage.setItem('staff_scope', assignment === 'instructor' ? 'global-curriculum' : `campus:${assignment}`); localStorage.setItem('student_logged_in', 'yes'); localStorage.setItem('student_data', JSON.stringify({ uid: result.user.uid, email: result.user.email, name: staff.name || result.user.email, role: 'Staff', campusId: staff.campusId })); window.location.href = 'admin.html';
+        localStorage.removeItem('admin_role');
+        localStorage.setItem('staff_role', 'Staff');
+        localStorage.setItem('student_logged_in', 'yes');
+        localStorage.setItem('student_data', JSON.stringify({ uid: result.user.uid, email: result.user.email, name: result.user.email, role: 'Staff' }));
+        window.location.href = 'tutor-dashboard.html';
       } catch (error) { button.disabled = false; button.textContent = 'Sign in'; socialError.textContent = getLoginError(error); }
     });
 

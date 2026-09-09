@@ -21,13 +21,48 @@ const channels = [
   { id:'cybersecurity', label:'Cybersecurity', icon:'fa-shield-halved', course:'cybersecurity' }
 ];
 const student = JSON.parse(localStorage.getItem('student_data') || 'null');
+const TEMP_CHAT_ACCESS_EMAILS = [
+  'theilmnexus@gmail.com',
+  'notify@example.com',
+  'hassansummayat@gmail.com',
+  'abduljeleelroheemoh9ischs@gmail.com',
+  'usmanlawal0505@gmail.com',
+  'darlingtonoluwajuwon@gmail.com',
+  'gbaiyebaliqess123@gmail.com',
+  'ytadeboye@gmail.com',
+  'nasaleabdulmusawwir@gmail.com',
+  'yakubualhajiali@gmail.com',
+  'yusrah0508@gmail.com',
+  'vadeniyi277@gmail.com',
+  'omagbemibest004@gmail.com',
+  'koladedaniel101@gmail.com',
+  'balogunmariam0003@gmail.com',
+  'fatimasagirimamv@gmail.com',
+  'joshuapheobe14@gmail.com',
+  'ajejehalima9@gmail.com',
+  'johnritaajayi22@gmail.com',
+  'yussufabdulwarith@gmail.com',
+  'visitisha9@gmail.com',
+  'ayubaabdulsalam06@gmail.com',
+  'muhammedjamiuabdulazeez2@gmail.com',
+  'osofisanajibolaelijah@gmail.com',
+  'normanalamin103@gmail.com',
+  'lagbaluhalimat@gmail.com',
+  'abdullahiabubakri4@gmail.com',
+  'femie561@gmail.com',
+  'careerbuilderspecialist@gmail.com',
+  'tobisalawu4@gmail.com'
+];
+const temporaryChatAccess = !!student && TEMP_CHAT_ACCESS_EMAILS.includes(String(student.email || '').trim().toLowerCase());
 const escapeHtml = value => String(value ?? '').replace(/[&<>"']/g, character => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#039;' }[character]));
 const courseText = String(student?.course || '').toLowerCase();
-const allowed = channel => !channel.course || courseText.includes(channel.course) || student?.role === 'Staff' || student?.role === 'Admin';
+const allowed = channel => !channel.course || courseText.includes(channel.course) || student?.role === 'Staff' || student?.role === 'Admin' || temporaryChatAccess;
 let activeChannel = channels.find(allowed) || channels[0]; let activeFilter = 'All'; let stopMessages = null;
 
-const user = await new Promise(resolve => { const stop = portalAuth.onAuthStateChanged(current => { stop(); resolve(current); }); });
-if (!user || !student || !['Student','Staff'].includes(student.role || 'Student')) { window.location.href = 'login.html'; throw new Error('Nexus Chat requires an enrolled authenticated user.'); }
+const user = temporaryChatAccess
+  ? { uid: student.uid || `temp-${String(student.email || 'chat').replace(/[^a-z0-9]/gi, '').slice(0, 20)}`, email: student.email, displayName: student.name || student.email }
+  : await new Promise(resolve => { const stop = portalAuth.onAuthStateChanged(current => { stop(); resolve(current); }); });
+if (!student || (!temporaryChatAccess && (!user || !['Student','Staff'].includes(student.role || 'Student')))) { window.location.href = 'login.html'; throw new Error('Nexus Chat requires an enrolled authenticated user.'); }
 
 document.getElementById('app').innerHTML = `<div class="chat-shell"><aside class="chat-side"><a class="brand" href="dashboard.html"><img src="./image/nexus-learn logo.png" alt="ILM Nexus"><span>ILM Nexus Academy</span></a><p class="side-label">Nexus Chat</p><nav class="channels">${channels.map(channel => `<button class="channel ${allowed(channel) ? '' : 'locked'} ${channel.id === activeChannel.id ? 'active' : ''}" data-channel="${channel.id}" ${allowed(channel) ? '' : 'disabled'}><i class="fas ${channel.icon}"></i><span># ${channel.label}</span>${allowed(channel) ? '' : '<i class="fas fa-lock" style="margin-left:auto"></i>'}</button>`).join('')}</nav><div class="side-foot">Private enrolled workspace</div></aside><main class="chat-main"><header class="chat-top"><div><h1>Nexus Chat</h1><p>Private classroom discussion for ${escapeHtml(student.name || user.email)}</p></div><a class="back" href="dashboard.html">Back to dashboard</a></header><div class="chat-wrap"><div class="chat-grid"><section><div class="panel"><div class="message-head"><div><strong id="channelTitle"></strong><p id="channelDescription" style="margin:.2rem 0;color:var(--muted);font-size:.82rem">Share questions, resources, and project progress.</p></div></div><div class="filters"><button class="filter active" data-filter="All">All posts</button><button class="filter" data-filter="Questions">Questions</button><button class="filter" data-filter="Resources">Resources</button><button class="filter" data-filter="Announcements">Announcements</button></div><form class="composer" id="messageForm"><div class="composer-row"><label>Post category<select name="category"><option>Questions</option><option>Resources</option><option>Announcements</option></select></label><label>Link attachment<input name="link" type="url" placeholder="https://..."></label></div><textarea name="content" placeholder="Start a private conversation, share a project update, or ask a question..." required maxlength="2000"></textarea><button class="primary" type="submit"><i class="fas fa-paper-plane"></i> Send message</button><p class="error" id="messageError"></p></form></div><div class="panel feed" id="messageFeed"><div class="notice">Loading channel messages...</div></div></section><aside><div class="panel widget"><h3><i class="fas fa-lock"></i> Enrolled access</h3><p>Only authenticated students and staff can enter this workspace. Track channels unlock when your enrollment matches the course.</p></div><div class="panel widget" style="margin-top:1rem"><h3><i class="fas fa-thumbtack"></i> Classroom guide</h3><ul><li>Ask clear questions.</li><li>Share useful resources.</li><li>Keep project work respectful.</li></ul></div></aside></div></div></main></div>`;
 
