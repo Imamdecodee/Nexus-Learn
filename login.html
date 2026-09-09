@@ -308,7 +308,7 @@
           campusId: staffType,
           accessBranch: staffType
         }));
-        window.location.href = 'tutor-dashboard.html';
+        window.location.href = './tutor-dashboard.html';
         return;
       }
 
@@ -319,7 +319,7 @@
         localStorage.setItem('staff_role', 'Staff');
         localStorage.setItem('student_logged_in', 'yes');
         localStorage.setItem('student_data', JSON.stringify({ uid: result.user.uid, email: result.user.email, name: result.user.email, role: 'Staff' }));
-        window.location.href = 'tutor-dashboard.html';
+        window.location.href = './tutor-dashboard.html';
       } catch (error) { button.disabled = false; button.textContent = 'Sign in'; socialError.textContent = getLoginError(error); }
     });
 
