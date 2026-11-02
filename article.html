@@ -6,17 +6,17 @@
     <title>ILM Nexus News Article</title>
     <meta name="description" content="Read the latest news and updates from ILM Nexus.">
     <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
-    <link id="articleCanonical" rel="canonical" href="https://ilmnexus.tech/article.html">
+    <link id="articleCanonical" rel="canonical" href="https://ilmnexus.pro/article.html">
     <meta id="articleOgTitle" property="og:title" content="ILM Nexus News Article">
     <meta id="articleOgDescription" property="og:description" content="Read the latest news and updates from ILM Nexus.">
-    <meta id="articleOgImage" property="og:image" content="https://ilmnexus.tech/image/nexus-learn%20logo.png">
-    <meta id="articleOgUrl" property="og:url" content="https://ilmnexus.tech/article.html">
+    <meta id="articleOgImage" property="og:image" content="https://ilmnexus.pro/image/nexus-learn%20logo.png">
+    <meta id="articleOgUrl" property="og:url" content="https://ilmnexus.pro/article.html">
     <meta property="og:type" content="article">
-    <meta property="og:site_name" content="ILM Nexus">
+    <meta property="og:site_name" content="ILM Nexus Academy">
     <meta name="twitter:card" content="summary_large_image">
     <meta id="articleTwitterTitle" name="twitter:title" content="ILM Nexus News Article">
     <meta id="articleTwitterDescription" name="twitter:description" content="Read the latest news and updates from ILM Nexus.">
-    <meta id="articleTwitterImage" name="twitter:image" content="https://ilmnexus.tech/image/nexus-learn%20logo.png">
+    <meta id="articleTwitterImage" name="twitter:image" content="https://ilmnexus.pro/image/nexus-learn%20logo.png">
     <script id="articleStructuredData" type="application/ld+json">{"@context":"https://schema.org","@type":"NewsArticle","publisher":{"@type":"Organization","name":"Ilm Nexus","url":"https://ilmnexus.tech/"}}</script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -105,10 +105,11 @@
         }
 
         function renderArticle(article) {
-            const articleUrl = `${window.location.origin}${window.location.pathname}?id=${encodeURIComponent(articleId)}`;
+            const preferredOrigin = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') ? 'https://ilmnexus.pro' : window.location.origin;
+            const articleUrl = `${preferredOrigin}${window.location.pathname}?id=${encodeURIComponent(articleId)}`;
             const articleTitle = article.title || 'ILM Nexus News';
             const articleDescription = article.description || article.content || 'Read the latest news and updates from ILM Nexus.';
-            const articleImage = article.image || `${window.location.origin}/image/nexus-learn%20logo.png`;
+            const articleImage = article.image || `${preferredOrigin}/image/nexus-learn%20logo.png`;
             const publishedDate = article.dateAdded?.toDate ? article.dateAdded.toDate() : new Date(article.date || Date.now());
 
             document.title = `${articleTitle} | ILM Nexus News`;

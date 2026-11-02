@@ -1,1 +1,25 @@
-<!doctype html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>ILM Nexus University of Ilorin Campus</title></head><body><script>fetch('../../../campus-template.html').then(r=>r.text()).then(t=>{document.open();document.write(t.replaceAll('__ROOT__','../../../').replaceAll('__CAMPUS_ID__','unilorin'));document.close()})</script></body></html>
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width,initial-scale=1">
+	<title>ILM Nexus UNILORIN Campus | University of Ilorin</title>
+	<meta name="description" content="ILM Nexus UNILORIN is the University of Ilorin campus tech community for digital skills, leadership, events, and career growth.">
+	<meta name="robots" content="index, follow">
+	<link rel="canonical" href="https://ilmnexus.pro/state/kwara/unilorin/">
+</head>
+<body>
+	<script>
+		fetch('../../../campus-template.html')
+			.then(r => r.text())
+			.then(t => {
+				document.open();
+				document.write(t.replaceAll('__ROOT__', '../../../').replaceAll('__CAMPUS_ID__', 'unilorin'));
+				document.close();
+			})
+			.catch(() => {
+				document.body.innerHTML = '<main style="font-family:Arial,sans-serif;padding:2rem;max-width:700px;margin:3rem auto;"><h1>ILM Nexus UNILORIN Campus</h1><p>The campus page is temporarily unavailable. Please try again shortly.</p></main>';
+			});
+	</script>
+</body>
+</html>

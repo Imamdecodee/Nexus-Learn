@@ -10,14 +10,18 @@
   }
 
   const logo = `${root}${campus.logo}`;
-  const memberUrl = 'https://ilmnexus-5oxknaa6.manus.space/join';
+  const memberUrl = 'https://ilmnexusunilorin.manus.space/member-id';
   const contactNumber = '09161699509';
   const contactUrl = `tel:${contactNumber}`;
   const dashboardUrl = `${root}dashboard.html#courses`;
   const campusPath = campus.route.replace(/\/$/, '');
-  const campusUrl = `https://ilmnexus.tech/${campusPath}/`;
-  const pageTitle = `ILM Nexus ${campus.name} Campus | Learn, Build, Grow`;
-  const pageDescription = `Join the ILM Nexus ${campus.institution} community for practical digital skills, campus events, and career growth.`;
+  const campusUrl = `https://ilmnexus.pro/${campusPath}/`;
+  const pageTitle = campus.id === 'unilorin'
+    ? 'ILM Nexus UNILORIN | University of Ilorin Campus Tech Community'
+    : `ILM Nexus ${campus.name} Campus | Learn, Build, Grow`;
+  const pageDescription = campus.id === 'unilorin'
+    ? 'ILM Nexus UNILORIN is the University of Ilorin campus tech community for digital skills, leadership, events, and career growth.'
+    : `Join the ILM Nexus ${campus.institution} community for practical digital skills, campus events, and career growth.`;
   const leadership = window.CAMPUS_ID === 'unilorin' ? [
     { name:'Bakare Aminat Adewunmi', role:'Campus President · Hub Manager', meta:'Employment Relations & HRM · 200 Level', contact:'+2349057808154', hobbies:'Community building, learning', image:'president.jpg', vision:'I am glad to have everyone onboard and I look forward to the growth and progress of ILM NEXUS with every single person.' },
     { name:'Abdulhadi Sanni (McTops)', role:'Vice President', meta:'ER / HRM · 200 Level', contact:'+2347084484946', hobbies:'Surfing the net, sports', image:'vice president.jpg', vision:'Because I believe in ILM Nexus and I want to see it progress and succeed.' },
@@ -55,13 +59,23 @@
   ];
 
   document.title = pageTitle;
+  const keywordsTag = document.querySelector('meta[name="keywords"]') || document.createElement('meta');
+  keywordsTag.setAttribute('name', 'keywords');
+  keywordsTag.setAttribute('content', campus.id === 'unilorin'
+    ? 'ILM Nexus UNILORIN, ILM Nexus University of Ilorin, University of Ilorin campus tech community, ILM Nexus Ilorin, ILM Nexus Kwara campus'
+    : `ILM Nexus ${campus.name}, ${campus.institution}, campus tech community, digital skills, career growth`);
+  if (!document.querySelector('meta[name="keywords"]')) document.head.appendChild(keywordsTag);
   document.querySelector('meta[name="description"]')?.setAttribute('content', pageDescription);
   document.querySelector('link[rel="canonical"]')?.setAttribute('href', campusUrl);
   document.querySelector('meta[property="og:url"]')?.setAttribute('content', campusUrl);
   document.querySelector('meta[property="og:title"]')?.setAttribute('content', pageTitle);
   document.querySelector('meta[property="og:description"]')?.setAttribute('content', pageDescription);
+  document.querySelector('meta[property="og:image"]')?.setAttribute('content', 'https://ilmnexus.pro/image/logo.png');
+  document.querySelector('meta[name="twitter:title"]')?.setAttribute('content', pageTitle);
+  document.querySelector('meta[name="twitter:description"]')?.setAttribute('content', pageDescription);
+  document.querySelector('meta[name="twitter:image"]')?.setAttribute('content', 'https://ilmnexus.pro/image/logo.png');
   const structuredData = document.getElementById('campusStructuredData');
-  if (structuredData) structuredData.textContent = JSON.stringify({ '@context':'https://schema.org', '@type':'EducationalOrganization', name:pageTitle, url:campusUrl, logo:`https://ilmnexus.tech/${campus.logo}`, description:pageDescription, parentOrganization:{ '@type':'EducationalOrganization', name:'ILM Nexus Academy' }, address:{ '@type':'PostalAddress', addressLocality:campus.state, addressCountry:'NG' } });
+  if (structuredData) structuredData.textContent = JSON.stringify({ '@context':'https://schema.org', '@type':'EducationalOrganization', name:pageTitle, url:campusUrl, logo:'https://ilmnexus.pro/image/logo.png', description:pageDescription, parentOrganization:{ '@type':'EducationalOrganization', name:'ILM Nexus Academy' }, address:{ '@type':'PostalAddress', addressLocality:campus.state, addressCountry:'NG' } });
 
   app.innerHTML = `
     <header class="campus-header"><div class="wrap campus-nav"><a href="${root}index.html" class="brand"><img src="${root}image/logo.png" alt="ILM Nexus logo"><span>ILM Nexus</span></a><nav><a href="#classroom">Classroom</a><a href="#leadership">Leadership</a><a href="#events">Events</a><a href="#news">News</a><a class="nav-join" href="${memberUrl}">Join Campus</a></nav></div></header>

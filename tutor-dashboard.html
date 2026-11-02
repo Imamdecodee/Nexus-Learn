@@ -750,15 +750,35 @@
         createdAt: serverTimestamp()
       };
 
+      const noticePayload = {
+        title: category || 'Tutor update',
+        body: content,
+        status: 'published',
+        publishedAt: serverTimestamp(),
+        createdBy: currentUser.uid || currentUser.email || 'tutor',
+        courseFilter: 'All',
+        source: 'tutor-dashboard',
+        link: link || ''
+      };
+
       try {
-        await addDoc(collection(db, 'channels', 'general-chat', 'messages'), payload);
+        await Promise.all([
+          addDoc(collection(db, 'channels', 'general-chat', 'messages'), payload),
+          addDoc(collection(db, 'notices'), noticePayload)
+        ]);
         return true;
       } catch (error) {
-        console.warn('Firebase general chat publish failed, saving locally:', error);
+        console.warn('Firebase tutor update publish failed, saving locally:', error);
         appState.messages.unshift({
           author: currentUser.name || 'Tutor',
           scope: 'All Students',
           text: content,
+          time: formatTime()
+        });
+        appState.resources.unshift({
+          type: category,
+          title: category || 'Tutor update',
+          detail: content,
           time: formatTime()
         });
         saveState();
