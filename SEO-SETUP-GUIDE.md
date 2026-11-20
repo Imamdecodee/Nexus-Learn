@@ -81,18 +81,18 @@ In Google Search Console:
 
 ### Article Share Previews
 
-Article links use `/share/article/{articleId}`. On Netlify, `_redirects` proxies these paths to the Firebase `articleShare` function. That function returns each article's title, description, and image in the initial HTML for social preview crawlers, then sends regular readers to the full article page. Keep the Firebase function deployed and publicly accessible for share links to work.
+Article links use `/share/article/{articleId}`. On Netlify, `_redirects` internally serves `article.html` for these paths while keeping the share URL in the address bar; the page reads the ID from the path and loads the article from Firestore. This keeps Read More links working even when the optional Firebase preview function is unavailable. The static article page does not provide per-article metadata to social preview crawlers. To enable rich social previews, deploy the Firebase `articleShare` function, confirm its direct URL returns article-specific metadata, and only then change the Netlify rewrite to proxy to that function.
 
 When publishing, add a few accurate, article-specific topics in **SEO Topics and Keywords**. They are saved with the article and included in its NewsArticle structured data and page metadata. Google does **not** use the `meta keywords` tag for rankings; the headline, useful article text, description, and links to the article matter more. Use the same topics naturally in the headline/story instead of repeating or stuffing keywords.
 
-Deploy the Firebase Function and Firestore rules from the repository root, then redeploy the site on Netlify so its `_redirects` proxy is published:
+Deploy the Firebase Function and Firestore rules from the repository root:
 
 ```powershell
 npm --prefix functions install
 firebase deploy --only functions:articleShare,firestore:rules
 ```
 
-Deploying Cloud Functions requires the Firebase project to use the Blaze billing plan. In the news page, use **Copy Link** or **Share** to copy the article URL. Older direct `article.html?id=...` links still open the article, but new share links should use `/share/article/{articleId}`.
+Deploying Cloud Functions requires the Firebase project to use the Blaze billing plan. In the news page, use **Copy Link** or **Share** to copy the article URL. Older direct `article.html?id=...` links still open the article, but new share links should use `/share/article/{articleId}`. If changing `_redirects` to the function proxy for rich previews, redeploy Netlify after verifying the function endpoint.
 
 Article comments are public. The Firestore rules allow anyone to read and create a comment with a name (up to 60 characters) and comment (up to 500 characters); only the admin can change or delete comments.
 
