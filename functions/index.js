@@ -7,6 +7,7 @@ initializeApp();
 const db = getFirestore();
 const SITE_ORIGIN = "https://ilmnexus.tech";
 const DEFAULT_IMAGE = `${SITE_ORIGIN}/image/nexus-learn%20logo.png`;
+const LOGO_IMAGE = `${SITE_ORIGIN}/image/nexus-learn%20logo.png`;
 
 function escapeHtml(value) {
     return String(value ?? "").replace(/[&<>"']/g, character => ({
@@ -162,9 +163,11 @@ ${keywords.length ? `<meta name="keywords" content="${escapeHtml(keywords.join("
 :root{--ink:#172033;--muted:#718096;--blue:#4361ee;--border:#e5eaf3}
 *{box-sizing:border-box}
 body{margin:0;background:radial-gradient(ellipse at 50% -15%,#dfe7ff 0,transparent 44rem),#f3f6fc;color:var(--ink);font:16px/1.75 Arial,sans-serif}
-.topbar{position:sticky;top:0;padding:18px max(24px,calc((100% - 1120px)/2));background:#ffffffeb;border-bottom:1px solid var(--border);backdrop-filter:blur(14px)}
+.topbar{position:sticky;top:0;z-index:5;padding:0 24px;background:#ffffffeb;border-bottom:1px solid var(--border);backdrop-filter:blur(14px)}
+.topbar-inner{width:min(1320px,100%);min-height:78px;margin:auto;display:flex;align-items:center;justify-content:space-between;gap:20px}
 .topbar a{color:var(--ink);font-weight:bold;text-decoration:none}
-main{max-width:1120px;margin:36px auto 60px;background:#fff;border:1px solid var(--border);border-radius:26px;overflow:hidden;box-shadow:0 28px 80px #23366e24}
+.topbar .brand img{display:block;width:158px;height:auto}
+main{width:min(1320px,calc(100% - 48px));margin:36px auto 60px;background:#fff;border:1px solid var(--border);border-radius:26px;overflow:hidden;box-shadow:0 28px 80px #23366e24}
 .hero{min-height:450px;position:relative;display:flex;align-items:end;color:#fff;background:linear-gradient(120deg,#18254d,#4361ee)}
 .hero>img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
 .hero:after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,#0a122aeb,#0a122a70 65%,#0a122a12),linear-gradient(0deg,#0a122a4d,transparent 60%)}
@@ -173,7 +176,7 @@ main{max-width:1120px;margin:36px auto 60px;background:#fff;border:1px solid var
 h1{max-width:900px;margin:16px 0;font-size:clamp(2.2rem,5.6vw,4.4rem);line-height:1.08;letter-spacing:-.035em}
 .intro{max-width:760px;color:#ffffffdf;font-size:1.15rem}
 .meta{display:flex;gap:20px;flex-wrap:wrap;color:#ffffffc9;font-size:.92rem}
-.layout{display:grid;grid-template-columns:minmax(0,1fr) 250px;gap:64px;padding:clamp(24px,5vw,64px)}
+.layout{display:grid;grid-template-columns:minmax(0,1fr) 290px;gap:clamp(36px,5vw,72px);padding:clamp(28px,5vw,72px)}
 .content{color:#35425a;font-size:1.12rem;overflow-wrap:anywhere}
 .content p{margin:0 0 1.3em}
 .content a,.related-link,.source-link{color:#2336a7;font-weight:bold;text-decoration:underline;text-decoration-color:#a9b8ff;text-underline-offset:3px;overflow-wrap:anywhere}
@@ -186,11 +189,11 @@ h1{max-width:900px;margin:16px 0;font-size:clamp(2.2rem,5.6vw,4.4rem);line-heigh
 .links{display:grid;gap:12px;margin-top:16px}
 .related-link,.source-link{display:block;padding:14px;border:1px solid var(--border);border-radius:12px;background:#fbfcff;text-decoration:none}
 footer{text-align:center;padding:22px;color:var(--muted);font-size:.9rem}
-@media(max-width:760px){main{margin:18px 12px 40px}.layout{grid-template-columns:1fr;gap:28px}.side{position:static;grid-row:1}.hero{min-height:420px}}
+@media(max-width:760px){.topbar{padding:0 16px}.topbar-inner{min-height:68px}.topbar .brand img{width:128px}main{width:calc(100% - 24px);margin:18px auto 40px}.layout{grid-template-columns:1fr;gap:28px}.side{position:static;grid-row:1}.hero{min-height:420px}}
 </style>
 </head>
 <body>
-<header class="topbar"><a href="${SITE_ORIGIN}/news.html">← All News</a></header>
+<header class="topbar"><nav class="topbar-inner"><a class="brand" href="${SITE_ORIGIN}/" aria-label="ILM Nexus home"><img src="${escapeHtml(LOGO_IMAGE)}" alt="ILM Nexus"></a><a href="${SITE_ORIGIN}/news.html">← All News</a></nav></header>
 <main>
 <header class="hero"><img src="${escapeHtml(image)}" alt="${escapeHtml(title)}"><div class="hero-copy">
 <div class="category">${escapeHtml(article.category || "ILM Nexus News")}</div>

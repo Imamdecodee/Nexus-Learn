@@ -7,17 +7,17 @@
     <meta name="description" content="Read the latest news and updates from ILM Nexus.">
     <meta id="articleKeywords" name="keywords" content="">
     <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
-    <link id="articleCanonical" rel="canonical" href="https://ilmnexus.pro/article.html">
+    <link id="articleCanonical" rel="canonical" href="https://ilmnexus.tech/article.html">
     <meta id="articleOgTitle" property="og:title" content="ILM Nexus News Article">
     <meta id="articleOgDescription" property="og:description" content="Read the latest news and updates from ILM Nexus.">
-    <meta id="articleOgImage" property="og:image" content="https://ilmnexus.pro/image/nexus-learn%20logo.png">
-    <meta id="articleOgUrl" property="og:url" content="https://ilmnexus.pro/article.html">
+    <meta id="articleOgImage" property="og:image" content="https://ilmnexus.tech/image/nexus-learn%20logo.png">
+    <meta id="articleOgUrl" property="og:url" content="https://ilmnexus.tech/article.html">
     <meta property="og:type" content="article">
     <meta property="og:site_name" content="ILM Nexus Academy">
     <meta name="twitter:card" content="summary_large_image">
     <meta id="articleTwitterTitle" name="twitter:title" content="ILM Nexus News Article">
     <meta id="articleTwitterDescription" name="twitter:description" content="Read the latest news and updates from ILM Nexus.">
-    <meta id="articleTwitterImage" name="twitter:image" content="https://ilmnexus.pro/image/nexus-learn%20logo.png">
+    <meta id="articleTwitterImage" name="twitter:image" content="https://ilmnexus.tech/image/nexus-learn%20logo.png">
     <script id="articleStructuredData" type="application/ld+json">{"@context":"https://schema.org","@type":"NewsArticle","publisher":{"@type":"Organization","name":"Ilm Nexus","url":"https://ilmnexus.tech/"}}</script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -27,10 +27,10 @@
         :root { --blue: #4361ee; --blue-dark: #2336a7; --ink: #172033; --muted: #718096; --light: #f3f6fc; --border: #e5eaf3; --purple: #7c3aed; }
         * { box-sizing: border-box; }
         body { margin: 0; color: var(--ink); background: radial-gradient(ellipse at 50% -15%, #dfe7ff 0, transparent 44rem), var(--light); font-family: Inter, sans-serif; line-height: 1.75; }
-        .container { width: min(1120px, calc(100% - 2rem)); margin: 0 auto; }
+        .container { width: min(1320px, calc(100% - 3rem)); margin: 0 auto; }
         .site-header { position: sticky; top: 0; z-index: 5; background: rgba(255,255,255,.9); border-bottom: 1px solid rgba(229,234,243,.85); backdrop-filter: blur(16px); }
         .nav { min-height: 76px; display: flex; align-items: center; justify-content: space-between; gap: 1rem; }
-        .logo img { width: 128px; height: auto; display: block; }
+        .logo img { width: 158px; height: auto; display: block; }
         .back-link { color: var(--ink); text-decoration: none; font-weight: 700; display: inline-flex; align-items: center; gap: .65rem; }
         .back-link:hover { color: var(--blue); }
         .article-shell { margin: 2.5rem auto 4rem; background: white; border: 1px solid rgba(229,234,243,.9); border-radius: 26px; overflow: hidden; box-shadow: 0 28px 80px rgba(35,54,110,.14); }
@@ -42,7 +42,7 @@
         h1 { max-width: 850px; margin: 1rem 0 .8rem; font: 800 clamp(2.1rem,5.6vw,4.35rem)/1.08 Poppins, sans-serif; letter-spacing: -.035em; text-wrap: balance; }
         .article-intro { max-width: 760px; margin: 0 0 1.3rem; color: rgba(255,255,255,.88); font-size: clamp(1rem,2vw,1.2rem); }
         .article-meta { display: flex; flex-wrap: wrap; gap: .7rem 1.25rem; color: rgba(255,255,255,.8); font-size: .9rem; }
-        .article-layout { display: grid; grid-template-columns: minmax(0,1fr) 250px; gap: clamp(2rem,5vw,4.5rem); padding: clamp(1.4rem,5vw,4rem); }
+        .article-layout { display: grid; grid-template-columns: minmax(0,1fr) 290px; gap: clamp(2rem,5vw,4.5rem); padding: clamp(1.8rem,5vw,4.5rem); }
         .article-content { color: #35425a; font-size: 1.12rem; overflow-wrap: anywhere; }
         .article-content p { margin: 0 0 1.25em; }
         .article-content a, .related-links a, .source-link { color: var(--blue-dark); font-weight: 700; text-decoration: underline; text-decoration-color: #a9b8ff; text-underline-offset: 3px; overflow-wrap: anywhere; }
@@ -84,13 +84,14 @@
         .status { width: min(780px,calc(100% - 2rem)); margin: 4rem auto; padding: 2.5rem; text-align: center; color: var(--muted); border: 1px solid var(--border); border-radius: 20px; background: white; }
         .site-footer { padding: 2rem 1rem; color: #78839a; text-align: center; font-size: .9rem; }
         @media (max-width: 760px) { .article-layout { grid-template-columns: 1fr; } .article-side { position: static; grid-row: 1; } .article-hero { min-height: 390px; } }
-        @media (max-width: 520px) { .nav { min-height: 64px; } .logo img { width: 105px; } .article-shell { margin-top: 1rem; border-radius: 18px; } .article-hero { min-height: 430px; } .hero-copy { padding: 1.3rem; } .article-layout { padding: 1.3rem; } .gallery img { height: 190px; } }
+        @media (max-width: 760px) { .container { width: min(100% - 1.25rem, 1320px); } }
+        @media (max-width: 520px) { .nav { min-height: 64px; } .logo img { width: 125px; } .article-shell { margin-top: 1rem; border-radius: 18px; } .article-hero { min-height: 430px; } .hero-copy { padding: 1.3rem; } .article-layout { padding: 1.3rem; } .gallery img { height: 190px; } }
     </style>
 </head>
 <body>
     <header class="site-header">
         <nav class="nav container">
-            <a class="logo" href="index.html"><img src="./image/nexus-learn logo.png" alt="ILM Nexus"></a>
+            <a class="logo" href="/"><img src="https://ilmnexus.tech/image/nexus-learn%20logo.png" alt="ILM Nexus"></a>
             <a class="back-link" href="news.html"><i class="fas fa-arrow-left"></i> All News</a>
         </nav>
     </header>
