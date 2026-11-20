@@ -863,6 +863,14 @@
             min-height: 120px;
         }
 
+        .form-help {
+            display: block;
+            margin-top: 0.55rem;
+            color: var(--gray-600);
+            font-size: 0.88rem;
+            line-height: 1.5;
+        }
+
         .form-row {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -1520,7 +1528,7 @@
 
                     <div class="form-group">
                         <label for="newsContent">Full Article Story</label>
-                        <textarea id="newsContent" name="content" placeholder="Write the complete story readers should see after clicking Read More."></textarea>
+                        <textarea id="newsContent" name="content" placeholder="Write the complete story readers should see after clicking Read More. Any https:// links you paste here will be clickable."></textarea>
                     </div>
 
                     <div class="form-group">
@@ -1535,13 +1543,15 @@
                     </div>
 
                     <div class="form-group">
-                        <label for="newsGallery">Additional Image URLs (Optional)</label>
-                        <textarea id="newsGallery" name="gallery" placeholder="Paste one image URL per line"></textarea>
+                        <label for="newsGallery">Story Gallery Images (Optional)</label>
+                        <textarea id="newsGallery" name="gallery" rows="5" placeholder="Add two or more image URLs, one per line&#10;https://example.com/photo-one.jpg&#10;https://example.com/photo-two.jpg"></textarea>
+                        <small class="form-help">Add at least two extra photos to create a gallery. Paste a direct image link on each line.</small>
                     </div>
 
                     <div class="form-group">
-                        <label for="newsSocialLinks">Related Social Links (Optional)</label>
-                        <textarea id="newsSocialLinks" name="socialLinks" placeholder="Paste one Facebook, Instagram, LinkedIn, or X link per line"></textarea>
+                        <label for="newsSocialLinks">Links to People, Posts, or Stories (Optional)</label>
+                        <textarea id="newsSocialLinks" name="socialLinks" placeholder="Paste one link per line, such as a profile, post, or article"></textarea>
+                        <small class="form-help">These links will appear as clickable links on the article page.</small>
                     </div>
 
                     <div class="form-group">
@@ -2018,10 +2028,18 @@
                 const title = titleElement ? titleElement.textContent.trim() : 'ILM Nexus news';
                 const cardId = card.dataset.articleId || createNewsSlug(title, index);
                 card.id = cardId;
-                if (readMore && !card.dataset.articleId) {
-                    readMore.href = `article.html?id=legacy-${index + 1}`;
+                const shareLink = new URL(`/share/article/${encodeURIComponent(cardId)}`, window.location.origin);
+                if (!card.dataset.articleId) {
+                    shareLink.searchParams.set('title', title);
+                    shareLink.searchParams.set('description', card.querySelector('.news-card-excerpt')?.textContent.trim() || '');
+                    shareLink.searchParams.set('image', card.querySelector('.news-image')?.src || '');
+                    shareLink.searchParams.set('category', card.querySelector('.news-category')?.textContent.trim() || '');
+                    shareLink.searchParams.set('date', card.querySelector('[itemprop="datePublished"]')?.textContent.trim() || '');
                 }
-                const shareUrl = `${window.location.origin}${window.location.pathname}#${cardId}`;
+                const shareUrl = shareLink.href;
+                if (readMore) {
+                    readMore.href = shareUrl;
+                }
                 const actions = document.createElement('div');
                 actions.className = 'news-actions';
                 actions.innerHTML = `
@@ -2294,7 +2312,7 @@
                                     </div>
                                     <h3 class="news-card-title" itemprop="headline">${news.title}</h3>
                                     <p class="news-card-excerpt" itemprop="description">${news.description}</p>
-                                    <a href="article.html?id=${encodeURIComponent(doc.id)}" class="read-more" itemprop="url">Read More <i class="fas fa-arrow-right"></i></a>
+                                    <a href="/share/article/${encodeURIComponent(doc.id)}" class="read-more" itemprop="url">Read More <i class="fas fa-arrow-right"></i></a>
                                 </div>
                             </article>
                         `;

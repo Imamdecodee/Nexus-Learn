@@ -2,8 +2,20 @@
   "firestore": {
     "rules": "firestore.rules"
   },
+  "functions": {
+    "source": "functions"
+  },
   "hosting": {
     "public": ".",
+    "rewrites": [
+      {
+        "source": "/share/article/**",
+        "function": {
+          "functionId": "articleShare",
+          "region": "us-central1"
+        }
+      }
+    ],
     "ignore": [
       "firebase.json",
       ".firebaserc",

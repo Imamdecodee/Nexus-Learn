@@ -10,6 +10,9 @@
   }
 
   const logo = `${root}${campus.logo}`;
+  const isUnilorin = campus.id === 'unilorin';
+  const chapterSiteUrl = 'https://ilmnexusunilorin.manus.space/';
+  const academyUrl = `${chapterSiteUrl}enroll`;
   const memberUrl = 'https://ilmnexusunilorin.manus.space/member-id';
   const contactNumber = '09161699509';
   const contactUrl = `tel:${contactNumber}`;
@@ -77,6 +80,7 @@
   const structuredData = document.getElementById('campusStructuredData');
   if (structuredData) structuredData.textContent = JSON.stringify({ '@context':'https://schema.org', '@type':'EducationalOrganization', name:pageTitle, url:campusUrl, logo:'https://ilmnexus.pro/image/logo.png', description:pageDescription, parentOrganization:{ '@type':'EducationalOrganization', name:'ILM Nexus Academy' }, address:{ '@type':'PostalAddress', addressLocality:campus.state, addressCountry:'NG' } });
 
+  app.classList.toggle('unilorin-gateway', isUnilorin);
   app.innerHTML = `
     <header class="campus-header"><div class="wrap campus-nav"><a href="${root}index.html" class="brand"><img src="${root}image/logo.png" alt="ILM Nexus logo"><span>ILM Nexus</span></a><nav><a href="#classroom">Classroom</a><a href="#leadership">Leadership</a><a href="#events">Events</a><a href="#news">News</a><a class="nav-join" href="${memberUrl}">Join Campus</a></nav></div></header>
     <main>
@@ -88,6 +92,76 @@
       <section class="section" id="news"><div class="wrap"><p class="eyebrow blue">Live campus news</p><h2>What is happening at UNILORIN.</h2><p class="lead">Published articles tagged with <strong>unilorin</strong> appear here automatically from the central news collection.</p><div class="news-grid" id="campusNews"><article class="empty-state"><i class="fas fa-newspaper"></i><p>Connecting to live campus news...</p></article></div></div></section>
       <section class="campus-join"><div class="wrap join-row"><div><p class="eyebrow">Join this community</p><h2>Build with ILM Nexus UNILORIN.</h2><p>Register your interest and choose your campus during onboarding.</p></div><a class="button button-gold" href="${memberUrl}">Join as a member <i class="fas fa-arrow-right"></i></a></div></section>
     </main><footer><div class="wrap footer-row"><span>ILM Nexus · ${escapeHtml(campus.name)} Campus</span><a href="${root}campus-admin.html?campus=unilorin">Campus executive login</a><a href="${root}index.html">Central ILM Nexus</a><button class="cms-trigger" id="cmsTrigger" type="button" aria-label="Open local CMS"><i class="fas fa-gear"></i></button></div></footer><div class="cms-modal-backdrop" id="cmsModal"><section class="cms-modal" role="dialog" aria-modal="true" aria-labelledby="cmsTitle"><div class="cms-modal-header"><div><p class="eyebrow blue">Local chapter tools</p><h2 id="cmsTitle">Presido access</h2></div><button class="cms-close" id="cmsClose" type="button" aria-label="Close"><i class="fas fa-xmark"></i></button></div><form id="cmsPinForm"><label>Authorization pass<input id="cmsPin" type="password" autocomplete="off" required></label><button class="small-button" type="submit">Unlock panel</button><p class="cms-message" id="cmsPinMessage"></p></form><div class="cms-grid" id="cmsPanel" hidden><form class="cms-form" id="courseForm"><h3>Add new course module</h3><label>Course title<input name="title" required></label><label>Description<textarea name="description" required></textarea></label><label>Video or workspace link<input name="link" type="url"></label><button class="small-button" type="submit">Save course</button><p class="cms-message" id="courseMessage"></p></form><form class="cms-form" id="staffForm"><h3>Upload local staff profile</h3><label>Name<input name="name" required></label><label>Position<input name="position" required></label><label>Department<input name="department" required></label><label>Level<input name="level" required></label><label>Contact<input name="contact" type="tel" required></label><label>Hobbies<input name="hobbies"></label><label>Short bio<textarea name="bio" required></textarea></label><label>Profile picture<input name="image" type="file" accept="image/*" required></label><button class="small-button" type="submit">Save staff profile</button><p class="cms-message" id="staffMessage"></p></form></div></section></div>`;
+
+  if (isUnilorin) {
+    const hero = app.querySelector('.campus-hero');
+    const heroGrid = hero?.querySelector('.hero-grid');
+    const heroCopy = heroGrid?.querySelector(':scope > div:first-child');
+    const identity = heroGrid?.querySelector('.identity');
+    if (heroCopy && heroGrid && identity) {
+      heroCopy.querySelector('.eyebrow').textContent = 'UNIVERSITY OF ILORIN · KWARA STATE';
+      heroCopy.querySelector('h1').textContent = 'Your next chapter in tech starts here.';
+      const primaryAction = heroCopy.querySelector('.button-gold');
+      primaryAction.href = chapterSiteUrl;
+      primaryAction.textContent = 'Explore the official chapter site';
+      primaryAction.insertAdjacentHTML('beforeend', ' <i class="fas fa-arrow-up-right-from-square" aria-hidden="true"></i>');
+      const memberAction = document.createElement('a');
+      memberAction.className = 'button button-light';
+      memberAction.href = memberUrl;
+      memberAction.innerHTML = 'Claim your member ID <i class="fas fa-arrow-right" aria-hidden="true"></i>';
+      primaryAction.after(memberAction);
+
+      const artwork = document.createElement('div');
+      artwork.className = 'gateway-artwork';
+      const flyer = document.createElement('img');
+      flyer.className = 'gateway-flyer';
+      flyer.src = `${chapterSiteUrl}manus-storage/ilm-nexus-flyer_bec199cc`;
+      flyer.alt = 'ILM Nexus UNILORIN Tech Outreach programme flyer';
+      flyer.fetchPriority = 'high';
+      artwork.append(flyer, identity);
+      heroGrid.append(artwork);
+
+      const brandLogo = identity.querySelector('.ilm-logo');
+      const universityLogo = identity.querySelector('.institution-logo');
+      if (brandLogo) brandLogo.src = `${chapterSiteUrl}manus-storage/ilm-nexus-logo-small_748c4003`;
+      if (universityLogo) universityLogo.src = `${chapterSiteUrl}manus-storage/uniilorin-logo_529a08e6`;
+      const headerLogo = app.querySelector('.campus-nav .brand img');
+      const headerName = app.querySelector('.campus-nav .brand span');
+      if (headerLogo) headerLogo.src = `${chapterSiteUrl}manus-storage/ilm-nexus-logo-small_748c4003`;
+      if (headerName) headerName.textContent = 'ILM Nexus · UNILORIN Chapter';
+    }
+
+    const updateSectionHeading = (selector, eyebrow, heading) => {
+      const section = app.querySelector(selector);
+      if (!section) return;
+      const label = section.querySelector('.eyebrow');
+      const title = section.querySelector('h2');
+      if (label) label.textContent = eyebrow;
+      if (title) title.textContent = heading;
+    };
+    updateSectionHeading('#about', 'PHASE 01 · THE HUB', 'A place to learn loudly, build together, and keep moving.');
+    updateSectionHeading('#classroom', 'PHASE 02 · THE PROGRAMME', 'Make your curiosity career-shaped.');
+    updateSectionHeading('#leadership', 'PHASE 03 · THE PEOPLE', 'Meet the students carrying the chapter forward.');
+    updateSectionHeading('.campus-join', 'PHASE 04 · YOUR MOVE', 'Ready to make something of it?');
+
+    const stats = app.querySelectorAll('#about .stats strong');
+    if (stats[0]) stats[0].textContent = '6 digital skill tracks';
+    if (stats[1]) stats[1].textContent = '7 chapter executives';
+    const classroomLead = app.querySelector('#classroom .lead');
+    if (classroomLead) classroomLead.textContent = `One intensive programme. Ten digital paths. ${classroomLead.textContent}`;
+
+    const gateway = app.querySelector('.campus-join .join-row');
+    if (gateway) {
+      const description = gateway.querySelector('p:not(.eyebrow)');
+      if (description) description.textContent = 'Start with an academy application, claim your member ID, or follow the chapter feed for the next event.';
+      const oldAction = gateway.querySelector('.button');
+      if (oldAction) oldAction.remove();
+      const actions = document.createElement('div');
+      actions.className = 'gateway-actions';
+      actions.innerHTML = `<a href="${academyUrl}">Start an application <i class="fas fa-arrow-up-right-from-square" aria-hidden="true"></i></a><a href="${academyUrl}">Open the academy application <i class="fas fa-arrow-right" aria-hidden="true"></i></a><a href="${memberUrl}">Claim your member ID <i class="fas fa-id-card" aria-hidden="true"></i></a><a href="${chapterSiteUrl}">Visit the official chapter site <i class="fas fa-arrow-up-right-from-square" aria-hidden="true"></i></a>`;
+      gateway.append(actions);
+    }
+  }
 
   let firebaseReady;
   const loggedInStudent = JSON.parse(localStorage.getItem('student_data') || 'null');
@@ -154,7 +228,7 @@
       const renderNews = snapshot => {
         const articles = snapshot.docs.map(item => ({ id:item.id, ...item.data() })).filter(article => Object.values(article).some(value => String(value ?? '').toLowerCase().includes('unilorin'))).slice(0, 6);
         const news = document.getElementById('campusNews');
-        news.innerHTML = articles.length ? articles.map(article => `<article class="news-card"><span class="news-category">${escapeHtml(article.category || 'Campus update')}</span><h3>${escapeHtml(article.title || 'UNILORIN campus update')}</h3><p>${escapeHtml(article.description || article.content || 'Read the latest ILM Nexus update.')}</p><time>${escapeHtml(article.date || 'Recently published')}</time><a class="text-link" href="${root}article.html?id=${encodeURIComponent(article.id)}">Read update →</a></article>`).join('') : '<article class="empty-state"><i class="fas fa-newspaper"></i><p>No UNILORIN news has been published yet. New tagged articles will appear here automatically.</p></article>';
+        news.innerHTML = articles.length ? articles.map(article => `<article class="news-card"><span class="news-category">${escapeHtml(article.category || 'Campus update')}</span><h3>${escapeHtml(article.title || 'UNILORIN campus update')}</h3><p>${escapeHtml(article.description || article.content || 'Read the latest ILM Nexus update.')}</p><time>${escapeHtml(article.date || 'Recently published')}</time><a class="text-link" href="${root}share/article/${encodeURIComponent(article.id)}">Read update →</a></article>`).join('') : '<article class="empty-state"><i class="fas fa-newspaper"></i><p>No UNILORIN news has been published yet. New tagged articles will appear here automatically.</p></article>';
       };
       onSnapshot(collection(db, 'news'), renderNews, () => { document.getElementById('campusNews').innerHTML = '<article class="empty-state"><i class="fas fa-circle-info"></i><p>Live news is temporarily unavailable. Please check the central news page.</p></article>'; });
       onSnapshot(collection(db, 'campuses', 'unilorin', 'staff_profiles'), snapshot => {

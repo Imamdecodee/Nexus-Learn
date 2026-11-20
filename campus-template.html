@@ -45,6 +45,92 @@
     .classroom-sidebar { display:grid; align-content:start; gap:1rem; } .classroom-widget h3 { margin:0 0 .5rem; font-size:1rem; } .classroom-widget p, .classroom-widget li { color:var(--muted); font-size:.84rem; } .classroom-widget ul { margin:.5rem 0 0; padding-left:1.1rem; } .cms-trigger { border:0; color:#9bbaf0; background:transparent; font-size:.75rem; cursor:pointer; } .cms-modal-backdrop { position:fixed; inset:0; z-index:30; display:none; place-items:center; padding:1rem; background:rgba(9,43,104,.55); } .cms-modal-backdrop.open { display:grid; } .cms-modal { width:min(720px,100%); max-height:90vh; overflow:auto; padding:1.3rem; border-radius:8px; background:#fff; box-shadow:0 20px 60px rgba(0,0,0,.25); } .cms-modal-header { display:flex; align-items:start; justify-content:space-between; gap:1rem; } .cms-modal h2 { font-size:1.5rem; } .cms-close { border:0; color:var(--muted); background:transparent; font-size:1.3rem; cursor:pointer; } .cms-grid { display:grid; grid-template-columns:1fr 1fr; gap:1rem; margin-top:1rem; } .cms-form { display:grid; gap:.6rem; padding:1rem; border:1px solid var(--line); border-radius:7px; } .cms-form h3 { margin:0; font-size:1rem; } .cms-form label { display:grid; gap:.3rem; color:var(--muted); font-size:.78rem; font-weight:700; } .cms-message { min-height:1.2rem; color:var(--blue); font-size:.8rem; }
     @media(max-width:900px) { .skills-grid { grid-template-columns:repeat(2,1fr); } .classroom-layout { grid-template-columns:1fr; } .cms-grid { grid-template-columns:1fr; } } @media(max-width:560px) { .skills-grid { grid-template-columns:1fr; } .classroom-form { grid-template-columns:1fr; } .classroom-form .full { grid-column:auto; } }
   </style>
+  <style>
+    #campusApp.unilorin-gateway { --blue:#0861d5; --blue-dark:#073b8d; --gold:#ffc52f; --ink:#101d35; --muted:#647084; --paper:#f5f7fb; --line:#dce4ef; }
+    body:has(#campusApp.unilorin-gateway) { color:#101d35; background:#f5f7fb; }
+    .unilorin-gateway .campus-header { color:#fff; background:#075bd0; border-bottom-color:rgba(255,255,255,.18); }
+    .unilorin-gateway .campus-nav { min-height:78px; }
+    .unilorin-gateway .brand { color:#fff; font-size:.88rem; letter-spacing:.08em; text-transform:uppercase; }
+    .unilorin-gateway .brand img { width:46px; height:46px; border-radius:50%; background:#fff; }
+    .unilorin-gateway .campus-nav nav a { color:#fff; }
+    .unilorin-gateway .campus-nav nav a:hover { color:#ffcf47; }
+    .unilorin-gateway .nav-join { color:#10234a!important; background:#ffcf47; }
+    .unilorin-gateway .campus-hero { position:relative; overflow:hidden; padding:5rem 0 5.5rem; background:linear-gradient(118deg,#0867df 0%,#075bd0 57%,#0649b1 100%); }
+    .unilorin-gateway .hero-grid { grid-template-columns:minmax(0,.92fr) minmax(0,1.08fr); gap:3.5rem; }
+    .unilorin-gateway .campus-hero h1 { max-width:720px; margin-bottom:1.2rem; font-size:4.7rem; line-height:1.02; font-weight:700; }
+    .unilorin-gateway .campus-hero p:not(.eyebrow) { color:rgba(255,255,255,.9); font-size:1.08rem; }
+    .unilorin-gateway .eyebrow { letter-spacing:.16em; }
+    .unilorin-gateway .button { min-height:50px; border-radius:4px; padding:.82rem 1.1rem; transition:transform .2s ease, box-shadow .2s ease, background-color .2s ease; }
+    .unilorin-gateway .button:hover { transform:translateY(-2px); box-shadow:0 12px 26px rgba(4,28,76,.2); }
+    .unilorin-gateway .button-gold { color:#10234a; background:#ffcf47; }
+    .unilorin-gateway .button-light { color:#0755bf; }
+    .unilorin-gateway .gateway-artwork { min-width:0; }
+    .unilorin-gateway .gateway-flyer { display:block; width:100%; max-height:610px; aspect-ratio:.78; object-fit:cover; border:8px solid #fff; background:#fff; box-shadow:0 28px 65px rgba(3,26,74,.32); transform:rotate(1deg); }
+    .unilorin-gateway .identity { grid-template-columns:1fr auto 1fr; gap:1rem; margin-top:1.4rem; padding:1rem 1.25rem; border:1px solid rgba(255,255,255,.45); border-radius:6px; color:#101d35; background:#fff; box-shadow:0 12px 32px rgba(3,26,74,.16); }
+    .unilorin-gateway .identity img { height:58px; background:#fff; }
+    .unilorin-gateway .identity span { color:#9aa7ba; font-size:1.2rem; }
+    .unilorin-gateway .identity strong { color:#19345d; font-size:.72rem; letter-spacing:.06em; text-transform:uppercase; }
+    .unilorin-gateway .section { padding:5.25rem 0; }
+    .unilorin-gateway .section-light { border-color:#e0e6f0; background:#fff; }
+    .unilorin-gateway .section h2 { max-width:850px; font-size:2.7rem; }
+    .unilorin-gateway .eyebrow.blue { color:#075bd0; }
+    .unilorin-gateway .stats div { border-left-color:#ffc52f; border-radius:4px; box-shadow:0 8px 26px rgba(17,42,82,.06); }
+    .unilorin-gateway .skills-grid { grid-template-columns:repeat(3,minmax(0,1fr)); gap:1rem; }
+    .unilorin-gateway .skill-card { min-height:205px; padding:1.5rem; border-color:#dbe4f0; border-radius:6px; box-shadow:0 9px 24px rgba(12,43,91,.055); transition:transform .2s ease,border-color .2s ease,box-shadow .2s ease; }
+    .unilorin-gateway .skill-card:hover { transform:translateY(-5px); border-color:#0861d5; box-shadow:0 17px 32px rgba(12,43,91,.12); }
+    .unilorin-gateway .skill-card i { color:#0861d5; }
+    .unilorin-gateway .skill-card h3 { color:#14284b; }
+    .unilorin-gateway .skill-card .text-link { color:#075bd0; }
+    .unilorin-gateway .classroom-panel, .unilorin-gateway .classroom-widget { border-radius:6px; box-shadow:0 9px 25px rgba(12,43,91,.06); }
+    .unilorin-gateway .leader-card { border:1px solid #dce4ef; border-radius:6px; background:#fff; box-shadow:0 9px 25px rgba(12,43,91,.06); }
+    .unilorin-gateway .leader-card img { border-radius:50%; }
+    .unilorin-gateway .leader-role { width:fit-content; border:1px solid #d8e6ff; border-radius:3px; color:#0753b6; background:#eef5ff; font-size:.7rem; font-weight:700; letter-spacing:.04em; text-transform:uppercase; }
+    .unilorin-gateway .leader-card .vision { margin-top:.4rem; padding:.85rem 1rem; border-left:3px solid #ffc52f; color:#35435a; background:#f5f8fc; font-style:italic; }
+    .unilorin-gateway .feature-card, .unilorin-gateway .event-card, .unilorin-gateway .news-card { border-radius:6px; box-shadow:0 9px 25px rgba(12,43,91,.06); }
+    .unilorin-gateway .campus-join { padding:4.5rem 0; color:#fff; background:linear-gradient(118deg,#073b8d,#075bd0 72%,#0867df); }
+    .unilorin-gateway .campus-join h2 { max-width:680px; color:#fff; font-size:2.8rem; }
+    .unilorin-gateway .campus-join p:not(.eyebrow) { max-width:650px; color:rgba(255,255,255,.84); }
+    .unilorin-gateway .campus-join .eyebrow { color:#ffcf47; }
+    .unilorin-gateway .gateway-actions { display:flex; flex-wrap:wrap; gap:.7rem; margin-top:1.25rem; }
+    .unilorin-gateway .gateway-actions a { display:inline-flex; min-height:46px; align-items:center; justify-content:center; gap:.5rem; padding:.7rem .95rem; border:1px solid rgba(255,255,255,.58); border-radius:4px; color:#fff; font-weight:700; text-decoration:none; transition:transform .2s ease,background-color .2s ease; }
+    .unilorin-gateway .gateway-actions a:first-child { border-color:#ffcf47; color:#10234a; background:#ffcf47; }
+    .unilorin-gateway .gateway-actions a:hover { transform:translateY(-2px); background:rgba(255,255,255,.14); }
+    .unilorin-gateway .gateway-actions a:first-child:hover { background:#ffdb70; }
+    .unilorin-gateway footer { color:#dce8fa; background:#071d43; }
+    .unilorin-gateway footer a { color:#fff; }
+    @media(max-width:900px) {
+      .unilorin-gateway .hero-grid { grid-template-columns:1fr 1fr; gap:2rem; }
+      .unilorin-gateway .campus-hero h1 { font-size:3.5rem; }
+      .unilorin-gateway .skills-grid { grid-template-columns:repeat(2,minmax(0,1fr)); }
+    }
+    @media(max-width:760px) {
+      .unilorin-gateway .campus-nav { align-items:center; }
+      .unilorin-gateway .campus-nav nav { display:flex; max-width:58vw; overflow-x:auto; gap:.8rem; white-space:nowrap; font-size:.76rem; scrollbar-width:thin; }
+      .unilorin-gateway .hero-grid { grid-template-columns:1fr; gap:2rem; }
+      .unilorin-gateway .campus-hero { padding:3.5rem 0 4rem; }
+      .unilorin-gateway .campus-hero h1 { max-width:600px; font-size:3.2rem; }
+      .unilorin-gateway .gateway-artwork { width:min(100%,520px); margin:0 auto; }
+      .unilorin-gateway .gateway-flyer { max-height:560px; }
+      .unilorin-gateway .section { padding:3.75rem 0; }
+      .unilorin-gateway .section h2, .unilorin-gateway .campus-join h2 { font-size:2.2rem; }
+    }
+    @media(max-width:480px) {
+      .unilorin-gateway .campus-nav { min-height:66px; gap:.5rem; }
+      .unilorin-gateway .brand { gap:.4rem; font-size:.68rem; letter-spacing:.04em; }
+      .unilorin-gateway .brand img { width:38px; height:38px; }
+      .unilorin-gateway .campus-nav nav { max-width:48vw; gap:.65rem; }
+      .unilorin-gateway .campus-hero h1 { font-size:2.65rem; }
+      .unilorin-gateway .skills-grid, .unilorin-gateway .leaders-grid, .unilorin-gateway .event-grid, .unilorin-gateway .news-grid { grid-template-columns:1fr; }
+      .unilorin-gateway .identity { gap:.5rem; padding:.8rem; }
+      .unilorin-gateway .identity img { height:48px; }
+      .unilorin-gateway .gateway-actions { align-items:stretch; flex-direction:column; }
+      .unilorin-gateway .gateway-actions a { width:100%; }
+      .unilorin-gateway .footer-row { align-items:flex-start; flex-direction:column; }
+    }
+    @media(prefers-reduced-motion:reduce) {
+      .unilorin-gateway *, .unilorin-gateway *::before, .unilorin-gateway *::after { scroll-behavior:auto!important; transition:none!important; animation:none!important; }
+    }
+  </style>
 </head>
 <body><div id="campusApp"><main class="notice">Loading campus...</main></div><script src="__ROOT__campus-data.js"></script><script>window.CAMPUS_ROOT='__ROOT__'; window.CAMPUS_ID='__CAMPUS_ID__';</script><script src="__ROOT__campus-template.js"></script></body>
 </html>

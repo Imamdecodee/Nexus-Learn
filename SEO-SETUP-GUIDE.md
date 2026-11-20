@@ -79,6 +79,19 @@ In Google Search Console:
 
 ## 📰 HOW TO ADD NEW NEWS ARTICLES
 
+### Article Share Previews
+
+Article links use `/share/article/{articleId}` so Facebook, WhatsApp, LinkedIn, and other link-preview crawlers receive the article's title, description, and image in the initial HTML. Uploaded images are served through the same share endpoint so preview bots can access them.
+
+After deploying the updated files, deploy the Firebase Function and Hosting rewrite from the repository root:
+
+```powershell
+npm --prefix functions install
+firebase deploy --only functions:articleShare,hosting
+```
+
+Deploying Cloud Functions requires the Firebase project to use the Blaze billing plan. In the news page, use **Copy Link** or **Share** to copy the preview-ready URL. Older direct `article.html?id=...` links still open the article, but new share links should use `/share/article/{articleId}`.
+
 ### Method 1: Using the Web Form (Easiest)
 1. Visit your news page
 2. Scroll to "Add New Article" section
