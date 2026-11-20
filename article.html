@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ILM Nexus News Article</title>
     <meta name="description" content="Read the latest news and updates from ILM Nexus.">
+    <meta id="articleKeywords" name="keywords" content="">
     <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
     <link id="articleCanonical" rel="canonical" href="https://ilmnexus.pro/article.html">
     <meta id="articleOgTitle" property="og:title" content="ILM Nexus News Article">
@@ -51,6 +52,27 @@
         .article-side p { margin: 0 0 1rem; color: var(--muted); font-size: .9rem; }
         .share-button { display: inline-flex; align-items: center; justify-content: center; gap: .55rem; width: 100%; padding: .8rem 1rem; border: 0; border-radius: 12px; color: white; background: linear-gradient(120deg,var(--blue),var(--purple)); font: 700 .9rem Inter,sans-serif; cursor: pointer; box-shadow: 0 8px 18px #4361ee33; }
         .share-button:hover { transform: translateY(-1px); box-shadow: 0 12px 24px #4361ee44; }
+        .related-news { display: grid; gap: .9rem; margin-top: 1.6rem; }
+        .related-news h2 { margin: 0; font: 700 1rem Poppins,sans-serif; }
+        .related-card { display: grid; grid-template-columns: 72px minmax(0,1fr); gap: .7rem; align-items: center; color: var(--ink); text-decoration: none; }
+        .related-card img { width: 72px; height: 62px; border-radius: 9px; object-fit: cover; background: var(--border); }
+        .related-card strong { display: -webkit-box; overflow: hidden; -webkit-line-clamp: 3; -webkit-box-orient: vertical; font-size: .8rem; line-height: 1.4; }
+        .related-card:hover strong { color: var(--blue); }
+        .related-empty { margin: 0 !important; color: var(--muted); font-size: .84rem !important; }
+        .comments-section { margin-top: 3rem; padding-top: 2rem; border-top: 1px solid var(--border); }
+        .comments-section h2 { margin: 0 0 1rem; font: 700 1.4rem Poppins,sans-serif; }
+        .comment-form { display: grid; gap: .8rem; margin-bottom: 1.5rem; }
+        .comment-form input, .comment-form textarea { width: 100%; padding: .85rem 1rem; border: 1px solid var(--border); border-radius: 11px; color: var(--ink); background: #fbfcff; font: inherit; }
+        .comment-form textarea { min-height: 120px; resize: vertical; }
+        .comment-form input:focus, .comment-form textarea:focus { outline: 3px solid #4361ee22; border-color: var(--blue); }
+        .comment-submit { justify-self: start; width: auto; min-width: 165px; }
+        .comment-message { margin: 0; color: var(--muted); font-size: .9rem; }
+        .comment-list { display: grid; gap: .8rem; }
+        .comment-card { padding: 1rem 1.1rem; border: 1px solid var(--border); border-radius: 13px; background: #fbfcff; }
+        .comment-card strong { color: var(--ink); }
+        .comment-card time { display: block; color: var(--muted); font-size: .78rem; }
+        .comment-card p { margin: .55rem 0 0; color: #43506a; white-space: pre-wrap; overflow-wrap: anywhere; }
+        .related-error { color: #9b1c1c !important; }
         .section-heading { margin: 2.5rem 0 1rem; font: 700 1.3rem Poppins,sans-serif; }
         .article-video { width: 100%; aspect-ratio: 16 / 9; border: 0; margin-top: 2rem; border-radius: 16px; background: #10182b; }
         .article-video-file { width: 100%; margin-top: 2rem; border-radius: 16px; }
@@ -102,11 +124,27 @@
                         <div id="articleLinks" class="related-links"></div>
                     </div>
                     <a id="articleSource" class="source-link" target="_blank" rel="noopener noreferrer" hidden>Read the related story <i class="fas fa-arrow-up-right-from-square"></i></a>
+                    <section class="comments-section" aria-labelledby="commentsHeading">
+                        <h2 id="commentsHeading">Join the conversation</h2>
+                        <form class="comment-form" id="articleCommentForm">
+                            <label for="commentName">Your name</label>
+                            <input id="commentName" name="name" type="text" maxlength="60" autocomplete="name" required placeholder="How should we address you?">
+                            <label for="commentText">Your comment</label>
+                            <textarea id="commentText" name="text" maxlength="500" required placeholder="Share a thoughtful comment..."></textarea>
+                            <button class="share-button comment-submit" id="commentSubmit" type="submit"><i class="fas fa-paper-plane"></i> Post comment</button>
+                            <p class="comment-message" id="commentMessage" role="status"></p>
+                        </form>
+                        <div class="comment-list" id="articleCommentList" aria-live="polite"><p class="comment-message">Loading comments...</p></div>
+                    </section>
                 </div>
                 <aside class="article-side">
                     <h2>Share this story</h2>
                     <p>Pass this update along to your community.</p>
                     <button class="share-button" id="shareArticleButton" type="button"><i class="fas fa-link"></i> Copy article link</button>
+                    <div class="related-news" id="relatedNews" aria-label="Related news">
+                        <h2>Related stories</h2>
+                        <p class="related-empty">Loading stories...</p>
+                    </div>
                 </aside>
             </div>
         </article>
@@ -115,7 +153,7 @@
 
     <script type="module">
         import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js';
-        import { doc, getDoc, getFirestore, increment, updateDoc } from 'https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js';
+        import { addDoc, collection, doc, getDoc, getDocs, getFirestore, increment, limit, orderBy, query, serverTimestamp, updateDoc, where } from 'https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js';
 
         const firebaseConfig = {
             apiKey: 'AIzaSyBJKtNJDIxbo-_PxSwGTYcuS8gRjg9ReX8',
@@ -195,17 +233,22 @@
             });
         }
 
-        function renderArticle(article) {
+        function renderArticle(article, { preserveShareQuery = false } = {}) {
             const isLocalhost = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
             const preferredOrigin = isLocalhost ? 'https://ilmnexus.tech' : window.location.origin;
-            const articleUrl = `${preferredOrigin}/share/article/${encodeURIComponent(articleId)}`;
+            const articleUrl = `${preferredOrigin}/share/article/${encodeURIComponent(articleId)}${preserveShareQuery ? window.location.search : ''}`;
             const articleTitle = article.title || 'ILM Nexus News';
             const articleDescription = article.description || article.content || 'Read the latest news and updates from ILM Nexus.';
             const articleImage = article.image || `${preferredOrigin}/image/nexus-learn%20logo.png`;
+            const articleKeywords = (Array.isArray(article.keywords) ? article.keywords : String(article.keywords || '').split(/[,\n]/))
+                .map(keyword => String(keyword).trim())
+                .filter(Boolean)
+                .slice(0, 10);
             const publishedDate = article.dateAdded?.toDate ? article.dateAdded.toDate() : new Date(article.date || Date.now());
 
             document.title = `${articleTitle} | ILM Nexus News`;
             document.querySelector('meta[name="description"]').content = articleDescription;
+            document.getElementById('articleKeywords').content = articleKeywords.join(', ');
             document.getElementById('articleCanonical').href = articleUrl;
             document.getElementById('articleOgTitle').content = articleTitle;
             document.getElementById('articleOgDescription').content = articleDescription;
@@ -219,6 +262,7 @@
                 '@type': 'NewsArticle',
                 headline: articleTitle,
                 description: articleDescription,
+                keywords: articleKeywords.join(', '),
                 image: [articleImage],
                 datePublished: publishedDate.toISOString(),
                 dateModified: publishedDate.toISOString(),
@@ -319,6 +363,107 @@
             }
         });
 
+        const commentForm = document.getElementById('articleCommentForm');
+        const commentList = document.getElementById('articleCommentList');
+        const commentMessage = document.getElementById('commentMessage');
+        const commentSubmit = document.getElementById('commentSubmit');
+
+        function formatCommentDate(value) {
+            const date = value?.toDate ? value.toDate() : (value ? new Date(value) : null);
+            return date && !Number.isNaN(date.getTime()) ? date.toLocaleString() : 'Just now';
+        }
+
+        async function loadArticleComments() {
+            commentList.innerHTML = '<p class="comment-message">Loading comments...</p>';
+            try {
+                const snapshot = await getDocs(query(collection(db, 'comments'), where('articleId', '==', articleId)));
+                const comments = snapshot.docs
+                    .map(comment => ({ id: comment.id, ...comment.data() }))
+                    .sort((first, second) => (second.createdAt?.seconds || 0) - (first.createdAt?.seconds || 0));
+                if (!comments.length) {
+                    commentList.innerHTML = '<p class="comment-message">No comments yet. Be the first to join the conversation.</p>';
+                    return;
+                }
+                commentList.replaceChildren(...comments.map(comment => {
+                    const card = document.createElement('article');
+                    card.className = 'comment-card';
+                    const author = document.createElement('strong');
+                    author.textContent = comment.name || 'ILM Nexus reader';
+                    const date = document.createElement('time');
+                    date.textContent = formatCommentDate(comment.createdAt);
+                    const text = document.createElement('p');
+                    text.textContent = comment.text || '';
+                    card.append(author, date, text);
+                    return card;
+                }));
+            } catch (error) {
+                console.error('Could not load article comments:', error);
+                commentList.innerHTML = '<p class="comment-message">Comments could not be loaded. Please try again later.</p>';
+            }
+        }
+
+        commentForm.addEventListener('submit', async event => {
+            event.preventDefault();
+            commentMessage.textContent = '';
+            commentSubmit.disabled = true;
+            commentSubmit.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Posting...';
+            const formData = new FormData(commentForm);
+            try {
+                await addDoc(collection(db, 'comments'), {
+                    articleId,
+                    name: String(formData.get('name') || '').trim(),
+                    text: String(formData.get('text') || '').trim(),
+                    createdAt: serverTimestamp()
+                });
+                commentForm.reset();
+                commentMessage.textContent = 'Your comment has been posted.';
+                await loadArticleComments();
+            } catch (error) {
+                console.error('Could not post article comment:', error);
+                commentMessage.textContent = `Your comment could not be posted: ${error.message}`;
+            } finally {
+                commentSubmit.disabled = false;
+                commentSubmit.innerHTML = '<i class="fas fa-paper-plane"></i> Post comment';
+            }
+        });
+
+        async function loadRelatedNews() {
+            const relatedNews = document.getElementById('relatedNews');
+            try {
+                const snapshot = await getDocs(query(collection(db, 'news'), orderBy('dateAdded', 'desc'), limit(10)));
+                const articles = snapshot.docs
+                    .filter(item => item.id !== articleId)
+                    .slice(0, 5)
+                    .map(item => ({ id: item.id, ...item.data() }));
+                if (!articles.length) {
+                    relatedNews.innerHTML = '<h2>Related stories</h2><p class="related-empty">More stories are coming soon.</p>';
+                    return;
+                }
+                relatedNews.replaceChildren();
+                const heading = document.createElement('h2');
+                heading.textContent = 'Related stories';
+                relatedNews.append(heading);
+                articles.forEach(article => {
+                    const link = document.createElement('a');
+                    link.className = 'related-card';
+                    link.href = `/share/article/${encodeURIComponent(article.id)}`;
+                    const image = document.createElement('img');
+                    image.src = typeof article.image === 'string' && article.image.startsWith('data:image/')
+                        ? article.image
+                        : (safeExternalUrl(article.image) || '/image/nexus-learn%20logo.png');
+                    image.alt = '';
+                    image.loading = 'lazy';
+                    const title = document.createElement('strong');
+                    title.textContent = article.title || 'ILM Nexus update';
+                    link.append(image, title);
+                    relatedNews.append(link);
+                });
+            } catch (error) {
+                console.error('Could not load related news:', error);
+                relatedNews.innerHTML = '<h2>Related stories</h2><p class="related-empty related-error">Related stories could not be loaded.</p>';
+            }
+        }
+
         async function loadArticle() {
             if (!articleId) {
                 status.textContent = 'Article not found.';
@@ -341,14 +486,19 @@
                         image,
                         description: shareParams.get('description') || '',
                         content: shareParams.get('description') || '',
+                        keywords: shareParams.get('keywords') || '',
                         category: shareParams.get('category') || 'ILM Nexus News',
                         date: shareParams.get('date') || ''
-                    });
+                    }, { preserveShareQuery: true });
+                    await loadArticleComments();
+                    await loadRelatedNews();
                     return;
                 }
 
                 const article = articleSnapshot.data();
                 renderArticle(article);
+                await loadArticleComments();
+                await loadRelatedNews();
                 updateDoc(doc(db, 'news', articleId), { views: increment(1) }).catch(() => {});
             } catch (error) {
                 status.textContent = `Could not load article: ${error.message}`;

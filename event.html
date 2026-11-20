@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Event details, speakers, venue, and recap from ILM Nexus.">
+    <meta name="robots" content="index, follow, max-image-preview:large">
+    <meta property="og:type" content="event">
+    <meta property="og:site_name" content="ILM Nexus">
+    <meta id="ogTitle" property="og:title" content="ILM Nexus Event">
+    <meta id="ogDescription" property="og:description" content="Explore this ILM Nexus event.">
+    <meta id="ogImage" property="og:image" content="https://ilmnexus.tech/image/flyer.jpg">
+    <meta id="ogUrl" property="og:url" content="https://ilmnexus.tech/event.html">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta id="twitterTitle" name="twitter:title" content="ILM Nexus Event">
+    <meta id="twitterDescription" name="twitter:description" content="Explore this ILM Nexus event.">
+    <meta id="twitterImage" name="twitter:image" content="https://ilmnexus.tech/image/flyer.jpg">
+    <link id="canonical" rel="canonical" href="https://ilmnexus.tech/event.html">
+    <title>ILM Nexus Event</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+    <style>
+        :root{--ink:#14213d;--muted:#667085;--blue:#246bfe;--gold:#ef9c18;--paper:#f5f8fc;--line:#dbe3ef}
+        *{box-sizing:border-box}body{margin:0;color:var(--ink);background:var(--paper);font:16px/1.7 "DM Sans",sans-serif}
+        .container{width:min(1120px,calc(100% - 2rem));margin:auto}.header{position:sticky;top:0;z-index:5;background:#fffffff2;border-bottom:1px solid var(--line);backdrop-filter:blur(14px)}
+        .nav{height:72px;display:flex;align-items:center;justify-content:space-between}.logo img{width:112px}.back{color:var(--blue);font-weight:800;text-decoration:none}
+        .hero{position:relative;min-height:450px;display:flex;align-items:end;overflow:hidden;background:linear-gradient(120deg,#10285c,#246bfe);color:#fff}
+        .hero>img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}.hero:after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,#0a122ae8,#0a122a70 65%,#0a122a18)}
+        .hero-copy{position:relative;z-index:1;width:min(1120px,100%);margin:auto;padding:clamp(2rem,6vw,5rem)}
+        .status{display:inline-block;padding:.35rem .75rem;border-radius:999px;background:#ffffff25;border:1px solid #ffffff70;font-size:.8rem;font-weight:800;text-transform:uppercase}
+        h1,h2,h3{font-family:"Space Grotesk",sans-serif;line-height:1.15}h1{max-width:900px;margin:1rem 0;font-size:clamp(2.4rem,6vw,4.8rem)}
+        .summary{max-width:760px;color:#ffffffdc;font-size:1.1rem}.actions{display:flex;gap:.75rem;flex-wrap:wrap;margin-top:1.5rem}
+        .button{display:inline-flex;align-items:center;gap:.5rem;padding:.8rem 1rem;border:0;border-radius:9px;background:var(--gold);color:white;font-weight:800;text-decoration:none;cursor:pointer}
+        .button.secondary{border:1px solid #ffffff85;background:#ffffff18}.layout{display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:2rem;padding:3rem 0}
+        .main-content,.side-card{padding:clamp(1.2rem,4vw,2rem);border:1px solid var(--line);border-radius:16px;background:#fff;box-shadow:0 12px 30px #14213d0a}
+        .details{white-space:pre-wrap;color:#39465c}.section-title{margin:1rem 0;font-size:1.5rem}
+        .info-grid{display:grid;gap:.75rem}.info-item{display:flex;gap:.75rem;padding:.8rem;border-radius:10px;background:#f5f8ff}.info-item i{width:18px;margin-top:.25rem;color:var(--blue)}
+        .people-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.75rem}.person{padding:1rem;border:1px solid var(--line);border-radius:12px;background:#fbfcff}
+        .person strong{display:block}.person span{color:var(--muted);font-size:.88rem}.gallery{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:.8rem;margin-top:1rem}
+        .gallery img{width:100%;height:220px;object-fit:cover;border-radius:12px}.related{display:grid;gap:.6rem}.related a{color:var(--blue);font-weight:700;overflow-wrap:anywhere}
+        .status-message{margin:3rem auto;padding:2rem;text-align:center;border:1px solid var(--line);border-radius:14px;background:white;color:var(--muted)}
+        footer{padding:2rem;text-align:center;color:var(--muted)}footer a{color:var(--blue);font-weight:700}
+        @media(max-width:760px){.hero{min-height:400px}.layout{grid-template-columns:1fr;padding:1.2rem 0}.people-grid{grid-template-columns:1fr}.side-card{grid-row:1}}
+    </style>
+</head>
+<body>
+<header class="header"><nav class="container nav"><a class="logo" href="index.html"><img src="./image/nexus-learn logo.png" alt="ILM Nexus"></a><a class="back" href="events.html"><i class="fas fa-arrow-left"></i> All events</a></nav></header>
+<main class="container"><div class="status-message" id="status">Loading event...</div>
+    <article id="event" hidden>
+        <header class="hero"><img id="flyer" alt=""><div class="hero-copy">
+            <span class="status" id="eventStatus"></span><h1 id="title"></h1><p class="summary" id="summary"></p>
+            <div class="actions"><a class="button" id="registration" target="_blank" rel="noopener noreferrer" hidden>Register / Join <i class="fas fa-arrow-right"></i></a><a class="button secondary" href="events.html">Explore other events</a></div>
+        </div></header>
+        <div class="layout">
+            <div class="main-content">
+                <section id="detailsSection" hidden><h2 class="section-title">About this event</h2><div class="details" id="details"></div></section>
+                <section id="speakersSection" hidden><h2 class="section-title">Speakers</h2><div class="people-grid" id="speakers"></div></section>
+                <section id="moderatorsSection" hidden><h2 class="section-title">Hosts &amp; moderators</h2><div class="people-grid" id="moderators"></div></section>
+                <section id="gallerySection" hidden><h2 class="section-title">Event gallery</h2><div class="gallery" id="gallery"></div></section>
+                <section id="linksSection" hidden><h2 class="section-title">Related links</h2><div class="related" id="links"></div></section>
+            </div>
+            <aside class="side-card"><h2 class="section-title">Event details</h2><div class="info-grid">
+                <div class="info-item"><i class="far fa-calendar"></i><span id="date"></span></div>
+                <div class="info-item"><i class="far fa-clock"></i><span id="time"></span></div>
+                <div class="info-item"><i class="fas fa-location-dot"></i><span id="venue"></span></div>
+                <div class="info-item"><i class="fas fa-display"></i><span id="format"></span></div>
+                <div class="info-item" id="partnerInfo" hidden><i class="fas fa-handshake"></i><span id="partnerName"></span></div>
+            </div></aside>
+        </div>
+    </article>
+</main>
+<footer>© <span id="year"></span> ILM Nexus Limited · <a href="events.html">Back to events</a></footer>
+<script type="module">
+    import { getDemoEvents } from './events-demo.js';
+    import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js';
+    import { doc, getDoc, getFirestore } from 'https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js';
+    const app = initializeApp({
+        apiKey:'AIzaSyBJKtNJDIxbo-_PxSwGTYcuS8gRjg9ReX8',
+        authDomain:'ilmnexusnews.firebaseapp.com',
+        projectId:'ilmnexusnews',
+        storageBucket:'ilmnexusnews.firebasestorage.app',
+        messagingSenderId:'434251311563',
+        appId:'1:434251311563:web:0264d1049c463369862e4e'
+    });
+    const db = getFirestore(app);
+    const id = new URLSearchParams(location.search).get('id');
+    const status = document.getElementById('status');
+    const safeUrl = value => {
+        try { const url = new URL(value, location.href); return ['http:','https:'].includes(url.protocol) ? url.href : ''; }
+        catch { return ''; }
+    };
+    const safeImage = value => typeof value === 'string' && /^data:image\/(?:jpeg|png|webp);base64,[A-Za-z0-9+/=]+$/i.test(value) ? value : safeUrl(value);
+    const escapeHtml = value => String(value ?? '').replace(/[&<>"']/g, char => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]));
+    function eventStatus(event) {
+        const end = new Date(`${event.date}T${event.endTime || event.startTime || '23:59'}`);
+        if (end > new Date()) return 'Upcoming';
+        const cutoff = new Date(); cutoff.setDate(cutoff.getDate() - 30);
+        return end >= cutoff ? 'Recent' : 'Past event';
+    }
+    function renderPeople(container, people) {
+        const entries = Array.isArray(people) ? people : [];
+        container.innerHTML = entries.map(person => {
+            const [name, role] = String(person).split(/\s+[—–-]\s+/, 2);
+            return `<div class="person"><strong>${escapeHtml(name)}</strong>${role ? `<span>${escapeHtml(role)}</span>` : ''}</div>`;
+        }).join('');
+        return Boolean(entries.length);
+    }
+    function render(event) {
+        const title = event.title || 'ILM Nexus Event';
+        const description = event.summary || event.details || 'Explore this ILM Nexus event.';
+        const flyer = safeImage(event.flyer) || `${location.origin}/image/flyer.jpg`;
+        const canonical = `${location.origin}/event.html?id=${encodeURIComponent(id)}`;
+        document.title = `${title} | ILM Nexus Events`;
+        document.querySelector('meta[name="description"]').content = description;
+        document.getElementById('ogTitle').content = title;
+        document.getElementById('ogDescription').content = description;
+        document.getElementById('ogImage').content = flyer;
+        document.getElementById('ogUrl').content = canonical;
+        document.getElementById('twitterTitle').content = title;
+        document.getElementById('twitterDescription').content = description;
+        document.getElementById('twitterImage').content = flyer;
+        document.getElementById('canonical').href = canonical;
+        document.getElementById('flyer').src = flyer;
+        document.getElementById('flyer').alt = title;
+        document.getElementById('eventStatus').textContent = eventStatus(event);
+        document.getElementById('title').textContent = title;
+        document.getElementById('summary').textContent = description;
+        document.getElementById('date').textContent = new Date(`${event.date}T00:00:00`).toLocaleDateString(undefined,{weekday:'long',year:'numeric',month:'long',day:'numeric'});
+        document.getElementById('time').textContent = [event.startTime,event.endTime].filter(Boolean).join(' – ') || 'Time to be announced';
+        document.getElementById('venue').textContent = event.venue || 'Venue to be announced';
+        document.getElementById('format').textContent = event.format || 'Event';
+        document.getElementById('partnerInfo').hidden = !event.partnerName;
+        document.getElementById('partnerName').textContent = event.partnerName ? `In partnership with ${event.partnerName}` : '';
+        document.getElementById('details').textContent = event.details || event.summary || '';
+        document.getElementById('detailsSection').hidden = !event.details && !event.summary;
+        document.getElementById('speakersSection').hidden = !renderPeople(document.getElementById('speakers'), event.speakers);
+        document.getElementById('moderatorsSection').hidden = !renderPeople(document.getElementById('moderators'), event.moderators);
+        const gallery = document.getElementById('gallery');
+        const imageUrls = Array.isArray(event.gallery) ? event.gallery : [];
+        gallery.replaceChildren(...imageUrls.map(safeUrl).filter(Boolean).map(url => {
+            const image = document.createElement('img'); image.src = url; image.alt = `${title} event`; image.loading = 'lazy'; return image;
+        }));
+        document.getElementById('gallerySection').hidden = !gallery.childElementCount;
+        const links = document.getElementById('links');
+        const urls = Array.isArray(event.links) ? event.links : [];
+        links.replaceChildren(...urls.map(safeUrl).filter(Boolean).map(url => {
+            const link = document.createElement('a'); link.href = url; link.target = '_blank'; link.rel = 'noopener noreferrer'; link.textContent = url; return link;
+        }));
+        document.getElementById('linksSection').hidden = !links.childElementCount;
+        const registration = safeUrl(event.registrationUrl);
+        if (registration) { document.getElementById('registration').href = registration; document.getElementById('registration').hidden = false; }
+        document.getElementById('event').hidden = false;
+        status.hidden = true;
+    }
+    document.getElementById('year').textContent = new Date().getFullYear();
+    if (!id) {
+        status.textContent = 'This event link is missing its event ID.';
+    } else {
+        try {
+            const snapshot = await getDoc(doc(db,'events',id));
+            const demoEvent = getDemoEvents().find(event => event.id === id);
+            if (!snapshot.exists() && demoEvent) render(demoEvent);
+            else if (!snapshot.exists()) status.textContent = 'This event could not be found. Browse all events to find another one.';
+            else render(snapshot.data());
+        } catch (error) {
+            console.error('Could not load event:', error);
+            status.textContent = `Could not load this event: ${error.message}`;
+        }
+    }
+</script>
+</body>
+</html>

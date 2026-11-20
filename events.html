@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Explore ILM Nexus events, workshops, masterclasses, and community gatherings. Browse upcoming, recent, and past events.">
+    <meta name="robots" content="index, follow, max-image-preview:large">
+    <meta property="og:title" content="Events | ILM Nexus">
+    <meta property="og:description" content="Discover upcoming events, recent sessions, and past ILM Nexus gatherings.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://ilmnexus.tech/events.html">
+    <meta property="og:image" content="https://ilmnexus.tech/image/flyer.jpg">
+    <link rel="canonical" href="https://ilmnexus.tech/events.html">
+    <title>Events | ILM Nexus</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+    <style>
+        :root{--ink:#14213d;--muted:#667085;--blue:#246bfe;--blue-dark:#173d9b;--gold:#ef9c18;--paper:#f5f8fc;--line:#dbe3ef;--green:#147d5a}
+        *{box-sizing:border-box}body{margin:0;color:var(--ink);background:var(--paper);font:16px/1.65 "DM Sans",sans-serif}
+        a{color:inherit;text-decoration:none}.container{width:min(1180px,calc(100% - 2rem));margin:auto}
+        .header{position:sticky;top:0;z-index:5;background:#fffffff2;border-bottom:1px solid var(--line);backdrop-filter:blur(14px)}
+        .nav{height:72px;display:flex;align-items:center;justify-content:space-between;gap:1rem}
+        .logo img{width:112px;display:block}.nav-links{display:flex;gap:1.4rem;list-style:none;font-weight:700;font-size:.92rem}
+        .nav-links a:hover,.back:hover{color:var(--blue)}.button{display:inline-flex;align-items:center;gap:.55rem;border:0;border-radius:10px;padding:.8rem 1.1rem;background:var(--blue);color:white;font:700 .93rem "DM Sans",sans-serif;cursor:pointer}
+        .hero{position:relative;overflow:hidden;padding:5.8rem 0 5rem;background:linear-gradient(120deg,#10285c,#246bfe 72%,#9261dc);color:white}
+        .hero:after{content:"";position:absolute;width:380px;height:380px;border:65px solid #ffffff16;border-radius:50%;right:-100px;bottom:-260px}
+        .hero-content{position:relative;z-index:1;max-width:760px}.eyebrow{margin:0 0 .6rem;color:#ffda91;font-size:.76rem;font-weight:800;letter-spacing:.14em;text-transform:uppercase}
+        h1,h2,h3{font-family:"Space Grotesk",sans-serif;line-height:1.15}.hero h1{margin:.5rem 0 1rem;font-size:clamp(2.7rem,7vw,5.3rem);letter-spacing:-.04em}
+        .hero p:not(.eyebrow){max-width:620px;color:#ffffffdc;font-size:1.08rem}.hero-actions{display:flex;align-items:center;gap:1rem;flex-wrap:wrap;margin-top:1.7rem}
+        .button.gold{background:var(--gold)}.button.ghost{border:1px solid #ffffff70;background:#ffffff16}
+        .intro{padding:2.5rem 0 1rem}.intro-row{display:flex;justify-content:space-between;align-items:end;gap:2rem}.intro h2{margin:.25rem 0;font-size:2rem}.intro p{margin:0;color:var(--muted)}
+        .event-tabs{display:flex;gap:.55rem;flex-wrap:wrap;margin:1.6rem 0 2rem}.event-tab{border:1px solid var(--line);border-radius:999px;background:white;color:var(--muted);padding:.65rem 1rem;font:700 .9rem "DM Sans",sans-serif;cursor:pointer}
+        .event-tab.active,.event-tab:hover{color:white;background:var(--blue);border-color:var(--blue)}.event-tab span{margin-left:.35rem;opacity:.75}
+        .event-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1.25rem}
+        .event-card{overflow:hidden;border:1px solid var(--line);border-radius:18px;background:white;box-shadow:0 10px 28px #14213d0b;transition:transform .2s,box-shadow .2s}
+        .event-card:hover{transform:translateY(-4px);box-shadow:0 18px 34px #14213d18}.event-image{position:relative;aspect-ratio:16/10;background:#e8eef8}
+        .event-image img{width:100%;height:100%;object-fit:cover}.status{position:absolute;left:1rem;top:1rem;padding:.35rem .7rem;border-radius:999px;background:#fff;color:var(--blue-dark);font-size:.75rem;font-weight:800}
+        .status.upcoming{color:#0d704f;background:#e4faef}.status.recent{color:#925300;background:#fff3d9}.event-card-body{padding:1.15rem}
+        .event-tag{position:absolute;left:1rem;padding:.28rem .6rem;border-radius:999px;background:#fff;color:var(--ink);font-size:.7rem;font-weight:800}.partner-tag{top:3.35rem;color:#173d9b;background:#eaf0ff}.demo-tag{top:5.4rem;color:#744600;background:#fff3d9}
+        .event-date{display:flex;align-items:center;gap:.5rem;color:var(--blue);font-size:.84rem;font-weight:800}.event-card h3{margin:.65rem 0;font-size:1.25rem}
+        .event-card h3 a:hover{color:var(--blue)}
+        .event-card p{display:-webkit-box;overflow:hidden;-webkit-line-clamp:3;-webkit-box-orient:vertical;margin:.35rem 0 1rem;color:var(--muted);font-size:.92rem}
+        .event-meta{display:grid;gap:.45rem;margin:.9rem 0 1.1rem;color:var(--muted);font-size:.84rem}.event-meta span{display:flex;align-items:flex-start;gap:.55rem}
+        .event-meta i{width:15px;margin-top:.25rem;color:var(--blue)}.read-more{display:inline-flex;align-items:center;gap:.5rem;color:var(--blue-dark);font-weight:800}
+        .event-admin-actions{display:flex;gap:.5rem;margin-top:.8rem}.event-admin-actions button{padding:.45rem .7rem;border:1px solid var(--line);border-radius:8px;background:#fff;color:var(--ink);font:700 .8rem "DM Sans",sans-serif;cursor:pointer}.event-admin-actions button:hover{border-color:var(--blue);color:var(--blue)}
+        .empty{grid-column:1/-1;padding:3rem 1.5rem;border:1px dashed #b9c7dc;border-radius:16px;background:#fff;text-align:center;color:var(--muted)}
+        .publish-panel{display:none;margin:2.5rem 0;padding:clamp(1rem,4vw,2rem);border:1px solid var(--line);border-radius:18px;background:white;box-shadow:0 10px 30px #14213d0c}
+        .publish-panel.open{display:block}.publish-panel h2{margin-top:0}.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+        .field{display:grid;gap:.4rem}.field.full{grid-column:1/-1}.field label{font-size:.88rem;font-weight:800}.field input,.field textarea,.field select{width:100%;border:1px solid #cdd7e6;border-radius:9px;padding:.75rem .85rem;color:var(--ink);font:inherit;background:white}
+        .field textarea{min-height:110px;resize:vertical}.field small{color:var(--muted)}.image-options{display:flex;gap:1rem;flex-wrap:wrap}
+        .login-modal{display:none;position:fixed;inset:0;z-index:9;align-items:center;justify-content:center;padding:1rem;background:#111b35a8}.login-modal.open{display:flex}
+        .login-card{width:min(420px,100%);padding:1.5rem;border-radius:18px;background:white}.login-card input{width:100%;padding:.8rem;border:1px solid var(--line);border-radius:9px;font:inherit}
+        .footer{margin-top:5rem;padding:2rem 0;background:#112148;color:#ffffffc9;text-align:center}.footer a{color:#fff;font-weight:700}
+        @media(max-width:900px){.event-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+        @media(max-width:600px){.nav-links{gap:.7rem;font-size:.8rem;padding:0}.nav-links li:not(:last-child){display:none}.hero{padding:4rem 0}.intro-row{align-items:flex-start;flex-direction:column}.event-grid,.form-grid{grid-template-columns:1fr}.field.full{grid-column:auto}.event-card-body{padding:1rem}}
+    </style>
+</head>
+<body>
+<header class="header"><nav class="container nav">
+    <a class="logo" href="index.html"><img src="./image/nexus-learn logo.png" alt="ILM Nexus"></a>
+    <ul class="nav-links"><li><a href="index.html">Home</a></li><li><a href="news.html">News</a></li><li><a href="programs.html">Programs</a></li></ul>
+    <button class="button" id="publishButton" type="button"><i class="fas fa-plus"></i> Publish Event</button>
+</nav></header>
+<main>
+    <section class="hero"><div class="container hero-content">
+        <p class="eyebrow">ILM Nexus community</p><h1>Events that move us forward.</h1>
+        <p>Find practical workshops, masterclasses, campus gatherings, and community moments. See what is coming up or revisit the events we have hosted.</p>
+        <div class="hero-actions"><a class="button gold" href="#event-list"><i class="fas fa-calendar-days"></i> Explore events</a><a class="button ghost" href="index.html">Back to ILM Nexus</a></div>
+    </div></section>
+    <section class="container intro" id="event-list">
+        <div class="intro-row"><div><p class="eyebrow" style="color:var(--blue)">Our event calendar</p><h2>Every gathering, all in one place.</h2><p>Browse upcoming events, the latest sessions, and past event recaps.</p></div></div>
+        <div class="event-tabs" role="tablist" aria-label="Filter events">
+            <button class="event-tab active" type="button" data-filter="all">All events <span id="countAll">0</span></button>
+            <button class="event-tab" type="button" data-filter="upcoming">Upcoming <span id="countUpcoming">0</span></button>
+            <button class="event-tab" type="button" data-filter="recent">Recent <span id="countRecent">0</span></button>
+            <button class="event-tab" type="button" data-filter="past">Past events <span id="countPast">0</span></button>
+            <button class="event-tab" type="button" data-filter="partner">Partner events <span id="countPartner">0</span></button>
+        </div>
+        <div id="eventGrid" class="event-grid" aria-live="polite"><div class="empty">Loading events...</div></div>
+        <section class="publish-panel" id="publishPanel">
+            <h2>Publish an event</h2><p>Add the flyer, schedule, venue, speakers, and details. Published events are sorted into Upcoming, Recent, or Past automatically.</p>
+            <form id="eventForm">
+                <div class="form-grid">
+                    <div class="field full"><label for="eventTitle">Event title</label><input id="eventTitle" name="title" required maxlength="160" placeholder="e.g. Build Your Digital Identity"></div>
+                    <div class="field full"><label for="eventSummary">Short summary</label><textarea id="eventSummary" name="summary" required maxlength="500" placeholder="What is this event about?"></textarea></div>
+                    <div class="field"><label for="eventDate">Event date</label><input id="eventDate" name="date" type="date" required></div>
+                    <div class="field"><label for="eventVenue">Venue or platform</label><input id="eventVenue" name="venue" required placeholder="e.g. University of Ilorin / Google Meet"></div>
+                    <div class="field"><label for="eventStartTime">Start time</label><input id="eventStartTime" name="startTime" type="time" required></div>
+                    <div class="field"><label for="eventEndTime">End time (optional)</label><input id="eventEndTime" name="endTime" type="time"></div>
+                    <div class="field"><label for="eventFormat">Event format</label><select id="eventFormat" name="format"><option>In person</option><option>Online</option><option>Hybrid</option></select></div>
+                    <div class="field"><label for="eventPartnerName">Partner organization (optional)</label><input id="eventPartnerName" name="partnerName" maxlength="120" placeholder="Enter the ILM Nexus partner organization"></div>
+                    <div class="field"><label for="eventRegistration">Registration / event link</label><input id="eventRegistration" name="registrationUrl" type="url" placeholder="https://..."></div>
+                    <div class="field full"><label>Event flyer</label><div class="image-options"><label><input type="radio" name="imageSource" value="upload" checked> Upload flyer</label><label><input type="radio" name="imageSource" value="url"> Use flyer URL</label></div><input id="eventFlyerFile" type="file" accept="image/*"><input id="eventFlyerUrl" type="url" placeholder="https://example.com/event-flyer.jpg" hidden><small>Flyer uploads are compressed before saving. For best results, use a clear portrait or landscape image.</small></div>
+                    <div class="field"><label for="eventSpeakers">Speakers (one per line)</label><textarea id="eventSpeakers" name="speakers" placeholder="Name — role or organization"></textarea></div>
+                    <div class="field"><label for="eventModerators">Moderators / hosts (one per line)</label><textarea id="eventModerators" name="moderators" placeholder="Name — role or organization"></textarea></div>
+                    <div class="field full"><label for="eventDetails">Full event details</label><textarea id="eventDetails" name="details" placeholder="Agenda, what attendees will learn, event recap, and any other useful information."></textarea></div>
+                    <div class="field full"><label for="eventGallery">Additional image URLs (optional, one per line)</label><textarea id="eventGallery" name="gallery" placeholder="https://example.com/event-photo-1.jpg&#10;https://example.com/event-photo-2.jpg"></textarea></div>
+                    <div class="field full"><label for="eventLinks">Related links (optional, one per line)</label><textarea id="eventLinks" name="links" placeholder="Speaker profile, registration, recap video, or related article"></textarea></div>
+                    <div class="field full"><button class="button" id="saveEvent" type="submit">Publish event</button><p id="formMessage" role="status"></p></div>
+                </div>
+            </form>
+        </section>
+    </section>
+</main>
+<footer class="footer"><div class="container"><a href="index.html">ILM Nexus</a> · Ilorin, Kwara State, Nigeria · <a href="mailto:theilmnexus@gmail.com">Contact us</a></div></footer>
+<div class="login-modal" id="loginModal" role="dialog" aria-modal="true" aria-labelledby="loginTitle"><form class="login-card" id="loginForm"><h2 id="loginTitle">Event publisher sign-in</h2><p>Sign in with the ILM Nexus admin account to publish events.</p><label for="adminPassword">Admin password</label><input id="adminPassword" type="password" required autocomplete="current-password"><p id="loginMessage" role="status"></p><button class="button" type="submit">Sign in</button> <button class="button" id="cancelLogin" type="button" style="background:#667085">Cancel</button></form></div>
+<script type="module">
+    import { getDemoEvents } from './events-demo.js';
+    import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js';
+    import { getAuth, signInWithEmailAndPassword, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/10.7.0/firebase-auth.js';
+    import { addDoc, collection, deleteDoc, doc, getDocs, getFirestore, orderBy, query, serverTimestamp, updateDoc } from 'https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js';
+
+    const config = {
+        apiKey: 'AIzaSyBJKtNJDIxbo-_PxSwGTYcuS8gRjg9ReX8',
+        authDomain: 'ilmnexusnews.firebaseapp.com',
+        projectId: 'ilmnexusnews',
+        storageBucket: 'ilmnexusnews.firebasestorage.app',
+        messagingSenderId: '434251311563',
+        appId: '1:434251311563:web:0264d1049c463369862e4e'
+    };
+    const app = initializeApp(config);
+    const db = getFirestore(app);
+    const auth = getAuth(app);
+    const adminEmail = 'theilmnexus@gmail.com';
+    const eventGrid = document.getElementById('eventGrid');
+    const panel = document.getElementById('publishPanel');
+    const form = document.getElementById('eventForm');
+    const message = document.getElementById('formMessage');
+    let activeFilter = 'all';
+    let events = [];
+    let isAdmin = false;
+    let editingEventId = null;
+    let editingFlyer = '';
+
+    function safeUrl(value) {
+        if (!value) return '';
+        try {
+            const url = new URL(value, window.location.href);
+            return ['http:', 'https:'].includes(url.protocol) ? url.href : '';
+        } catch { return ''; }
+    }
+
+    function safeImage(value) {
+        if (typeof value === 'string' && /^data:image\/(?:jpeg|png|webp);base64,[A-Za-z0-9+/=]+$/i.test(value)) return value;
+        return safeUrl(value);
+    }
+
+    function escapeHtml(value) {
+        return String(value ?? '').replace(/[&<>"']/g, char => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]));
+    }
+
+    function eventStatus(event) {
+        const endTime = event.endTime || event.startTime || '23:59';
+        const end = new Date(`${event.date}T${endTime}`);
+        const now = new Date();
+        if (end > now) return 'upcoming';
+        const recentCutoff = new Date(now);
+        recentCutoff.setDate(now.getDate() - 30);
+        return end >= recentCutoff ? 'recent' : 'past';
+    }
+
+    function formatDate(value) {
+        const date = new Date(`${value}T00:00:00`);
+        return Number.isNaN(date.getTime()) ? value : date.toLocaleDateString(undefined, { weekday:'short', year:'numeric', month:'long', day:'numeric' });
+    }
+
+    function render() {
+        const groups = { upcoming:0, recent:0, past:0 };
+        events.forEach(event => { groups[eventStatus(event)] += 1; });
+        document.getElementById('countAll').textContent = events.length;
+        document.getElementById('countUpcoming').textContent = groups.upcoming;
+        document.getElementById('countRecent').textContent = groups.recent;
+        document.getElementById('countPast').textContent = groups.past;
+        document.getElementById('countPartner').textContent = events.filter(event => event.partnerName).length;
+
+        const visible = events.filter(event => activeFilter === 'all' || (activeFilter === 'partner' ? Boolean(event.partnerName) : eventStatus(event) === activeFilter));
+        if (!visible.length) {
+            const emptyCopy = events.length
+                ? `There are no ${activeFilter === 'past' ? 'past' : activeFilter === 'partner' ? 'partner' : activeFilter} events to show right now.`
+                : 'No events have been published yet. Check back soon for upcoming ILM Nexus events.';
+            eventGrid.innerHTML = `<div class="empty"><i class="fas fa-calendar-days"></i><p>${escapeHtml(emptyCopy)}</p></div>`;
+            return;
+        }
+
+        eventGrid.innerHTML = visible.map(event => {
+            const status = eventStatus(event);
+            const flyer = safeImage(event.flyer) || './image/flyer.jpg';
+            const detailLink = event.id === 'demo-build-digital-identity'
+                ? './events/build-digital-identity.html'
+                : `./event.html?id=${encodeURIComponent(event.id)}`;
+            const statusLabel = status === 'upcoming' ? 'Upcoming' : status === 'recent' ? 'Recent' : 'Past event';
+            const time = [event.startTime, event.endTime].filter(Boolean).join(' – ');
+            return `<article class="event-card">
+                <a class="event-image" href="${detailLink}" aria-label="View ${escapeHtml(event.title)}">
+                    <img src="${escapeHtml(flyer)}" alt="${escapeHtml(event.title)}" loading="lazy"><span class="status ${status}">${statusLabel}</span>
+                    ${event.partnerName ? '<span class="event-tag partner-tag">Partner event</span>' : ''}
+                    ${event.isDemo ? '<span class="event-tag demo-tag">Demo listing</span>' : ''}
+                </a>
+                <div class="event-card-body">
+                    <div class="event-date"><i class="far fa-calendar"></i> ${escapeHtml(formatDate(event.date))}</div>
+                    <h3><a href="${detailLink}">${escapeHtml(event.title)}</a></h3><p>${escapeHtml(event.summary)}</p>
+                    <div class="event-meta"><span><i class="fas fa-location-dot"></i>${escapeHtml(event.venue || event.format || 'Venue to be announced')}</span>${time ? `<span><i class="far fa-clock"></i>${escapeHtml(time)}</span>` : ''}</div>
+                    <a class="read-more" href="${detailLink}">View event <i class="fas fa-arrow-right"></i></a>
+                    ${isAdmin && event.id !== 'demo-build-digital-identity' ? `<div class="event-admin-actions"><button class="edit-event" type="button" data-edit="${escapeHtml(event.id)}">Edit</button><button class="delete-event" type="button" data-delete="${escapeHtml(event.id)}">Delete</button></div>` : ''}
+                </div>
+            </article>`;
+        }).join('');
+
+        eventGrid.querySelectorAll('[data-edit]').forEach(button => button.addEventListener('click', () => {
+            const event = events.find(item => item.id === button.dataset.edit);
+            if (!event) return;
+            editingEventId = event.id;
+            editingFlyer = event.flyer || '';
+            for (const field of ['title','summary','date','startTime','endTime','venue','format','registrationUrl','details','partnerName']) {
+                const input = form.elements.namedItem(field);
+                if (input) input.value = event[field] || '';
+            }
+            document.getElementById('eventSpeakers').value = (event.speakers || []).join('\n');
+            document.getElementById('eventModerators').value = (event.moderators || []).join('\n');
+            document.getElementById('eventGallery').value = (event.gallery || []).join('\n');
+            document.getElementById('eventLinks').value = (event.links || []).join('\n');
+            document.querySelector('input[name="imageSource"][value="url"]').checked = true;
+            document.getElementById('eventFlyerUrl').value = event.flyer && !event.flyer.startsWith('data:') ? event.flyer : '';
+            document.getElementById('eventFlyerFile').hidden = true;
+            document.getElementById('eventFlyerUrl').hidden = false;
+            document.getElementById('saveEvent').textContent = 'Save event changes';
+            message.textContent = event.flyer?.startsWith('data:') ? 'Existing uploaded flyer will stay unless you choose a flyer URL.' : '';
+            panel.classList.add('open');
+            panel.scrollIntoView({ behavior:'smooth', block:'start' });
+        }));
+
+        eventGrid.querySelectorAll('[data-delete]').forEach(button => button.addEventListener('click', async () => {
+            const event = events.find(item => item.id === button.dataset.delete);
+            if (!event || !window.confirm(`Delete "${event.title}"? This cannot be undone.`)) return;
+            try {
+                await deleteDoc(doc(db, 'events', event.id));
+                await loadEvents();
+            } catch (error) {
+                window.alert(`Could not delete the event: ${error.message}`);
+            }
+        }));
+    }
+
+    async function loadEvents() {
+        eventGrid.innerHTML = '<div class="empty">Loading events...</div>';
+        try {
+            const snapshot = await getDocs(query(collection(db, 'events'), orderBy('date', 'desc')));
+            events = snapshot.docs.map(item => ({ id:item.id, ...item.data() }));
+        } catch (error) {
+            console.error('Could not load events:', error);
+            eventGrid.innerHTML = `<div class="empty">Events could not be loaded. ${escapeHtml(error.message)}</div>`;
+            return;
+        }
+
+        const demoEvents = getDemoEvents().filter(demo => !events.some(event => event.id === demo.id));
+        events.push(...demoEvents);
+        events.sort((first, second) => new Date(`${second.date}T${second.startTime || '00:00'}`) - new Date(`${first.date}T${first.startTime || '00:00'}`));
+        render();
+    }
+
+    document.querySelectorAll('.event-tab').forEach(button => button.addEventListener('click', () => {
+        activeFilter = button.dataset.filter;
+        document.querySelectorAll('.event-tab').forEach(tab => tab.classList.toggle('active', tab === button));
+        render();
+    }));
+
+    document.getElementById('publishButton').addEventListener('click', () => {
+        if (isAdmin) {
+            panel.classList.toggle('open');
+            panel.scrollIntoView({ behavior:'smooth', block:'start' });
+        } else {
+            document.getElementById('loginModal').classList.add('open');
+            document.getElementById('adminPassword').focus();
+        }
+    });
+
+    document.getElementById('cancelLogin').addEventListener('click', () => document.getElementById('loginModal').classList.remove('open'));
+    document.querySelectorAll('input[name="imageSource"]').forEach(input => input.addEventListener('change', () => {
+        const useUrl = document.querySelector('input[name="imageSource"]:checked').value === 'url';
+        document.getElementById('eventFlyerFile').hidden = useUrl;
+        document.getElementById('eventFlyerUrl').hidden = !useUrl;
+    }));
+
+    document.getElementById('loginForm').addEventListener('submit', async event => {
+        event.preventDefault();
+        const loginMessage = document.getElementById('loginMessage');
+        try {
+            await signInWithEmailAndPassword(auth, adminEmail, document.getElementById('adminPassword').value);
+            isAdmin = true;
+            document.getElementById('loginModal').classList.remove('open');
+            panel.classList.add('open');
+            render();
+            panel.scrollIntoView({ behavior:'smooth' });
+        } catch (error) {
+            loginMessage.textContent = `Sign-in failed: ${error.message}`;
+        }
+    });
+
+    onAuthStateChanged(auth, user => {
+        isAdmin = user?.email?.toLowerCase() === adminEmail;
+        if (isAdmin) document.getElementById('publishButton').innerHTML = '<i class="fas fa-plus"></i> Add event';
+        render();
+    });
+
+    function compressFlyer(file) {
+        return new Promise((resolve, reject) => {
+            const image = new Image();
+            const objectUrl = URL.createObjectURL(file);
+            image.onload = () => {
+                URL.revokeObjectURL(objectUrl);
+                const scale = Math.min(1, 1500 / image.width);
+                const canvas = document.createElement('canvas');
+                canvas.width = Math.max(1, Math.round(image.width * scale));
+                canvas.height = Math.max(1, Math.round(image.height * scale));
+                canvas.getContext('2d').drawImage(image, 0, 0, canvas.width, canvas.height);
+                canvas.toBlob(blob => {
+                    if (!blob) return reject(new Error('The flyer image could not be compressed.'));
+                    if (blob.size > 500000) return reject(new Error('Flyer is too large after compression. Please choose a smaller image.'));
+                    const reader = new FileReader();
+                    reader.onload = () => resolve(reader.result);
+                    reader.onerror = () => reject(new Error('The flyer image could not be read.'));
+                    reader.readAsDataURL(blob);
+                }, 'image/jpeg', 0.72);
+            };
+            image.onerror = () => { URL.revokeObjectURL(objectUrl); reject(new Error('Please select a valid flyer image.')); };
+            image.src = objectUrl;
+        });
+    }
+
+    form.addEventListener('submit', async event => {
+        event.preventDefault();
+        if (!isAdmin) {
+            message.textContent = 'Sign in as the ILM Nexus admin to publish an event.';
+            return;
+        }
+        const data = new FormData(form);
+        const imageSource = data.get('imageSource');
+        const flyerFile = document.getElementById('eventFlyerFile').files[0];
+        const flyerUrl = document.getElementById('eventFlyerUrl').value.trim();
+        if (imageSource === 'upload' && !flyerFile && !editingEventId) {
+            message.textContent = 'Please choose an event flyer.';
+            return;
+        }
+        if (imageSource === 'url' && !safeUrl(flyerUrl) && !(editingEventId && editingFlyer)) {
+            message.textContent = 'Please enter a valid flyer URL.';
+            return;
+        }
+        const button = document.getElementById('saveEvent');
+        button.disabled = true;
+        message.textContent = 'Publishing event...';
+        try {
+            const flyer = imageSource === 'url'
+                ? (safeUrl(flyerUrl) || editingFlyer)
+                : (flyerFile ? await compressFlyer(flyerFile) : editingFlyer);
+            const eventData = {
+                title:String(data.get('title')).trim(),
+                summary:String(data.get('summary')).trim(),
+                date:String(data.get('date')),
+                startTime:String(data.get('startTime')),
+                endTime:String(data.get('endTime') || ''),
+                venue:String(data.get('venue')).trim(),
+                format:String(data.get('format')),
+                partnerName:String(data.get('partnerName') || '').trim(),
+                registrationUrl:safeUrl(data.get('registrationUrl')),
+                flyer,
+                speakers:String(data.get('speakers') || '').split('\n').map(item => item.trim()).filter(Boolean),
+                moderators:String(data.get('moderators') || '').split('\n').map(item => item.trim()).filter(Boolean),
+                details:String(data.get('details') || '').trim(),
+                gallery:String(data.get('gallery') || '').split('\n').map(safeUrl).filter(Boolean),
+                links:String(data.get('links') || '').split('\n').map(safeUrl).filter(Boolean),
+                updatedAt:serverTimestamp()
+            };
+            if (editingEventId) {
+                await updateDoc(doc(db, 'events', editingEventId), eventData);
+                message.textContent = 'Event updated successfully.';
+            } else {
+                eventData.createdAt = serverTimestamp();
+                await addDoc(collection(db, 'events'), eventData);
+                message.textContent = 'Event published successfully.';
+            }
+            editingEventId = null;
+            editingFlyer = '';
+            form.reset();
+            document.getElementById('eventDate').valueAsDate = new Date();
+            document.getElementById('eventFlyerFile').hidden = false;
+            document.getElementById('eventFlyerUrl').hidden = true;
+            document.getElementById('saveEvent').textContent = 'Publish event';
+            await loadEvents();
+        } catch (error) {
+            console.error('Could not publish event:', error);
+            message.textContent = `Could not publish event: ${error.message}`;
+        } finally {
+            button.disabled = false;
+        }
+    });
+
+    document.getElementById('eventDate').valueAsDate = new Date();
+    loadEvents();
+</script>
+</body>
+</html>

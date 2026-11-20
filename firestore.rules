@@ -27,6 +27,32 @@ service cloud.firestore {
       allow create, update, delete: if isAdmin();
     }
 
+    match /comments/{commentId} {
+      allow read: if true;
+      allow create: if request.resource.data.keys().hasOnly([
+          'articleId', 'name', 'text', 'createdAt'
+        ])
+        && request.resource.data.keys().hasAll([
+          'articleId', 'name', 'text', 'createdAt'
+        ])
+        && request.resource.data.articleId is string
+        && request.resource.data.articleId.size() > 0
+        && request.resource.data.articleId.size() <= 150
+        && request.resource.data.name is string
+        && request.resource.data.name.size() > 0
+        && request.resource.data.name.size() <= 60
+        && request.resource.data.text is string
+        && request.resource.data.text.size() > 0
+        && request.resource.data.text.size() <= 500
+        && request.resource.data.createdAt == request.time;
+      allow update, delete: if isAdmin();
+    }
+
+    match /events/{eventId} {
+      allow read: if true;
+      allow create, update, delete: if isAdmin();
+    }
+
     match /campus_feedback/{feedbackId} {
       allow create: if request.auth != null
         && request.resource.data.campusId == 'unilorin'

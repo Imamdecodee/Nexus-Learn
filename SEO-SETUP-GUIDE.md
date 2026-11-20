@@ -81,16 +81,26 @@ In Google Search Console:
 
 ### Article Share Previews
 
-Article links use `/share/article/{articleId}`. The root `_redirects` file rewrites these paths to `article.html` on Netlify, and the article page reads the ID from the share URL so readers can open the story without a 404. Existing static articles also carry their title, description, and image in the link query string.
+Article links use `/share/article/{articleId}`. On Netlify, `_redirects` proxies these paths to the Firebase `articleShare` function. That function returns each article's title, description, and image in the initial HTML for social preview crawlers, then sends regular readers to the full article page. Keep the Firebase function deployed and publicly accessible for share links to work.
 
-For Firebase Hosting, the Hosting rewrite sends article links to the server-rendered share function so link-preview crawlers can read the article metadata. Deploy the Firebase Function and Hosting rewrite from the repository root:
+When publishing, add a few accurate, article-specific topics in **SEO Topics and Keywords**. They are saved with the article and included in its NewsArticle structured data and page metadata. Google does **not** use the `meta keywords` tag for rankings; the headline, useful article text, description, and links to the article matter more. Use the same topics naturally in the headline/story instead of repeating or stuffing keywords.
+
+Deploy the Firebase Function and Firestore rules from the repository root, then redeploy the site on Netlify so its `_redirects` proxy is published:
 
 ```powershell
 npm --prefix functions install
-firebase deploy --only functions:articleShare,hosting
+firebase deploy --only functions:articleShare,firestore:rules
 ```
 
-Deploying Cloud Functions requires the Firebase project to use the Blaze billing plan. If the public site is hosted on Netlify, redeploy the site after changing `_redirects`; Firebase Hosting rewrites do not apply to Netlify. In the news page, use **Copy Link** or **Share** to copy the article URL. Older direct `article.html?id=...` links still open the article, but new share links should use `/share/article/{articleId}`.
+Deploying Cloud Functions requires the Firebase project to use the Blaze billing plan. In the news page, use **Copy Link** or **Share** to copy the article URL. Older direct `article.html?id=...` links still open the article, but new share links should use `/share/article/{articleId}`.
+
+Article comments are public. The Firestore rules allow anyone to read and create a comment with a name (up to 60 characters) and comment (up to 500 characters); only the admin can change or delete comments.
+
+To ask Google to crawl a newly published article, copy its article link, open Google Search Console for `https://ilmnexus.tech`, use **URL Inspection**, paste the article link, and select **Request Indexing**. Crawling and indexing are controlled by Google and are not immediate or guaranteed. The current `news-sitemap.xml` is a static sitemap for the original articles, so it does not automatically add new Firebase articles.
+
+### Events archive
+
+The homepage Events link opens `events.html`, which groups published Firestore `events` by date: future events are Upcoming, events that ended in the last 30 days are Recent, and older events are Past. Events with a partner organization entered are also available under Partner Events and show the partnership on the event details page. The archive includes clearly marked sample listings (5 upcoming, 5 recent, and 7 past, including the confirmed Build Your Digital Identity event) for demonstration; replace or remove sample content when it is no longer needed. Sign in with the ILM Nexus admin account and publish an event with its flyer, schedule, venue, partner organization (if applicable), speakers, moderators, description, and links. Event details open at `event.html?id=...`. When deploying, publish the Firestore rules (`firebase deploy --only firestore:rules`) and redeploy the site on Netlify so public visitors can read events and admins can publish them.
 
 ### Method 1: Using the Web Form (Easiest)
 1. Visit your news page

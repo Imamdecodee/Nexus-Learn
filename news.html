@@ -1299,6 +1299,7 @@
                 <li><a href="index.html">Home</a></li>
                 <li><a href="index.html#courses">Courses</a></li>
                 <li><a href="news.html">News</a></li>
+                <li><a href="events.html">Events</a></li>
                 <li><a href="index.html#contact">Contact</a></li>
             </ul>
             <a href="login.html" class="cta-button">Login</a>
@@ -1527,6 +1528,12 @@
                     </div>
 
                     <div class="form-group">
+                        <label for="newsKeywords">SEO Topics and Keywords (Optional)</label>
+                        <input type="text" id="newsKeywords" name="keywords" maxlength="300" placeholder="e.g. ILM Nexus, digital skills training, University of Ilorin">
+                        <small class="form-help">Add up to 10 accurate topics, separated by commas. Google ignores the old meta-keywords tag, so use these same phrases naturally in your headline and story too.</small>
+                    </div>
+
+                    <div class="form-group">
                         <label for="newsContent">Full Article Story</label>
                         <textarea id="newsContent" name="content" placeholder="Write the complete story readers should see after clicking Read More. Any https:// links you paste here will be clickable."></textarea>
                     </div>
@@ -1581,6 +1588,7 @@
                     <a href="index.html">Home</a>
                     <a href="programs.html">Programs</a>
                     <a href="news.html">News</a>
+                    <a href="events.html">Events</a>
                     <a href="services.html">Services</a>
                 </div>
                 <div class="footer-section">
@@ -1839,6 +1847,7 @@
             document.getElementById('newsCategory').value = article.category || '';
             document.getElementById('newsDate').value = article.date || '';
             document.getElementById('newsDescription').value = article.description || '';
+            document.getElementById('newsKeywords').value = Array.isArray(article.keywords) ? article.keywords.join(', ') : (article.keywords || '');
             document.getElementById('newsContent').value = article.content || '';
             document.getElementById('newsVideoUrl').value = article.videoUrl || '';
             document.getElementById('newsGallery').value = (article.gallery || []).join('\n');
@@ -2035,6 +2044,7 @@
                     shareLink.searchParams.set('image', card.querySelector('.news-image')?.src || '');
                     shareLink.searchParams.set('category', card.querySelector('.news-category')?.textContent.trim() || '');
                     shareLink.searchParams.set('date', card.querySelector('[itemprop="datePublished"]')?.textContent.trim() || '');
+                    shareLink.searchParams.set('keywords', card.dataset.keywords || '');
                 }
                 const shareUrl = shareLink.href;
                 if (readMore) {
@@ -2225,6 +2235,11 @@
                     date: formData.get('date'),
                     image: imageUrl,
                     description: formData.get('description'),
+                    keywords: [...new Set(String(formData.get('keywords') || '')
+                        .split(/[,\n]/)
+                        .map(keyword => keyword.trim())
+                        .filter(Boolean)
+                        .map(keyword => keyword.slice(0, 60)))].slice(0, 10),
                     content: formData.get('content') || formData.get('description'),
                     videoUrl: articleVideoUrl,
                     gallery: formData.get('gallery').split('\n').map(value => value.trim()).filter(Boolean),

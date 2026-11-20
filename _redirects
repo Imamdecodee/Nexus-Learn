@@ -1,2 +1,2 @@
-/share/article/* /article.html 200
+/share/article/* https://us-central1-ilmnexusnews.cloudfunctions.net/articleShare/share/article/:splat 200!
 https://nexus-learn.netlify.app/* https://ilmnexus.tech/:splat 301!

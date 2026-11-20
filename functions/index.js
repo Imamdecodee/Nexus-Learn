@@ -94,6 +94,10 @@ function renderLinkedContent(value) {
 function renderArticlePage(article, articleId, articleUrl, imageUrl) {
     const title = String(article.title || "ILM Nexus News");
     const description = String(article.description || article.content || "Read the latest news and updates from ILM Nexus.");
+    const keywords = (Array.isArray(article.keywords) ? article.keywords : String(article.keywords || "").split(/[,\n]/))
+        .map(keyword => String(keyword).trim())
+        .filter(Boolean)
+        .slice(0, 10);
     const image = getShareImage(article, imageUrl);
     const date = getPublishedDate(article);
     const content = renderLinkedContent(article.content || article.description || "");
@@ -120,6 +124,7 @@ function renderArticlePage(article, articleId, articleUrl, imageUrl) {
         "@type": "NewsArticle",
         headline: title,
         description,
+        keywords: keywords.join(", "),
         image: [image],
         datePublished: date.toISOString(),
         mainEntityOfPage: { "@type": "WebPage", "@id": articleUrl },
@@ -139,6 +144,7 @@ function renderArticlePage(article, articleId, articleUrl, imageUrl) {
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>${escapeHtml(title)} | ILM Nexus News</title>
 <meta name="description" content="${escapeHtml(description)}">
+${keywords.length ? `<meta name="keywords" content="${escapeHtml(keywords.join(", "))}">` : ""}
 <link rel="canonical" href="${escapeHtml(articleUrl)}">
 <meta property="og:type" content="article">
 <meta property="og:site_name" content="ILM Nexus Academy">
@@ -201,6 +207,7 @@ ${sourceLink}
 </main>
 <footer>© ${new Date().getFullYear()} ILM Nexus Limited · Ilorin, Kwara State, Nigeria</footer>
 <script>document.getElementById("copyArticleLink").addEventListener("click",async event=>{const button=event.currentTarget;try{await navigator.clipboard.writeText(window.location.href);button.textContent="Link copied";setTimeout(()=>button.textContent="Copy article link",1800)}catch(error){button.textContent="Copy the link from your address bar"}});</script>
+<script>if(!/bot|crawler|spider|preview|whatsapp|facebookexternalhit|slackbot|linkedinbot|telegrambot/i.test(navigator.userAgent)){location.replace("/article.html?id=${encodeURIComponent(articleId)}"+location.search)}</script>
 </body>
 </html>`;
 }
@@ -242,6 +249,7 @@ exports.articleShare = onRequest({ region: "us-central1" }, async (request, resp
                 description: typeof request.query.description === "string" ? request.query.description.slice(0, 2000) : "",
                 image: request.query.image.slice(0, 1000000),
                 category: typeof request.query.category === "string" ? request.query.category.slice(0, 100) : "ILM Nexus News",
+                keywords: typeof request.query.keywords === "string" ? request.query.keywords.slice(0, 300) : "",
                 date: typeof request.query.date === "string" ? request.query.date.slice(0, 40) : ""
             };
             queryString = `?${new URLSearchParams({
@@ -249,6 +257,7 @@ exports.articleShare = onRequest({ region: "us-central1" }, async (request, resp
                 description: article.description,
                 image: article.image,
                 category: article.category,
+                keywords: article.keywords,
                 date: article.date
             })}`;
         } else {

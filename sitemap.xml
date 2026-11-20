@@ -22,6 +22,14 @@
             <image:title>Nexus-Learn News</image:title>
         </image:image>
     </url>
+
+    <!-- Events archive -->
+    <url>
+        <loc>https://ilmnexus.tech/events.html</loc>
+        <lastmod>2026-11-20T00:00:00+00:00</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.8</priority>
+    </url>
     
     <!-- Login Page -->
     <url>
