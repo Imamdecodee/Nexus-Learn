@@ -126,7 +126,9 @@
             appId: '1:434251311563:web:0264d1049c463369862e4e'
         };
         const db = getFirestore(initializeApp(firebaseConfig));
-        const articleId = new URLSearchParams(window.location.search).get('id');
+        const pathArticleId = window.location.pathname.match(/^\/share\/article\/([^/]+)\/?$/)?.[1];
+        const articleId = new URLSearchParams(window.location.search).get('id')
+            || (pathArticleId ? decodeURIComponent(pathArticleId) : null);
         const status = document.getElementById('articleStatus');
 
         function youtubeEmbed(url) {
@@ -326,7 +328,22 @@
             try {
                 const articleSnapshot = await getDoc(doc(db, 'news', articleId));
                 if (!articleSnapshot.exists()) {
-                    status.textContent = 'This article is not available yet. Migrate the old news into Firebase first.';
+                    const shareParams = new URLSearchParams(window.location.search);
+                    const title = shareParams.get('title');
+                    const image = shareParams.get('image');
+                    if (!title || !image) {
+                        status.textContent = 'This article is not available yet. Migrate the old news into Firebase first.';
+                        return;
+                    }
+
+                    renderArticle({
+                        title,
+                        image,
+                        description: shareParams.get('description') || '',
+                        content: shareParams.get('description') || '',
+                        category: shareParams.get('category') || 'ILM Nexus News',
+                        date: shareParams.get('date') || ''
+                    });
                     return;
                 }
 

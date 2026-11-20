@@ -81,16 +81,16 @@ In Google Search Console:
 
 ### Article Share Previews
 
-Article links use `/share/article/{articleId}` so Facebook, WhatsApp, LinkedIn, and other link-preview crawlers receive the article's title, description, and image in the initial HTML. Uploaded images are served through the same share endpoint so preview bots can access them.
+Article links use `/share/article/{articleId}`. The root `_redirects` file rewrites these paths to `article.html` on Netlify, and the article page reads the ID from the share URL so readers can open the story without a 404. Existing static articles also carry their title, description, and image in the link query string.
 
-After deploying the updated files, deploy the Firebase Function and Hosting rewrite from the repository root:
+For Firebase Hosting, the Hosting rewrite sends article links to the server-rendered share function so link-preview crawlers can read the article metadata. Deploy the Firebase Function and Hosting rewrite from the repository root:
 
 ```powershell
 npm --prefix functions install
 firebase deploy --only functions:articleShare,hosting
 ```
 
-Deploying Cloud Functions requires the Firebase project to use the Blaze billing plan. In the news page, use **Copy Link** or **Share** to copy the preview-ready URL. Older direct `article.html?id=...` links still open the article, but new share links should use `/share/article/{articleId}`.
+Deploying Cloud Functions requires the Firebase project to use the Blaze billing plan. If the public site is hosted on Netlify, redeploy the site after changing `_redirects`; Firebase Hosting rewrites do not apply to Netlify. In the news page, use **Copy Link** or **Share** to copy the article URL. Older direct `article.html?id=...` links still open the article, but new share links should use `/share/article/{articleId}`.
 
 ### Method 1: Using the Web Form (Easiest)
 1. Visit your news page
