@@ -1,10 +1,13 @@
 const { initializeApp } = require("firebase-admin/app");
+const { getAuth } = require("firebase-admin/auth");
 const { getFirestore } = require("firebase-admin/firestore");
-const { onRequest } = require("firebase-functions/v2/https");
+const { onCall, onRequest, HttpsError } = require("firebase-functions/v2/https");
+const { randomBytes } = require("node:crypto");
 
 initializeApp();
 
 const db = getFirestore();
+const auth = getAuth();
 const SITE_ORIGIN = "https://ilmnexus.tech";
 const DEFAULT_IMAGE = `${SITE_ORIGIN}/image/nexus-learn%20logo.png`;
 const LOGO_IMAGE = `${SITE_ORIGIN}/image/nexus-learn%20logo.png`;
@@ -293,4 +296,215 @@ exports.articleShare = onRequest({ region: "us-central1" }, async (request, resp
         console.error("Could not render article share page:", error);
         response.status(500).send("Could not load this article");
     }
+});
+
+function requirePortalAdmin(request) {
+    if (request.auth?.token?.email?.toLowerCase() !== "theilmnexus@gmail.com") {
+        throw new HttpsError("permission-denied", "Only the ILM Nexus administrator can manage accounts.");
+    }
+}
+
+function validateAccountEmail(value) {
+    const email = String(value || "").trim().toLowerCase();
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email) || email.length > 254) {
+        throw new HttpsError("invalid-argument", "Enter a valid email address.");
+    }
+    return email;
+}
+
+exports.approveStudentImport = onCall({ region: "us-central1" }, async request => {
+    requirePortalAdmin(request);
+    const importId = String(request.data?.importId || "");
+    if (!/^[A-Za-z0-9_-]{1,150}$/.test(importId)) {
+        throw new HttpsError("invalid-argument", "A valid student import ID is required.");
+    }
+
+    const importRef = db.collection("student_imports").doc(importId);
+    const importSnapshot = await importRef.get();
+    if (!importSnapshot.exists) {
+        throw new HttpsError("not-found", "The imported student record was not found.");
+    }
+
+    const imported = importSnapshot.data();
+    const email = validateAccountEmail(imported.email);
+    const name = String(imported.name || "").trim();
+    if (!name || name.length > 160) {
+        throw new HttpsError("failed-precondition", "The student record needs a valid name before approval.");
+    }
+
+    let user;
+    try {
+        user = await auth.getUserByEmail(email);
+    } catch (error) {
+        if (error.code !== "auth/user-not-found") {
+            throw new HttpsError("internal", "Could not check the student's sign-in account.");
+        }
+    }
+
+    const accountCreated = !user;
+    if (user) {
+        const existingProfile = await db.collection("users").doc(user.uid).get();
+        if (!existingProfile.exists || String(existingProfile.data().role || "").toLowerCase() !== "student") {
+            throw new HttpsError("failed-precondition", "This email already belongs to an account that is not an approved student-import candidate.");
+        }
+    }
+    if (!user) {
+        user = await auth.createUser({
+            email,
+            displayName: name,
+            password: randomBytes(32).toString("base64url"),
+            emailVerified: false,
+            disabled: false
+        });
+    } else if (user.disabled) {
+        user = await auth.updateUser(user.uid, { disabled: false, displayName: name });
+    }
+
+    const claims = { ...(user.customClaims || {}), role: "student" };
+    if (imported.campusId) claims.campusId = String(imported.campusId).slice(0, 100);
+    await auth.setCustomUserClaims(user.uid, claims);
+
+    const now = new Date();
+    const studentProfile = {
+        uid: user.uid,
+        name,
+        email,
+        username: String(imported.username || email.split("@")[0]).slice(0, 100),
+        course: String(imported.course || "").slice(0, 160),
+        campusId: String(imported.campusId || "").slice(0, 100),
+        plan: String(imported.plan || "").slice(0, 100),
+        institution: String(imported.institution || "").slice(0, 160),
+        phone: String(imported.phone || "").slice(0, 40),
+        studentId: String(imported.studentId || "").slice(0, 80),
+        role: "Student",
+        approvalStatus: "APPROVED",
+        passwordSetupRequired: true,
+        updatedAt: now
+    };
+    await db.collection("users").doc(user.uid).set(studentProfile, { merge: true });
+    await importRef.update({
+        approvalStatus: "APPROVED",
+        uid: user.uid,
+        approvedAt: now,
+        updatedAt: now
+    });
+
+    return { email, uid: user.uid, accountCreated };
+});
+
+exports.setStudentAccountStatus = onCall({ region: "us-central1" }, async request => {
+    requirePortalAdmin(request);
+    const uid = String(request.data?.uid || "");
+    const status = String(request.data?.status || "").toUpperCase();
+    const allowedStatuses = new Set(["APPROVED", "PENDING", "REJECTED", "SUSPENDED", "DISABLED"]);
+    if (!/^[A-Za-z0-9_-]{1,150}$/.test(uid) || !allowedStatuses.has(status)) {
+        throw new HttpsError("invalid-argument", "A valid account and status are required.");
+    }
+
+    const userRef = db.collection("users").doc(uid);
+    const snapshot = await userRef.get();
+    if (!snapshot.exists || snapshot.data().role !== "Student") {
+        throw new HttpsError("not-found", "The student account was not found.");
+    }
+
+    const user = await auth.getUser(uid);
+    await auth.updateUser(uid, { disabled: status !== "APPROVED" });
+    await auth.setCustomUserClaims(uid, { ...(user.customClaims || {}), role: "student" });
+    await userRef.update({ approvalStatus: status, updatedAt: new Date() });
+    return { uid, status };
+});
+
+exports.inviteStaffAccount = onCall({ region: "us-central1" }, async request => {
+    requirePortalAdmin(request);
+    const email = validateAccountEmail(request.data?.email);
+    const name = String(request.data?.name || "").trim();
+    const role = String(request.data?.role || "").toLowerCase();
+    const campusId = String(request.data?.campusId || "").trim().slice(0, 100);
+    const allowedRoles = new Set(["tutor", "instructor", "coordinator", "campus_president", "staff"]);
+    if (!name || name.length > 160 || !allowedRoles.has(role)) {
+        throw new HttpsError("invalid-argument", "Enter a name and a valid staff role.");
+    }
+    if (email === "theilmnexus@gmail.com") {
+        throw new HttpsError("failed-precondition", "The administrator account cannot be used as a staff account.");
+    }
+    if ((role === "coordinator" || role === "campus_president") && !campusId) {
+        throw new HttpsError("invalid-argument", "A campus is required for this staff role.");
+    }
+
+    let user;
+    let created = false;
+    try {
+        user = await auth.getUserByEmail(email);
+        const existingProfile = await db.collection("users").doc(user.uid).get();
+        if (existingProfile.exists && String(existingProfile.data().role || "").toLowerCase() === "student") {
+            throw new HttpsError("failed-precondition", "This email already belongs to a student account.");
+        }
+        user = await auth.updateUser(user.uid, { displayName: name, disabled: false });
+    } catch (error) {
+        if (error instanceof HttpsError) throw error;
+        if (error.code !== "auth/user-not-found") {
+            throw new HttpsError("internal", "Could not check the staff sign-in account.");
+        }
+        user = await auth.createUser({
+            email,
+            displayName: name,
+            password: randomBytes(32).toString("base64url"),
+            emailVerified: false,
+            disabled: false
+        });
+        created = true;
+    }
+    try {
+        await auth.setCustomUserClaims(user.uid, { role, ...(campusId ? { campusId } : {}) });
+        const now = new Date();
+        await db.collection("users").doc(user.uid).set({
+            uid: user.uid,
+            name,
+            email,
+            role,
+            staffType: role,
+            campusId,
+            approvalStatus: "APPROVED",
+            passwordSetupRequired: true,
+            createdAt: now,
+            updatedAt: now
+        });
+        await db.collection("staff").doc(user.uid).set({
+            uid: user.uid,
+            name,
+            email,
+            role,
+            campusId,
+            status: "active",
+            createdAt: now
+        });
+    } catch (error) {
+        if (created) await auth.deleteUser(user.uid);
+        throw new HttpsError("internal", "The staff account could not be completed. Review the account before retrying.");
+    }
+
+    return { email, uid: user.uid, role };
+});
+
+exports.disableStaffAccount = onCall({ region: "us-central1" }, async request => {
+    requirePortalAdmin(request);
+    const uid = String(request.data?.uid || "");
+    if (!/^[A-Za-z0-9_-]{1,150}$/.test(uid)) {
+        throw new HttpsError("invalid-argument", "A valid staff account is required.");
+    }
+
+    const profileRef = db.collection("users").doc(uid);
+    const profileSnapshot = await profileRef.get();
+    if (!profileSnapshot.exists || String(profileSnapshot.data().role || "").toLowerCase() === "student") {
+        throw new HttpsError("not-found", "The staff account was not found.");
+    }
+    const user = await auth.getUser(uid);
+    if (user.email?.toLowerCase() === "theilmnexus@gmail.com") {
+        throw new HttpsError("failed-precondition", "The administrator account cannot be disabled here.");
+    }
+    await auth.updateUser(uid, { disabled: true });
+    await auth.setCustomUserClaims(uid, { ...(user.customClaims || {}), role: "disabled" });
+    await profileRef.update({ approvalStatus: "DISABLED", updatedAt: new Date() });
+    await db.collection("staff").doc(uid).set({ status: "disabled", updatedAt: new Date() }, { merge: true });
+    return { uid, status: "DISABLED" };
 });

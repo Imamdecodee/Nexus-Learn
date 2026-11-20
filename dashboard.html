@@ -26,14 +26,32 @@
   </div>
   <script type="module">
     import { startPortalState, sessionLabel } from './portal/dashboard-state.js';
-    const student = JSON.parse(localStorage.getItem('student_data') || 'null');
-    const status = String(student?.approvalStatus || student?.status || 'APPROVED').toUpperCase();
-    if (!student || !student.name) window.location.href = 'login.html';
-    if (status === 'PENDING' || status === 'SUSPENDED' || status === 'SUSPEND' || status === 'REJECTED' || status === 'DISABLED') {
+    import { portalAuth, db, firestoreModule } from './portal/firebase.js';
+    const { doc, getDoc } = firestoreModule;
+    const authUser = await new Promise(resolve => {
+      const stop = portalAuth.onAuthStateChanged(user => { stop(); resolve(user); });
+    });
+    if (!authUser) {
+      window.location.replace('login.html');
+      throw new Error('Student dashboard requires an authenticated account.');
+    }
+    const [profileSnapshot, token] = await Promise.all([
+      getDoc(doc(db, 'users', authUser.uid)),
+      authUser.getIdTokenResult(true)
+    ]);
+    const profile = profileSnapshot.exists() ? profileSnapshot.data() : null;
+    const role = String(token.claims.role || profile?.role || '').toLowerCase();
+    const status = String(profile?.approvalStatus || profile?.status || '').toUpperCase();
+    if (!profile || role !== 'student' || status !== 'APPROVED') {
+      await portalAuth.signOut();
       localStorage.removeItem('student_logged_in');
       localStorage.removeItem('student_data');
-      window.location.href = 'login.html';
+      window.location.replace('login.html');
+      throw new Error('This account is not approved for the student dashboard.');
     }
+    const student = { ...profile, uid:authUser.uid, email:authUser.email || profile.email };
+    localStorage.setItem('student_logged_in', 'yes');
+    localStorage.setItem('student_data', JSON.stringify(student));
     const firstName = (student?.name || 'Student').split(' ')[0];
     const setText = (id, value) => { document.getElementById(id).textContent = value; };
     setText('studentName', student.name); setText('welcomeName', firstName); setText('profileName', student.name);
@@ -45,7 +63,7 @@
     renderCourses(); document.getElementById('searchInput').addEventListener('input', event => renderCourses(event.target.value));
     const updateClock = () => setText('localTime', new Intl.DateTimeFormat([], { hour:'numeric', minute:'2-digit' }).format(new Date())); updateClock(); setInterval(updateClock, 30000);
     document.getElementById('menuButton').addEventListener('click', () => document.getElementById('sidebar').classList.toggle('open'));
-    document.getElementById('logoutButton').addEventListener('click', () => { localStorage.removeItem('student_logged_in'); localStorage.removeItem('student_data'); window.location.href = 'login.html'; });
+    document.getElementById('logoutButton').addEventListener('click', async () => { await portalAuth.signOut(); localStorage.removeItem('student_logged_in'); localStorage.removeItem('student_data'); window.location.href = 'login.html'; });
     document.getElementById('sessionJoin').addEventListener('click', () => window.open('https://meet.google.com/sso-aqbo-bsz', '_blank'));
     const chatLink = document.createElement('a'); chatLink.href = 'nexus-chat.html'; chatLink.innerHTML = '<i class="fa-solid fa-comments"></i> Nexus Chat'; document.querySelector('.nav')?.append(chatLink);
     startPortalState({

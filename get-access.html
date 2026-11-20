@@ -80,7 +80,7 @@
 <body>
   <header><nav class="container"><a class="logo" href="index.html"><img src="./image/nexus-learn logo.png" alt="ILM Nexus Academy"></a><ul class="nav-links"><li><a href="index.html">Home</a></li><li><a href="programs.html">Programs</a></li><li><a href="news.html">News</a></li></ul><a class="button button-primary" href="login.html">Sign in</a></nav></header>
 
-  <section class="hero"><div class="container"><p class="eyebrow">Student onboarding</p><h1>Choose your path. Start with clarity.</h1><p>Select one course and one learning plan, then complete registration to create your ILM Nexus student portal. Your account will begin as Payment Pending until your receipt is verified.</p></div></section>
+  <section class="hero"><div class="container"><p class="eyebrow">Student onboarding</p><h1>Choose your path. Start with clarity.</h1><p>Select one course and one learning plan, then register for your student portal. You can sign in to upload your payment receipt; your payment remains pending until verified.</p></div></section>
 
   <main class="container">
     <div class="selection-summary"><div><strong id="selectionText">Choose a course and plan to continue</strong><span id="selectionDetail">Your selection will appear here.</span></div><button class="button button-primary" id="continueButton" type="button" disabled>Register for Course <i class="fas fa-arrow-right"></i></button></div>
@@ -168,6 +168,8 @@
         paymentStatus: 'Payment Pending',
         receiptStatus: 'Not submitted',
         certificateStatus: 'Not yet eligible',
+        role: 'Student',
+        approvalStatus: 'APPROVED',
         projectSubmitted: false,
         projectReviewStatus: 'Not Submitted',
         attendancePercent: 0,
@@ -180,14 +182,25 @@
       try {
         const authResult = await portalAuth.createUserWithEmail(student.email, student.password);
         student.uid = authResult.user.uid;
-        const { password: ignoredPassword, ...profileData } = student;
+        const profileData = { ...student };
+        delete profileData.password;
         await saveUserProfile(student.uid, profileData);
       } catch (authError) {
-        if (authError.code && authError.code !== 'auth/email-already-in-use') console.warn('Firebase account creation unavailable; keeping legacy registration.', authError);
+        let signOutWarning = '';
+        if (student.uid && portalAuth.auth.currentUser?.uid === student.uid) {
+          try { await portalAuth.signOut(); } catch (signOutError) { signOutWarning = ` Sign out failed: ${signOutError.message}`; }
+        }
+        error.textContent = authError.code === 'auth/email-already-in-use'
+          ? 'An account already uses this email. Sign in or reset your password instead.'
+          : `Could not create your account: ${authError.message}`;
+        error.textContent += signOutWarning;
+        return;
       }
-      localStorage.setItem('registered_student', JSON.stringify(student));
-      localStorage.setItem('student_logged_in', 'yes');
-      localStorage.setItem('student_data', JSON.stringify(student));
+      const safeStudent = { ...student };
+      delete safeStudent.password;
+      localStorage.setItem('registered_student', JSON.stringify(safeStudent));
+      localStorage.removeItem('student_logged_in');
+      localStorage.removeItem('student_data');
       const whatsappMessage = [
         'NEW ILM NEXUS STUDENT REGISTRATION',
         '',
@@ -230,7 +243,10 @@
           receipt_status: student.receiptStatus
         })
       }).catch(() => {});
-      window.location.href = 'dashboard.html';
+      let signOutWarning = '';
+      try { await portalAuth.signOut(); } catch (signOutError) { signOutWarning = ` Sign out could not be completed: ${signOutError.message}`; }
+      sessionStorage.setItem('login_notice', `Registration complete. Sign in with your email and password to continue; payment remains pending until verified.${signOutWarning}`);
+      window.location.href = 'login.html';
     });
   </script>
 </body>

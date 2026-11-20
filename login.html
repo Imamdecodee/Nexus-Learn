@@ -1,345 +1,142 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Sign In | ILM Nexus Academy</title>
-  <meta name="description" content="Sign in to your ILM Nexus Academy learning dashboard.">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Sign In | ILM Nexus</title>
+  <meta name="description" content="Securely sign in to your ILM Nexus account.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
   <style>
-    :root { --blue: #246bfe; --blue-dark: #1744ad; --gold: #ef9c18; --ink: #14213d; --muted: #667085; --line: #dbe3ef; --paper: #f5f8fc; }
-    * { box-sizing: border-box; }
-    body { min-height: 100vh; margin: 0; padding: 1.25rem; display: grid; place-items: center; color: var(--ink); background: var(--paper); font-family: 'DM Sans', sans-serif; }
-    body::before { content: ''; position: fixed; inset: 0 55% 0 0; z-index: -1; background: var(--blue); }
-    .login-shell { width: min(980px, 100%); min-height: 620px; display: grid; grid-template-columns: .9fr 1.1fr; overflow: hidden; background: #fff; border: 1px solid rgba(20, 33, 61, .08); border-radius: 22px; box-shadow: 0 24px 70px rgba(20, 33, 61, .15); }
-    .login-intro { display: flex; flex-direction: column; justify-content: space-between; padding: clamp(2rem, 5vw, 4rem); color: #fff; background: linear-gradient(155deg, var(--blue), var(--blue-dark)); }
-    .brand { display: inline-flex; align-items: center; gap: .7rem; color: #fff; font: 700 1rem 'Space Grotesk', sans-serif; text-decoration: none; }
-    .brand img { width: 42px; height: 42px; object-fit: contain; border-radius: 50%; background: #fff; }
-    .intro-copy { max-width: 320px; }
-    .eyebrow { margin: 0 0 1rem; color: #ffd58a; font-size: .78rem; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; }
-    .intro-copy h1 { margin: 0 0 1rem; font: 700 clamp(2.1rem, 4vw, 3.6rem)/1.05 'Space Grotesk', sans-serif; }
-    .intro-copy p:not(.eyebrow) { color: rgba(255, 255, 255, .78); line-height: 1.75; }
-    .intro-footer { margin: 0; color: rgba(255, 255, 255, .68); font-size: .9rem; }
-    .login-panel { display: flex; align-items: center; padding: clamp(2rem, 6vw, 5rem); }
-    .login-form { width: 100%; max-width: 390px; margin: 0 auto; }
-    .login-form h2 { margin: 0 0 .55rem; font: 700 2rem 'Space Grotesk', sans-serif; }
-    .subheading { margin: 0 0 2rem; color: var(--muted); }
-    .field { margin-bottom: 1.15rem; }
-    .field label { display: block; margin-bottom: .45rem; font-size: .9rem; font-weight: 600; }
-    .field select { width: 100%; padding: .9rem 1rem; color: var(--ink); border: 1px solid var(--line); border-radius: 10px; background: #fff; font: inherit; }
-    .field select:focus { border-color: var(--blue); outline: none; box-shadow: 0 0 0 4px rgba(36, 107, 254, .12); }
-    #staffAssignmentField { display: none; }
-    .input-wrap { position: relative; }
-    .login-form input { width: 100%; padding: .9rem 1rem; color: var(--ink); border: 1px solid var(--line); border-radius: 10px; background: #fff; font: inherit; transition: border-color .2s, box-shadow .2s; }
-    .login-form input:focus { border-color: var(--blue); outline: none; box-shadow: 0 0 0 4px rgba(36, 107, 254, .12); }
-    .toggle-password { position: absolute; top: 50%; right: .8rem; transform: translateY(-50%); border: 0; background: transparent; color: var(--muted); cursor: pointer; font: inherit; font-size: .85rem; font-weight: 600; }
-    .submit-button { width: 100%; padding: .95rem 1rem; margin-top: .5rem; border: 0; border-radius: 10px; background: var(--blue); color: #fff; cursor: pointer; font: inherit; font-weight: 700; transition: background .2s, transform .2s; }
-    .submit-button:hover { background: var(--blue-dark); transform: translateY(-1px); }
-    .social-button { padding: .75rem .8rem; border: 1px solid var(--line); border-radius: 10px; color: var(--ink); background: #fff; cursor: pointer; font: inherit; font-weight: 700; }
-    .social-button:hover { border-color: var(--blue); color: var(--blue); background: var(--blue-soft); }
-    .submit-button:disabled { cursor: wait; opacity: .65; }
-    .error { min-height: 1.4rem; margin: .8rem 0 0; color: #c62828; font-size: .9rem; }
-    .helper-links { display: flex; justify-content: space-between; gap: 1rem; margin-top: 1.5rem; color: var(--muted); font-size: .9rem; }
-    .helper-links a { color: var(--blue); font-weight: 600; text-decoration: none; }
-    .helper-links a:hover { text-decoration: underline; }
-    .secure-note { margin-top: 2rem; color: var(--muted); font-size: .82rem; }
-    .secure-note i { margin-right: .35rem; color: var(--gold); }
-    @media (max-width: 720px) { body { padding: 0; } body::before { inset: 0 0 70% 0; } .login-shell { min-height: 100vh; grid-template-columns: 1fr; border: 0; border-radius: 0; } .login-intro { min-height: 285px; padding: 1.5rem; } .intro-copy h1 { font-size: 2.2rem; } .intro-footer { display: none; } .login-panel { align-items: flex-start; padding: 2rem 1.5rem 3rem; } .helper-links { flex-direction: column; } }
+    :root{--blue:#246bfe;--navy:#14213d;--muted:#667085;--line:#dbe3ef;--paper:#f5f8fc;--error:#b42318}
+    *{box-sizing:border-box}body{min-height:100vh;margin:0;padding:1.25rem;display:grid;place-items:center;background:var(--paper);color:var(--navy);font:16px/1.5 "DM Sans",sans-serif}
+    .shell{width:min(980px,100%);min-height:600px;display:grid;grid-template-columns:.9fr 1.1fr;overflow:hidden;border:1px solid #14213d12;border-radius:22px;background:#fff;box-shadow:0 24px 70px #14213d24}
+    .welcome{display:flex;flex-direction:column;justify-content:space-between;padding:clamp(2rem,5vw,4rem);color:white;background:linear-gradient(155deg,#246bfe,#173d9b)}
+    .brand{display:flex;align-items:center;gap:.8rem;color:inherit;text-decoration:none;font:700 1rem "Space Grotesk",sans-serif}.brand img{width:48px;height:48px;object-fit:contain;border-radius:50%;background:#fff}
+    .eyebrow{color:#ffda91;font-size:.75rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase}.welcome h1{margin:.5rem 0 1rem;font:700 clamp(2.2rem,4vw,3.5rem)/1.08 "Space Grotesk",sans-serif}.welcome p{max-width:330px;color:#ffffffc9}.panel{display:grid;place-items:center;padding:clamp(2rem,6vw,5rem)}form{width:min(390px,100%)}h2{margin:0 0 .4rem;font:700 2rem "Space Grotesk",sans-serif}.sub{margin:0 0 1.7rem;color:var(--muted)}
+    label{display:block;margin:.9rem 0 .4rem;font-weight:700;font-size:.9rem}input{width:100%;padding:.9rem 1rem;border:1px solid var(--line);border-radius:10px;font:inherit;color:var(--navy)}input:focus{outline:3px solid #246bfe22;border-color:var(--blue)}
+    .password-wrap{position:relative}.password-wrap input{padding-right:4.5rem}.toggle{position:absolute;right:.8rem;top:50%;transform:translateY(-50%);border:0;background:transparent;color:var(--muted);font:700 .85rem "DM Sans",sans-serif;cursor:pointer}
+    .submit,.social{width:100%;margin-top:1rem;padding:.9rem 1rem;border:0;border-radius:10px;font:700 1rem "DM Sans",sans-serif;cursor:pointer}.submit{color:white;background:var(--blue)}.submit:disabled{opacity:.65;cursor:wait}.social{border:1px solid var(--line);background:white;color:var(--navy)}.social:hover{border-color:var(--blue);color:var(--blue)}
+    .links{display:flex;justify-content:space-between;gap:1rem;margin-top:1rem;font-size:.9rem}.links a{color:var(--blue);font-weight:700;text-decoration:none}.message{min-height:1.4rem;margin:.75rem 0 0;color:var(--error);font-size:.9rem}.note{margin-top:1.5rem;color:var(--muted);font-size:.84rem}
+    @media(max-width:720px){body{padding:0}.shell{min-height:100vh;grid-template-columns:1fr;border:0;border-radius:0}.welcome{min-height:245px;padding:1.5rem}.welcome h1{font-size:2rem}.welcome>p:last-child{display:none}.panel{align-items:start;padding:2rem 1.5rem 3rem}}
   </style>
 </head>
 <body>
-  <main class="login-shell">
-    <section class="login-intro">
-      <a class="brand" href="index.html"><img src="./image/nexus-learn logo.png" alt="ILM Nexus logo"><span>ILM Nexus Academy</span></a>
-      <div class="intro-copy"><p class="eyebrow">Your learning space</p><h1>Keep learning. Keep moving.</h1><p>Pick up your courses, track your progress, and stay connected to your next opportunity.</p></div>
-      <p class="intro-footer">Learn · Build · Earn</p>
+  <main class="shell">
+    <section class="welcome">
+      <a class="brand" href="/"><img src="/image/nexus-learn%20logo.png" alt="ILM Nexus"><span>ILM Nexus</span></a>
+      <div><p class="eyebrow">One account, the right workspace</p><h1>Welcome back.</h1><p>Sign in with your approved ILM Nexus account. Your role determines which workspace opens.</p></div>
+      <p>Learn · Build · Earn</p>
     </section>
-    <section class="login-panel">
-      <form class="login-form" id="loginForm">
-        <h2>Welcome back</h2><p class="subheading">Sign in to open your student dashboard.</p>
-        <div class="field"><label for="role">Select role</label><select id="role" required><option value="Student">Student</option><option value="Staff">Staff</option></select></div>
-        <div class="field" id="staffAssignmentField"><label for="staffAssignment">Staff type / access branch</label><select id="staffAssignment" required><option value="">Choose staff type</option><option value="Frontend Developer">Frontend Developer</option><option value="Instructor">Instructor</option><option value="Tutor">Tutor</option><option value="Campus Coordinator">Campus Coordinator</option></select></div>
-        <div class="field"><label for="username">Username or email</label><input type="text" id="username" placeholder="Enter your username" autocomplete="username" required></div>
-        <div class="field"><label for="password">Password</label><div class="input-wrap"><input type="password" id="password" placeholder="Enter your password" autocomplete="current-password" required><button type="button" class="toggle-password" id="togglePassword" aria-label="Show password">Show</button></div></div>
-        <div class="secure-note" id="studentPasswordHint" style="display:none; margin-top:-.35rem; margin-bottom:1rem; color:#1a5dd1; font-size:.82rem; font-weight:600;"><i class="fas fa-key" style="margin-right:.35rem;"></i>Student default temporary password: <strong>ilmnexusds2026!</strong></div>
-        <button type="submit" class="submit-button" id="loginButton">Sign in</button>
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:.65rem;margin-top:.75rem;"><button type="button" class="social-button" id="googleSignIn"><i class="fab fa-google"></i> Google</button><button type="button" class="social-button" id="githubSignIn"><i class="fab fa-github"></i> GitHub</button></div>
-        <p class="error" id="errorMsg" role="alert" aria-live="polite"></p>
-        <div class="helper-links"><span>Need access to a course?</span><a href="get-access.html">Request access</a></div>
-        <p class="secure-note"><i class="fas fa-lock"></i>Your learning dashboard is private to you.</p>
+    <section class="panel">
+      <form id="loginForm">
+        <h2>Sign in</h2><p class="sub">Use the email address linked to your ILM Nexus account.</p>
+        <label for="email">Email address</label><input id="email" type="email" autocomplete="username" required>
+        <label for="password">Password</label><div class="password-wrap"><input id="password" type="password" autocomplete="current-password" required><button class="toggle" type="button" id="togglePassword">Show</button></div>
+        <button class="submit" id="loginButton" type="submit">Sign in</button>
+        <button class="social" type="button" id="googleSignIn"><i class="fab fa-google"></i> Continue with Google</button>
+        <p class="message" id="errorMsg" role="alert" aria-live="polite"></p>
+        <div class="links"><a id="forgotPassword" href="#">Forgot password?</a><a href="get-access.html">Get student access</a></div>
+        <p class="note"><i class="fas fa-lock"></i> Accounts must be approved by ILM Nexus before portal access is enabled.</p>
       </form>
     </section>
   </main>
-  <script>
-    document.getElementById('togglePassword').addEventListener('click', event => { const passwordInput = document.getElementById('password'); const showingPassword = passwordInput.type === 'password'; passwordInput.type = showingPassword ? 'text' : 'password'; event.currentTarget.textContent = showingPassword ? 'Hide' : 'Show'; event.currentTarget.setAttribute('aria-label', showingPassword ? 'Hide password' : 'Show password'); });
-  </script>
   <script type="module">
     import { portalAuth, db, firestoreModule } from './portal/firebase.js';
-    const { collection, getDocs, query, where } = firestoreModule;
-    const socialError = document.getElementById('errorMsg');
-    const roleSelect = document.getElementById('role');
-    const staffField = document.getElementById('staffAssignmentField');
-
-    const DEFAULT_STUDENT_PASSWORD = 'ilmnexusds2026!';
-    const STAFF_DEFAULT_EMAIL = 'allcourse_ilmnexus@gmail.com';
-    const STAFF_DEFAULT_PASSWORD = 'ilmnexus.tutor';
-    const STAFF_EMAIL_ALLOWLIST = [
-      'allcourse_ilmnexus@gmail.com',
-      'frontenddeveloperilmnexus@gmail.com',
-      'socialmediamanagementilmnexus@gmail.com',
-      'videoeditingilmnexus@gmail.com',
-      'graphicsdesignilmnexus@gmail.com',
-      'contentcreationilmnexus@gmail.com',
-      'datascienceilmnexus@gmail.com',
-      'aiforproductivityilmnexus@gmail.com'
-    ];
-    const TEMP_CHAT_ACCESS_EMAILS = [
-      'theilmnexus@gmail.com',
-      'notify@example.com',
-      'hassansummayat@gmail.com',
-      'abduljeleelroheemoh9ischs@gmail.com',
-      'usmanlawal0505@gmail.com',
-      'darlingtonoluwajuwon@gmail.com',
-      'gbaiyebaliqess123@gmail.com',
-      'ytadeboye@gmail.com',
-      'nasaleabdulmusawwir@gmail.com',
-      'yakubualhajiali@gmail.com',
-      'yusrah0508@gmail.com',
-      'vadeniyi277@gmail.com',
-      'omagbemibest004@gmail.com',
-      'koladedaniel101@gmail.com',
-      'balogunmariam0003@gmail.com',
-      'fatimasagirimamv@gmail.com',
-      'joshuapheobe14@gmail.com',
-      'ajejehalima9@gmail.com',
-      'johnritaajayi22@gmail.com',
-      'yussufabdulwarith@gmail.com',
-      'visitisha9@gmail.com',
-      'ayubaabdulsalam06@gmail.com',
-      'muhammedjamiuabdulazeez2@gmail.com',
-      'osofisanajibolaelijah@gmail.com',
-      'normanalamin103@gmail.com',
-      'lagbaluhalimat@gmail.com',
-      'abdullahiabubakri4@gmail.com',
-      'femie561@gmail.com',
-      'careerbuilderspecialist@gmail.com',
-      'tobisalawu4@gmail.com'
-    ];
-
-    function isTemporaryChatAccessEmail(value) {
-      const email = String(value || '').trim().toLowerCase();
-      return TEMP_CHAT_ACCESS_EMAILS.includes(email);
+    const { doc, getDoc } = firestoreModule;
+    const errorMessage = document.getElementById('errorMsg');
+    const loginButton = document.getElementById('loginButton');
+    const notice = sessionStorage.getItem('login_notice');
+    if (notice) {
+      errorMessage.style.color = '#147d5a';
+      errorMessage.textContent = notice;
+      sessionStorage.removeItem('login_notice');
     }
 
-    function normalizeStaffEmail(value) {
-      return String(value || '').trim().toLowerCase();
-    }
-
-    function isValidStaffEmail(value) {
-      const normalized = normalizeStaffEmail(value);
-      return STAFF_EMAIL_ALLOWLIST.includes(normalized) || normalized === STAFF_DEFAULT_EMAIL || normalized.endsWith('ilmnexus@gmail.com');
-    }
-
-    function isValidStaffPassword(value) {
-      const password = String(value || '').trim();
-      return password === STAFF_DEFAULT_PASSWORD || password === 'ilmnexusds2026!' || password.length >= 6;
-    }
-
-    function getLoginError(error) {
-      const messages = {
-        'auth/invalid-credential': 'The email or password is incorrect.',
-        'auth/user-not-found': 'No account was found for this email.',
-        'auth/wrong-password': 'The email or password is incorrect.',
-        'auth/too-many-requests': 'Too many attempts. Wait a moment and try again.',
-        'auth/network-request-failed': 'Network error. Check your internet connection and try again.'
-      };
-      return messages[error.code] || error.message || 'Sign in failed.';
-    }
-
-    function normalizeApprovalStatus(value) {
-      return String(value || '').trim().toUpperCase();
-    }
-
-    function getBlockedStudentMessage(profile) {
-      const status = normalizeApprovalStatus(profile?.approvalStatus || profile?.status || 'APPROVED');
-      if (status === 'PENDING') return 'Your student account is currently pending approval. Please wait for admin approval.';
-      if (status === 'SUSPENDED' || status === 'SUSPEND') return 'Your student account has been suspended. Please contact ILM Nexus support.';
-      if (status === 'REJECTED' || status === 'DISABLED') return 'Your student account has been disabled. Please contact ILM Nexus support.';
-      return '';
-    }
-
-    async function lookupStudentProfileByLoginValue(loginValue) {
-      const normalized = String(loginValue || '').trim();
-      if (!normalized) return null;
-
-      const email = normalized.toLowerCase();
-      try {
-        const snapshot = await getDocs(collection(db, 'users'));
-        return snapshot.docs
-          .map(doc => ({ id: doc.id, ...doc.data() }))
-          .find(student => {
-            const studentEmail = String(student.email || '').trim().toLowerCase();
-            const studentUsername = String(student.username || '').trim().toLowerCase();
-            const studentId = String(student.studentId || '').trim().toLowerCase();
-            return studentEmail === email || studentUsername === email || studentId === email;
-          }) || null;
-      } catch (error) {
-        console.warn('Student profile lookup failed:', error);
-        return null;
-      }
-    }
-
-    roleSelect.addEventListener('change', () => {
-      const staff = roleSelect.value === 'Staff';
-      staffField.style.display = staff ? 'block' : 'none';
-      document.getElementById('username').type = 'text';
-      document.getElementById('username').placeholder = roleSelect.value === 'Student' ? 'Enter your email or username' : 'Enter staff email';
-      const hint = document.getElementById('studentPasswordHint');
-      hint.style.display = roleSelect.value === 'Student' ? 'block' : 'none';
+    document.getElementById('togglePassword').addEventListener('click', event => {
+      const input = document.getElementById('password');
+      input.type = input.type === 'password' ? 'text' : 'password';
+      event.currentTarget.textContent = input.type === 'password' ? 'Show' : 'Hide';
     });
 
-    document.getElementById('loginForm').addEventListener('submit', async event => {
-      const role = roleSelect.value;
-      event.preventDefault();
-      const username = document.getElementById('username').value.trim();
-      const password = document.getElementById('password').value;
-      const button = document.getElementById('loginButton');
-      socialError.textContent = '';
-
-      if (role === 'Student') {
-        button.disabled = true;
-        button.textContent = 'Signing in...';
-
-        try {
-          let emailToUse = username;
-          if (!emailToUse.includes('@')) {
-            const profile = await lookupStudentProfileByLoginValue(username);
-            if (!profile || !profile.email) {
-              throw Object.assign(new Error('Student account not found. Use the email on your Firebase account or create a new student registration.'), { code: 'auth/user-not-found' });
-            }
-            emailToUse = profile.email;
-          }
-
-          const temporaryChatAccess = isTemporaryChatAccessEmail(emailToUse);
-          const sharedPasswordAllowed = password === DEFAULT_STUDENT_PASSWORD || temporaryChatAccess;
-          if (!sharedPasswordAllowed && !password) {
-            throw Object.assign(new Error('Password is required.'), { code: 'auth/invalid-credential' });
-          }
-
-          if (temporaryChatAccess) {
-            localStorage.removeItem('admin_role');
-            localStorage.removeItem('staff_role');
-            localStorage.setItem('student_logged_in', 'yes');
-            localStorage.setItem('student_data', JSON.stringify({
-              uid: `temp-chat-${String(emailToUse).replace(/[^a-z0-9]/gi, '').slice(0, 20)}`,
-              email: String(emailToUse).trim().toLowerCase(),
-              username: String(emailToUse).split('@')[0] || '',
-              name: String(emailToUse).split('@')[0] || 'Temporary Chat User',
-              role: 'Student',
-              approvalStatus: 'APPROVED',
-              tempChatAccess: true,
-              course: 'temporary-chat-access'
-            }));
-            window.location.href = 'nexus-chat.html';
-            return;
-          }
-
-          const result = await portalAuth.signInWithEmail(emailToUse, password);
-          const profile = await lookupStudentProfileByLoginValue(result.user.email || username);
-          const finalProfile = profile || {
-            uid: result.user.uid,
-            email: result.user.email,
-            username: result.user.email?.split('@')[0] || '',
-            name: result.user.displayName || result.user.email || 'Student',
-            role: 'Student'
-          };
-
-          const blockedMessage = getBlockedStudentMessage(finalProfile);
-          if (blockedMessage) {
-            await portalAuth.signOut().catch(() => {});
-            socialError.textContent = blockedMessage;
-            button.disabled = false;
-            button.textContent = 'Sign in';
-            return;
-          }
-
-          localStorage.removeItem('admin_role');
-          localStorage.removeItem('staff_role');
-          localStorage.setItem('student_logged_in', 'yes');
-          localStorage.setItem('student_data', JSON.stringify({ ...finalProfile, uid: result.user.uid, email: result.user.email || finalProfile.email || emailToUse, password: password }));
-          window.location.href = 'dashboard.html';
-          return;
-        } catch (error) {
-          button.disabled = false;
-          button.textContent = 'Sign in';
-          socialError.textContent = getLoginError(error);
+    async function authenticate(signIn) {
+      errorMessage.textContent = '';
+      loginButton.disabled = true;
+      loginButton.textContent = 'Signing in...';
+      try {
+        const { user } = await signIn();
+        const email = String(user.email || '').trim().toLowerCase();
+        if (email === 'theilmnexus@gmail.com') {
+          window.location.assign('admin.html');
           return;
         }
-      }
-
-      if (role === 'Staff') {
-        const staffType = document.getElementById('staffAssignment').value.trim();
-        if (!staffType) { socialError.textContent = 'Select your staff type or access branch.'; return; }
-
-        const normalizedEmail = normalizeStaffEmail(username);
-        if (!isValidStaffEmail(normalizedEmail)) {
-          socialError.textContent = 'Staff email not recognized. Use your ILM Nexus staff email or the default allcourse_ilmnexus@gmail.com.';
-          return;
+        const [profileSnapshot, token] = await Promise.all([
+          getDoc(doc(db, 'users', user.uid)),
+          user.getIdTokenResult(true)
+        ]);
+        if (!profileSnapshot.exists()) {
+          await portalAuth.signOut();
+          throw new Error('Your account has not been approved or activated. Contact the ILM Nexus administrator.');
         }
-
-        if (!isValidStaffPassword(password)) {
-          socialError.textContent = 'Staff password is incorrect. Use the default ilmnexus.tutor or your assigned staff password.';
-          return;
+        const profile = profileSnapshot.data();
+        const role = String(token.claims.role || profile.role || '').trim().toLowerCase();
+        const status = String(profile.approvalStatus || profile.status || '').trim().toUpperCase();
+        if (status !== 'APPROVED') {
+          await portalAuth.signOut();
+          throw new Error(status === 'PENDING'
+            ? 'Your account is waiting for ILM Nexus approval.'
+            : 'Your account is inactive. Contact the ILM Nexus administrator.');
         }
-
-        localStorage.removeItem('admin_role');
-        localStorage.setItem('staff_role', 'Staff');
-        localStorage.setItem('staff_scope', staffType);
+        if (role !== 'student' && !['tutor', 'instructor', 'coordinator', 'campus_president', 'staff'].includes(role)) {
+          await portalAuth.signOut();
+          throw new Error('Your account role is not configured. Contact the ILM Nexus administrator.');
+        }
+        const account = { ...profile, uid:user.uid, email:user.email || profile.email, role:role === 'student' ? 'Student' : 'Staff' };
         localStorage.setItem('student_logged_in', 'yes');
-        localStorage.setItem('student_data', JSON.stringify({
-          uid: `staff-${normalizedEmail.replace(/[^a-z0-9]/g, '').slice(0, 20) || 'tutor'}`,
-          email: normalizedEmail,
-          name: staffType === 'Frontend Developer' ? 'Frontend Developer' : 'Tutor Staff',
-          role: 'Staff',
-          staffType,
-          campusId: staffType,
-          accessBranch: staffType
-        }));
-        window.location.href = './tutor-dashboard.html';
+        localStorage.setItem('student_data', JSON.stringify(account));
+        if (role === 'student') {
+          localStorage.removeItem('staff_role');
+          window.location.assign('dashboard.html');
+        } else {
+          localStorage.setItem('staff_role', role);
+          window.location.assign('tutor-dashboard.html');
+        }
+      } catch (error) {
+        errorMessage.textContent = error.code === 'auth/invalid-credential' || error.code === 'auth/user-not-found'
+          ? 'Email or password is incorrect.'
+          : error.message || 'Sign in failed. Please try again.';
+      } finally {
+        loginButton.disabled = false;
+        loginButton.textContent = 'Sign in';
+      }
+    }
+
+    document.getElementById('loginForm').addEventListener('submit', event => {
+      event.preventDefault();
+      authenticate(() => portalAuth.signInWithEmail(
+        document.getElementById('email').value.trim(),
+        document.getElementById('password').value
+      ));
+    });
+    document.getElementById('googleSignIn').addEventListener('click', () => authenticate(() => portalAuth.signInWithGoogle()));
+    document.getElementById('forgotPassword').addEventListener('click', async event => {
+      event.preventDefault();
+      const email = document.getElementById('email').value.trim();
+      if (!email) {
+        errorMessage.textContent = 'Enter your email address first, then choose Forgot password.';
         return;
       }
-
-      button.disabled = true; button.textContent = 'Verifying access...';
       try {
-        const result = await portalAuth.signInWithEmail(username, password);
-        localStorage.removeItem('admin_role');
-        localStorage.setItem('staff_role', 'Staff');
-        localStorage.setItem('student_logged_in', 'yes');
-        localStorage.setItem('student_data', JSON.stringify({ uid: result.user.uid, email: result.user.email, name: result.user.email, role: 'Staff' }));
-        window.location.href = './tutor-dashboard.html';
-      } catch (error) { button.disabled = false; button.textContent = 'Sign in'; socialError.textContent = getLoginError(error); }
-    });
-
-    async function signInWithProvider(provider) {
-      try {
-        const result = await provider();
-        const user = result.user;
-        const profile = { username: user.email || user.uid, name: user.displayName || user.email || 'ILM Nexus student', email: user.email || '', avatar: user.photoURL || '', uid: user.uid, course: 'Professional Learning' };
-        localStorage.removeItem('admin_role');
-        localStorage.removeItem('staff_role');
-        localStorage.setItem('student_logged_in', 'yes');
-        localStorage.setItem('student_data', JSON.stringify(profile));
-        window.location.href = 'dashboard.html';
+        await portalAuth.sendPasswordReset(email, { url:`${window.location.origin}/login.html`, handleCodeInApp:false });
+        errorMessage.style.color = '#147d5a';
+        errorMessage.textContent = 'If an account exists for this email, a password reset link has been sent.';
       } catch (error) {
-        socialError.textContent = getLoginError(error);
+        errorMessage.style.color = '';
+        errorMessage.textContent = error.message || 'Could not send a password reset email.';
       }
-    }
-
-    document.getElementById('googleSignIn').addEventListener('click', () => signInWithProvider(portalAuth.signInWithGoogle));
-    document.getElementById('githubSignIn').addEventListener('click', () => signInWithProvider(portalAuth.signInWithGithub));
+    });
   </script>
 </body>
 </html>

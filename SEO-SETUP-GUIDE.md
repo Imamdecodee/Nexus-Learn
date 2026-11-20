@@ -98,6 +98,26 @@ Article comments are public. The Firestore rules allow anyone to read and create
 
 To ask Google to crawl a newly published article, copy its article link, open Google Search Console for `https://ilmnexus.tech`, use **URL Inspection**, paste the article link, and select **Request Indexing**. Crawling and indexing are controlled by Google and are not immediate or guaranteed. The current `news-sitemap.xml` is a static sitemap for the original articles, so it does not automatically add new Firebase articles.
 
+### Student and staff account setup
+
+The sign-in page uses Firebase Authentication (email/password, with Google sign-in available). The account role comes from the protected Firebase user profile and custom claims; users cannot select their own role at sign-in.
+
+To import student records, sign in as `theilmnexus@gmail.com`, open **Admin → Students**, and upload a CSV. `fullName` (or `name`) and `email` are required. Optional supported columns are `username`, `phone`, `course` (or `learningTrack`/`pathway`), `campusId`, `university`, `institution`, `plan`, and `studentId`. The existing `student-default-login-list.csv` uses compatible `fullName`, `email`, `phone`, `university`, and `learningTrack` columns. Password, temporaryPassword, role, and approvalStatus columns are ignored; never add or rely on passwords in an import file. Imported rows stay pending until an administrator approves them. Approval creates or enables the student Firebase account, assigns the Student role, and sends a Firebase password-setup email. If email delivery fails after approval, use **Send setup link** in the student list to retry.
+
+For staff, open **Admin → Staff directory** after the interview, enter the staff member's name and email, choose Tutor, Instructor, Campus Coordinator, Campus President, or Other Staff, and submit the invitation. Campus coordinators and campus presidents need a campus. The new staff member gets an email/password setup link. Re-submit the invitation to retry if the email service fails. The Staff directory's **Disable account** action disables sign-in; inviting the person again re-enables access.
+
+The existing public course-registration form is separate from the import approval queue and currently creates an approved student profile to preserve the payment/receipt portal workflow. Review that behavior before changing public registration policy.
+
+Before deploying, enable Email/Password in Firebase Authentication. Enable Google if offering that option, and add `ilmnexus.tech` to Firebase Authentication's authorized domains. Set up the Firebase password-reset email template and test that its link returns to `https://ilmnexus.tech/login.html`. Legacy staff accounts need a matching approved `/users/{uid}` profile with a supported role before they can use the staff dashboard.
+
+Deploy the account callables and Firestore rules from the repository root:
+
+```powershell
+firebase deploy --only functions:approveStudentImport,functions:setStudentAccountStatus,functions:inviteStaffAccount,functions:disableStaffAccount,firestore:rules
+```
+
+Deploy the updated static site to Netlify as well. The new account controls will not be available until both the Firebase deployment and Netlify deployment are complete.
+
 ### Events archive
 
 The homepage Events link opens `events.html`, which groups published Firestore `events` by date: future events are Upcoming, events that ended in the last 30 days are Recent, and older events are Past. Events with a partner organization entered are also available under Partner Events and show the partnership on the event details page. The archive includes clearly marked sample listings (5 upcoming, 5 recent, and 7 past, including the confirmed Build Your Digital Identity event) for demonstration; replace or remove sample content when it is no longer needed. Sign in with the ILM Nexus admin account and publish an event with its flyer, schedule, venue, partner organization (if applicable), speakers, moderators, description, and links. Event details open at `event.html?id=...`. When deploying, publish the Firestore rules (`firebase deploy --only firestore:rules`) and redeploy the site on Netlify so public visitors can read events and admins can publish them.

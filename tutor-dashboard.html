@@ -617,7 +617,7 @@
   </div>
 
   <script type="module">
-    import { db, firestoreModule } from './portal/firebase.js';
+    import { portalAuth, db, firestoreModule } from './portal/firebase.js';
 
     const { addDoc, collection, onSnapshot, serverTimestamp } = firestoreModule;
     const storageKey = 'tutor_dashboard_state';
@@ -660,18 +660,38 @@
       { type: 'Text Assignment', title: 'Mini project sprint task', detail: 'Build a landing page and submit before 5PM', time: 'Today, 10:15 AM' }
     ];
 
-    const tutor = JSON.parse(localStorage.getItem('student_data') || 'null');
-    if (!tutor || tutor.role !== 'Staff') {
-      window.location.href = 'login.html';
+    const authUser = await new Promise(resolve => {
+      const stop = portalAuth.onAuthStateChanged(user => { stop(); resolve(user); });
+    });
+    if (!authUser) {
+      window.location.replace('login.html');
+      throw new Error('Staff dashboard requires an authenticated account.');
     }
-
-    const currentUser = tutor || { name: 'Tutor Staff', email: 'allcourse_ilmnexus@gmail.com' };
+    const [profileSnapshot, token] = await Promise.all([
+      firestoreModule.getDoc(firestoreModule.doc(db, 'users', authUser.uid)),
+      authUser.getIdTokenResult(true)
+    ]);
+    const profile = profileSnapshot.exists() ? profileSnapshot.data() : null;
+    const role = String(token.claims.role || profile?.role || '').toLowerCase();
+    const allowedStaffRoles = ['tutor', 'instructor', 'coordinator', 'campus_president', 'staff'];
+    if (!profile || !allowedStaffRoles.includes(role) || String(profile.approvalStatus || '').toUpperCase() !== 'APPROVED') {
+      await portalAuth.signOut();
+      localStorage.removeItem('student_data');
+      localStorage.removeItem('staff_role');
+      window.location.replace('login.html');
+      throw new Error('This account is not approved for the staff dashboard.');
+    }
+    const tutor = { ...profile, uid:authUser.uid, email:authUser.email || profile.email, role:'Staff', staffType:role };
+    localStorage.setItem('student_data', JSON.stringify(tutor));
+    const currentUser = tutor;
     document.getElementById('tutorName').textContent = currentUser.name || 'Tutor Staff';
     document.getElementById('tutorEmail').textContent = currentUser.email || 'allcourse_ilmnexus@gmail.com';
 
-    document.getElementById('logoutButton').addEventListener('click', () => {
+    document.getElementById('logoutButton').addEventListener('click', async () => {
+      await portalAuth.signOut();
       localStorage.removeItem('student_logged_in');
       localStorage.removeItem('student_data');
+      localStorage.removeItem('staff_role');
       window.location.href = 'login.html';
     });
 

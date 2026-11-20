@@ -8,16 +8,22 @@ const firebaseConfig = {
   appId: '1:434251311563:web:0264d1049c463369862e4e'
 };
 
-const [{ initializeApp }, authModule, firestoreModule] = await Promise.all([
+const [{ initializeApp }, authModule, firestoreModule, functionsModule] = await Promise.all([
   import(`https://www.gstatic.com/firebasejs/${firebaseVersion}/firebase-app.js`),
   import(`https://www.gstatic.com/firebasejs/${firebaseVersion}/firebase-auth.js`),
-  import(`https://www.gstatic.com/firebasejs/${firebaseVersion}/firebase-firestore.js`)
+  import(`https://www.gstatic.com/firebasejs/${firebaseVersion}/firebase-firestore.js`),
+  import(`https://www.gstatic.com/firebasejs/${firebaseVersion}/firebase-functions.js`)
 ]);
 
 const app = initializeApp(firebaseConfig);
 const auth = authModule.getAuth(app);
 await authModule.setPersistence(auth, authModule.browserLocalPersistence);
 const db = firestoreModule.getFirestore(app);
+const cloudFunctions = functionsModule.getFunctions(app, 'us-central1');
+
+export function callPortalFunction(name, data) {
+  return functionsModule.httpsCallable(cloudFunctions, name)(data);
+}
 
 export const portalAuth = {
   auth,
@@ -26,7 +32,7 @@ export const portalAuth = {
   onAuthStateChanged: callback => authModule.onAuthStateChanged(auth, callback),
   createUserWithEmail: (email, password) => authModule.createUserWithEmailAndPassword(auth, email, password),
   signInWithEmail: (email, password) => authModule.signInWithEmailAndPassword(auth, email, password),
-  sendPasswordReset: email => authModule.sendPasswordResetEmail(auth, email),
+  sendPasswordReset: (email, actionCodeSettings) => authModule.sendPasswordResetEmail(auth, email, actionCodeSettings),
   signInWithGoogle: () => authModule.signInWithPopup(auth, new authModule.GoogleAuthProvider()),
   signInWithGithub: () => authModule.signInWithPopup(auth, new authModule.GithubAuthProvider()),
   signOut: () => authModule.signOut(auth)

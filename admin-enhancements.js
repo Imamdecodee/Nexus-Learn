@@ -1,9 +1,10 @@
-import { db, firestoreModule, portalAuth } from './portal/firebase.js';
+import { callPortalFunction, db, firestoreModule, portalAuth } from './portal/firebase.js';
 
-const { addDoc, collection, deleteDoc, doc, getDocs, onSnapshot, query, serverTimestamp, setDoc, updateDoc, where } = firestoreModule;
+const { addDoc, collection, deleteDoc, doc, getDocs, onSnapshot, query, serverTimestamp, updateDoc, where } = firestoreModule;
 const $ = id => document.getElementById(id);
 const buttonClass = 'button';
 const showMessage = (node, text, type = '') => { node.textContent = text; node.className = `notice ${type}`; node.classList.remove('hidden'); };
+const escapeHtml = value => String(value ?? '').replace(/[&<>"']/g, character => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;' }[character]));
 
 function parseCsv(text) {
   const rows = [];
@@ -23,91 +24,53 @@ function parseCsv(text) {
 
 async function upsertStudentFromCsvRow(row) {
   const name = String(row.fullName || row.name || '').trim();
-  const email = String(row.email || '').trim();
+  const email = String(row.email || '').trim().toLowerCase();
   const username = String(row.username || email.split('@')[0] || '').trim();
   const course = String(row.course || row.learningTrack || row.pathway || '').trim();
   const campusId = String(row.campusId || (String(row.university || '').toLowerCase().includes('ilorin') ? 'unilorin' : '')).trim();
   const plan = String(row.plan || row.pathway || '').trim();
-  const tempPassword = String(row.temporaryPassword || row.initialPassword || row.password || 'ilmnexusds2026!').trim() || 'ilmnexusds2026!';
-  const approvalStatus = String(row.approvalStatus || row.status || 'PENDING').trim().toUpperCase();
+  const studentId = String(row.studentId || '').trim();
 
-  if (!name || !email) return { created: 0, updated: 0, skipped: 1 };
+  if (!name || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return { skipped: 1 };
+  if (email === 'theilmnexus@gmail.com') throw new Error('The administrator email cannot be imported as a student.');
 
-  let authUid = null;
-  try {
-    const authResult = await portalAuth.createUserWithEmail(email, tempPassword);
-    authUid = authResult.user.uid;
-  } catch (error) {
-    if (error.code !== 'auth/email-already-in-use') {
-      console.warn('Firebase student creation failed for', email, error);
-      throw error;
-    }
-    const existing = await getDocs(query(collection(db, 'users'), where('email', '==', email)));
-    const match = existing.docs[0];
-    if (!match) {
-      console.warn('Student email already exists in Firebase but no user record was found in Firestore:', email);
-      return { created: 0, updated: 0, skipped: 1 };
-    }
-    authUid = match.id;
-  }
-
-  const studentRecord = {
-    uid: authUid,
+  const imported = {
     name,
     email,
     username,
     course,
     campusId,
     plan,
-    role: 'Student',
-    approvalStatus: ['APPROVED', 'PENDING', 'SUSPENDED', 'REJECTED', 'DISABLED'].includes(approvalStatus) ? approvalStatus : 'PENDING',
-    scholarshipStatus: String(row.scholarshipStatus || 'Pending').trim(),
-    projectReviewStatus: String(row.projectReviewStatus || 'Not Submitted').trim(),
-    certificateStatus: String(row.certificateStatus || 'Not Approved').trim(),
     phone: String(row.phone || '').trim(),
-    state: String(row.state || '').trim(),
     institution: String(row.institution || row.university || '').trim(),
-    level: String(row.currentLevel || row.level || '').trim(),
-    format: String(row.format || '').trim(),
-    heard: String(row.heard || '').trim(),
-    requiredFee: Number(row.requiredFee || 0),
-    amountPaid: Number(row.amountPaid || 0),
-    outstandingBalance: Number(row.outstandingBalance || 0),
-    paymentStatus: String(row.paymentStatus || 'Payment Pending').trim(),
-    feeStatus: String(row.feeStatus || 'Payment Pending').trim(),
-    studentId: String(row.studentId || `ILM-${Date.now().toString(36).toUpperCase()}`).trim(),
-    createdAt: serverTimestamp(),
-    updatedAt: serverTimestamp()
+    studentId
   };
-
-  await setDoc(doc(db, 'users', authUid), studentRecord, { merge: true });
-  return { created: 1, updated: 1, skipped: 0 };
+  const existing = await getDocs(query(collection(db, 'student_imports'), where('email', '==', email)));
+  if (existing.empty) {
+    await addDoc(collection(db, 'student_imports'), {
+      ...imported,
+      approvalStatus: 'PENDING',
+      createdAt: serverTimestamp(),
+      updatedAt: serverTimestamp()
+    });
+  } else {
+    await updateDoc(existing.docs[0].ref, { ...imported, updatedAt: serverTimestamp() });
+  }
+  return { created: 1, skipped: 0 };
 }
 
 function addStudentTools() {
   const panel = $('students')?.querySelector('.panel'); if (!panel || $('studentTools')) return;
   const tools = document.createElement('div'); tools.id = 'studentTools'; tools.className = 'panel';
-  tools.innerHTML = `<h3>New student account</h3><p class="muted" id="studentSyncStatus">Waiting for Firebase student synchronization...</p><p class="muted" style="margin-top:.4rem">This creates the Firebase Auth account and the Firestore student profile together. The temporary password you enter here is the password the student will use to sign in.</p><div style="overflow:auto"><table style="width:100%;border-collapse:collapse;margin-top:1rem;font-size:.82rem"><thead><tr><th style="text-align:left;padding:.55rem;border-bottom:1px solid var(--line)">Name</th><th style="text-align:left;padding:.55rem;border-bottom:1px solid var(--line)">Email</th><th style="text-align:left;padding:.55rem;border-bottom:1px solid var(--line)">Phone</th><th style="text-align:left;padding:.55rem;border-bottom:1px solid var(--line)">Course</th><th style="text-align:left;padding:.55rem;border-bottom:1px solid var(--line)">Institution</th><th style="text-align:left;padding:.55rem;border-bottom:1px solid var(--line)">Status</th><th style="text-align:left;padding:.55rem;border-bottom:1px solid var(--line)">Actions</th></tr></thead><tbody id="studentDetailsBody"><tr><td colspan="7" style="padding:.7rem;color:var(--muted)">Loading student details...</td></tr></tbody></table></div><div class="grid" style="margin-top:1.2rem"><div class="field"><label>Name<input id="newStudentName"></label></div><div class="field"><label>Email<input id="newStudentEmail" type="email"></label></div><div class="field"><label>Temporary password for login<input id="newStudentPassword" type="text" value="ilmnexusds2026!"></label></div><div class="field"><label>Course<input id="newStudentCourse"></label></div><div class="field"><label>Campus<input id="newStudentCampus"></label></div></div><div class="actions"><button class="${buttonClass}" id="saveNewStudent" type="button">Create student + Firebase Auth</button><label class="${buttonClass}" for="studentCsv" style="cursor:pointer">Sync CSV now<input id="studentCsv" type="file" accept=".csv,text/csv" hidden></label></div><div class="notice hidden" id="studentToolsMessage"></div>`;
+  tools.innerHTML = `<h3>Student accounts</h3><p class="muted" id="studentSyncStatus">Student accounts stay pending until you approve them. Never include passwords in the CSV; approved students receive a secure password setup email.</p><div style="overflow:auto"><table style="width:100%;border-collapse:collapse;margin-top:1rem;font-size:.82rem"><thead><tr><th style="text-align:left;padding:.55rem;border-bottom:1px solid var(--line)">Name</th><th style="text-align:left;padding:.55rem;border-bottom:1px solid var(--line)">Email</th><th style="text-align:left;padding:.55rem;border-bottom:1px solid var(--line)">Phone</th><th style="text-align:left;padding:.55rem;border-bottom:1px solid var(--line)">Course</th><th style="text-align:left;padding:.55rem;border-bottom:1px solid var(--line)">Institution</th><th style="text-align:left;padding:.55rem;border-bottom:1px solid var(--line)">Status</th><th style="text-align:left;padding:.55rem;border-bottom:1px solid var(--line)">Actions</th></tr></thead><tbody id="studentDetailsBody"><tr><td colspan="7" style="padding:.7rem;color:var(--muted)">Loading student details...</td></tr></tbody></table></div><div class="grid" style="margin-top:1.2rem"><div class="field"><label>Name<input id="newStudentName"></label></div><div class="field"><label>Email<input id="newStudentEmail" type="email"></label></div><div class="field"><label>Course<input id="newStudentCourse"></label></div><div class="field"><label>Campus<input id="newStudentCampus"></label></div></div><div class="actions"><button class="${buttonClass}" id="saveNewStudent" type="button">Add to approval queue</button><label class="${buttonClass}" for="studentCsv" style="cursor:pointer">Import student CSV<input id="studentCsv" type="file" accept=".csv,text/csv" hidden></label></div><div class="notice hidden" id="studentToolsMessage"></div><h3 style="margin-top:1.5rem">Pending student approvals</h3><div style="overflow:auto"><table style="width:100%;border-collapse:collapse;margin-top:.7rem;font-size:.82rem"><thead><tr><th style="text-align:left;padding:.55rem;border-bottom:1px solid var(--line)">Name</th><th style="text-align:left;padding:.55rem;border-bottom:1px solid var(--line)">Email</th><th style="text-align:left;padding:.55rem;border-bottom:1px solid var(--line)">Course</th><th style="text-align:left;padding:.55rem;border-bottom:1px solid var(--line)">Campus</th><th style="text-align:left;padding:.55rem;border-bottom:1px solid var(--line)">Action</th></tr></thead><tbody id="studentImportBody"><tr><td colspan="5" style="padding:.7rem;color:var(--muted)">Loading approvals...</td></tr></tbody></table></div>`;
   panel.prepend(tools);
   $('saveNewStudent').addEventListener('click', async () => {
     try {
       const name = $('newStudentName').value.trim();
       const email = $('newStudentEmail').value.trim();
-      const password = $('newStudentPassword').value.trim() || 'ilmnexusds2026!';
       if (!name || !email) throw new Error('Name and email are required.');
-      const authResult = await portalAuth.createUserWithEmail(email, password).catch(error => {
-        if (error.code === 'auth/email-already-in-use') return { user: { uid: null } };
-        throw error;
-      });
-      const uid = authResult.user.uid;
-      if (!uid) {
-        const existing = await getDocs(query(collection(db, 'users'), where('email', '==', email)));
-        if (!existing.docs[0]) throw new Error('This student already exists in Firebase and has no profile record yet.');
-        await setDoc(doc(db, 'users', existing.docs[0].id), { uid: existing.docs[0].id, name, email, course:$('newStudentCourse').value.trim(), campusId:$('newStudentCampus').value.trim(), role:'Student', approvalStatus:'APPROVED', scholarshipStatus:'Approved', projectReviewStatus:'Approved', updatedAt:serverTimestamp() }, { merge: true });
-      } else {
-        await setDoc(doc(db, 'users', uid), { uid, name, email, course:$('newStudentCourse').value.trim(), campusId:$('newStudentCampus').value.trim(), role:'Student', approvalStatus:'APPROVED', scholarshipStatus:'Approved', projectReviewStatus:'Approved', createdAt:serverTimestamp(), updatedAt:serverTimestamp() }, { merge: true });
-      }
-      showMessage($('studentToolsMessage'), 'Approved student record created.', 'success');
+      await upsertStudentFromCsvRow({ name, email, course:$('newStudentCourse').value.trim(), campusId:$('newStudentCampus').value.trim() });
+      showMessage($('studentToolsMessage'), 'Student added to the pending approval queue.', 'success');
     } catch (error) { showMessage($('studentToolsMessage'), error.message, 'error'); }
   });
   $('studentCsv').addEventListener('change', async event => {
@@ -116,54 +79,102 @@ function addStudentTools() {
       const rows = parseCsv(await file.text());
       if (!rows.length) throw new Error('The CSV has no data rows.');
       let imported = 0;
+      let skipped = 0;
       let errors = 0;
       for (const row of rows) {
         try {
           const result = await upsertStudentFromCsvRow(row);
-          if (!result.skipped) imported += 1;
+          if (result.skipped) skipped += 1;
+          else imported += 1;
         } catch (error) {
           errors += 1;
           console.warn('CSV student import failed:', row.email, error);
         }
       }
-      showMessage($('studentToolsMessage'), `${imported} student record(s) imported. ${errors ? `${errors} failed.` : ''}`.trim(), errors ? 'error' : 'success');
+      showMessage($('studentToolsMessage'), `${imported} student record(s) added to the pending approval queue. ${skipped ? `${skipped} invalid row(s) skipped. ` : ''}${errors ? `${errors} row(s) failed.` : ''}`.trim(), errors ? 'error' : 'success');
     } catch (error) { showMessage($('studentToolsMessage'), error.message, 'error'); } finally { event.target.value = ''; }
+  });
+  $('studentImportBody').addEventListener('click', async event => {
+    const button = event.target.closest('[data-approve-import]');
+    if (!button) return;
+    button.disabled = true;
+    try {
+      const { data } = await callPortalFunction('approveStudentImport', { importId:button.dataset.approveImport });
+      try {
+        await portalAuth.sendPasswordReset(data.email, {
+          url: `${window.location.origin}/login.html`,
+          handleCodeInApp: false
+        });
+        showMessage($('studentToolsMessage'), `Approved ${data.email}. A secure password setup link was sent to the student.`, 'success');
+      } catch (emailError) {
+        showMessage($('studentToolsMessage'), `Student account ${data.email} was approved, but the setup email failed: ${emailError.message}. Use “Send setup link” in the student list to retry.`, 'error');
+      }
+    } catch (error) {
+      showMessage($('studentToolsMessage'), `Student approval failed: ${error.message}`, 'error');
+    } finally {
+      button.disabled = false;
+    }
   });
 }
 
 function addLiveMetrics() {
   const update = (id, value) => { if ($(id)) $(id).textContent = String(value); };
-  onSnapshot(collection(db, 'users'), snapshot => { update('studentMetric', snapshot.size); update('pendingMetric', snapshot.docs.filter(item => item.data().approvalStatus !== 'APPROVED').length); const body = $('studentDetailsBody'); if (body) body.innerHTML = snapshot.docs.map(item => { const student = item.data(); const status = student.approvalStatus || 'APPROVED'; return `<tr><td style="padding:.55rem;border-bottom:1px solid var(--line)">${student.name || 'Unnamed'}</td><td style="padding:.55rem;border-bottom:1px solid var(--line)">${student.email || ''}</td><td style="padding:.55rem;border-bottom:1px solid var(--line)">${student.phone || 'Not provided'}</td><td style="padding:.55rem;border-bottom:1px solid var(--line)">${student.course || 'Not assigned'}</td><td style="padding:.55rem;border-bottom:1px solid var(--line)">${student.institution || student.campusId || 'Not provided'}</td><td style="padding:.55rem;border-bottom:1px solid var(--line)"><select data-student-status="${item.id}" style="padding:.3rem"><option ${status === 'APPROVED' ? 'selected' : ''}>APPROVED</option><option ${status === 'PENDING' ? 'selected' : ''}>PENDING</option><option ${status === 'REJECTED' ? 'selected' : ''}>REJECTED</option><option ${status === 'SUSPENDED' ? 'selected' : ''}>SUSPENDED</option></select></td><td style="padding:.55rem;border-bottom:1px solid var(--line)"><button class="${buttonClass}" type="button" data-reset-student="${item.id}" data-student-email="${student.email || ''}" style="padding:.35rem .5rem;font-size:.75rem">Send reset link</button></td></tr>`; }).join('') || '<tr><td colspan="7" style="padding:.7rem;color:var(--muted)">No students found.</td></tr>'; }, () => {});
-  onSnapshot(collection(db, 'staff'), snapshot => update('staffMetric', snapshot.size), () => {});
+  onSnapshot(collection(db, 'users'), snapshot => {
+    const studentDocs = snapshot.docs.filter(item => String(item.data().role || '').toLowerCase() === 'student');
+    update('studentMetric', studentDocs.length);
+    update('pendingMetric', studentDocs.filter(item => item.data().approvalStatus !== 'APPROVED').length);
+    const body = $('studentDetailsBody');
+    if (!body) return;
+    body.innerHTML = studentDocs.map(item => {
+      const student = item.data();
+      const status = String(student.approvalStatus || 'APPROVED').toUpperCase();
+      const approveButton = status === 'APPROVED' ? '' : `<button class="${buttonClass}" type="button" data-approve-user="${escapeHtml(item.id)}" data-student-email="${escapeHtml(student.email || '')}">Approve</button>`;
+      return `<tr><td>${escapeHtml(student.name || 'Unnamed')}</td><td>${escapeHtml(student.email || '')}</td><td>${escapeHtml(student.phone || 'Not provided')}</td><td>${escapeHtml(student.course || 'Not assigned')}</td><td>${escapeHtml(student.institution || student.campusId || 'Not provided')}</td><td>${escapeHtml(status)}</td><td>${approveButton} <button class="${buttonClass}" type="button" data-reset-student="${escapeHtml(item.id)}" data-student-email="${escapeHtml(student.email || '')}">Send setup link</button></td></tr>`;
+    }).join('') || '<tr><td colspan="7">No students found.</td></tr>';
+  }, error => { const message = $('studentToolsMessage'); if (message) showMessage(message, `Could not load student records: ${error.message}`, 'error'); });
+  onSnapshot(collection(db, 'student_imports'), snapshot => {
+    const body = $('studentImportBody');
+    if (!body) return;
+    const pending = snapshot.docs.filter(item => (item.data().approvalStatus || 'PENDING') === 'PENDING');
+    body.innerHTML = pending.map(item => {
+      const student = item.data();
+      return `<tr><td>${escapeHtml(student.name || '')}</td><td>${escapeHtml(student.email || '')}</td><td>${escapeHtml(student.course || '—')}</td><td>${escapeHtml(student.campusId || '—')}</td><td><button class="${buttonClass}" type="button" data-approve-import="${escapeHtml(item.id)}">Approve &amp; send setup link</button></td></tr>`;
+    }).join('') || '<tr><td colspan="5">No student approvals are waiting.</td></tr>';
+  }, error => { const message = $('studentToolsMessage'); if (message) showMessage(message, `Could not load the approval queue: ${error.message}`, 'error'); });
+  onSnapshot(collection(db, 'staff'), snapshot => update('staffMetric', snapshot.docs.filter(item => item.data().status !== 'disabled').length), () => {});
   onSnapshot(collection(db, 'courses'), snapshot => update('courseMetric', snapshot.docs.filter(item => item.data().status === 'published').length), () => {});
-  $('studentDetailsBody')?.addEventListener('change', async event => { const id = event.target.dataset.studentStatus; if (!id) return; try { await updateDoc(doc(db, 'users', id), { approvalStatus:event.target.value, updatedAt:serverTimestamp() }); } catch (error) { showMessage($('studentToolsMessage'), error.message, 'error'); } });
-  $('studentDetailsBody')?.addEventListener('click', async event => { const button = event.target.closest('[data-reset-student]'); if (!button) return; const email = button.dataset.studentEmail; if (!email) return showMessage($('studentToolsMessage'), 'This student has no email address for password setup.', 'error'); try { await portalAuth.sendPasswordReset(email); const isAdminEmail = email.toLowerCase() === 'theilmnexus@gmail.com'; showMessage($('studentToolsMessage'), `Firebase accepted a reset link for ${email}. Check Inbox and Spam/Junk. To set a password directly, use Firebase Console Authentication; this website never stores passwords. ${isAdminEmail ? 'This is the administrator email listed in the CSV.' : ''}`, 'success'); } catch (error) { showMessage($('studentToolsMessage'), error.code === 'auth/user-not-found' ? 'No Firebase Auth account exists for this email. Create the account in Firebase Authentication first.' : error.message, 'error'); } });
-}
-
-async function syncBundledStudentCsv() {
-  if ($('studentSyncStatus')) $('studentSyncStatus').textContent = 'Reading the bundled student CSV...';
-  const response = await fetch('./student_Data/scholarship_applications_20260907_152550.csv', { cache:'no-store' });
-  if (!response.ok) throw new Error(`Student CSV could not be read (${response.status}).`);
-  const rows = parseCsv(await response.text());
-  let synced = 0;
-  for (const row of rows) {
-    try {
-      const result = await upsertStudentFromCsvRow(row);
-      if (!result.skipped) synced += 1;
-    } catch (error) {
-      console.warn('Bundled CSV student sync failed:', row.email, error);
+  $('studentDetailsBody')?.addEventListener('click', async event => {
+    const approveButton = event.target.closest('[data-approve-user]');
+    const resetButton = event.target.closest('[data-reset-student]');
+    if (approveButton) {
+      approveButton.disabled = true;
+      try {
+        const { data } = await callPortalFunction('setStudentAccountStatus', { uid:approveButton.dataset.approveUser, status:'APPROVED' });
+        try {
+          await portalAuth.sendPasswordReset(approveButton.dataset.studentEmail, {
+            url: `${window.location.origin}/login.html`,
+            handleCodeInApp: false
+          });
+          showMessage($('studentToolsMessage'), `Approved ${approveButton.dataset.studentEmail}. A secure password setup link was sent.`, 'success');
+        } catch (emailError) {
+          showMessage($('studentToolsMessage'), `Student account ${approveButton.dataset.studentEmail} was approved, but the setup email failed: ${emailError.message}. Use “Send setup link” to retry.`, 'error');
+        }
+      } catch (error) {
+        showMessage($('studentToolsMessage'), `Student approval failed: ${error.message}`, 'error');
+      } finally {
+        approveButton.disabled = false;
+      }
+      return;
     }
-  }
-  const existing = await getDocs(collection(db, 'users'));
-  await Promise.all(existing.docs.filter(item => item.data().approvalStatus !== 'APPROVED' || item.data().projectReviewStatus !== 'Approved').map(item => updateDoc(doc(db, 'users', item.id), { approvalStatus:'APPROVED', scholarshipStatus:'Approved', projectReviewStatus:'Approved', updatedAt:serverTimestamp() })));
-  if ($('roleLabel')) $('roleLabel').title = `${synced} bundled student records synchronized from student_data.`;
-  if ($('studentSyncStatus')) $('studentSyncStatus').textContent = `${synced} bundled student records synchronized. Loading the complete live directory...`;
-}
-
-function addStaffReplication() {
-  $('saveStaff')?.addEventListener('click', async () => {
-    const campusId = $('staffCampus').value.trim().toLowerCase(); if (campusId !== 'unilorin') return;
-    try { await addDoc(collection(db, 'campuses', 'unilorin', 'staff'), { name:$('staffName').value.trim(), email:$('staffEmail').value.trim(), role:$('staffRole').value, grade:Number($('staffGrade').value || 0), campusId, featured:$('staffFeatured').value === 'true', status:'active', syncedAt:serverTimestamp() }); } catch (error) { console.warn('Campus staff replication failed:', error); }
+    if (!resetButton) return;
+    const email = resetButton.dataset.studentEmail;
+    if (!email) return showMessage($('studentToolsMessage'), 'This student has no email address for password setup.', 'error');
+    try {
+      await portalAuth.sendPasswordReset(email, { url:`${window.location.origin}/login.html`, handleCodeInApp:false });
+      showMessage($('studentToolsMessage'), `A secure password setup link was sent to ${email}.`, 'success');
+    } catch (error) {
+      showMessage($('studentToolsMessage'), error.code === 'auth/user-not-found' ? 'No Firebase Auth account exists for this email. Approve an imported student record to create it.' : error.message, 'error');
+    }
   });
 }
 
@@ -174,15 +185,15 @@ function addStaffDirectory() {
   panel.after(directory);
   onSnapshot(collection(db, 'staff'), snapshot => {
     const body = $('staffDirectoryBody');
-    body.innerHTML = snapshot.docs.map(item => { const staff = item.data(); return `<tr><td style="padding:.55rem;border-bottom:1px solid var(--line)">${staff.name || 'Unnamed'}</td><td style="padding:.55rem;border-bottom:1px solid var(--line)">${staff.email || 'No email'}</td><td style="padding:.55rem;border-bottom:1px solid var(--line)">${staff.role || 'Staff'}</td><td style="padding:.55rem;border-bottom:1px solid var(--line)">${staff.campusId || 'Global'}</td><td style="padding:.55rem;border-bottom:1px solid var(--line)"><button class="${buttonClass}" type="button" data-delete-staff="${item.id}" data-staff-email="${staff.email || ''}" style="padding:.35rem .5rem;font-size:.75rem;background:var(--red)">Delete staff</button></td></tr>`; }).join('') || '<tr><td colspan="5" style="padding:.7rem;color:var(--muted)">No staff profiles found.</td></tr>';
+    body.innerHTML = snapshot.docs.map(item => { const staff = item.data(); const action = staff.status === 'disabled' ? 'Disabled' : `<button class="${buttonClass}" type="button" data-delete-staff="${escapeHtml(item.id)}" data-staff-email="${escapeHtml(staff.email || '')}" style="padding:.35rem .5rem;font-size:.75rem;background:var(--red)">Disable account</button>`; return `<tr><td style="padding:.55rem;border-bottom:1px solid var(--line)">${escapeHtml(staff.name || 'Unnamed')}</td><td style="padding:.55rem;border-bottom:1px solid var(--line)">${escapeHtml(staff.email || 'No email')}</td><td style="padding:.55rem;border-bottom:1px solid var(--line)">${escapeHtml(staff.role || 'Staff')}</td><td style="padding:.55rem;border-bottom:1px solid var(--line)">${escapeHtml(staff.campusId || 'Global')}</td><td style="padding:.55rem;border-bottom:1px solid var(--line)">${action}</td></tr>`; }).join('') || '<tr><td colspan="5" style="padding:.7rem;color:var(--muted)">No staff profiles found.</td></tr>';
   }, error => { if ($('staffDirectoryMessage')) showMessage($('staffDirectoryMessage'), error.message, 'error'); });
   $('staffDirectoryBody').addEventListener('click', async event => {
     const button = event.target.closest('[data-delete-staff]'); if (!button) return;
-    if (!window.confirm(`Delete ${button.dataset.staffEmail || 'this staff profile'}?`)) return;
+    if (!window.confirm(`Disable access for ${button.dataset.staffEmail || 'this staff member'}? They will no longer be able to sign in.`)) return;
     try {
-      await deleteDoc(doc(db, 'staff', button.dataset.deleteStaff));
+      await callPortalFunction('disableStaffAccount', { uid:button.dataset.deleteStaff });
       if (button.dataset.staffEmail) { const branch = await getDocs(query(collection(db, 'campuses', 'unilorin', 'staff'), where('email', '==', button.dataset.staffEmail))); await Promise.all(branch.docs.map(item => deleteDoc(item.ref))); }
-      showMessage($('staffDirectoryMessage'), 'Staff profile deleted.', 'success');
+      showMessage($('staffDirectoryMessage'), 'Staff sign-in access disabled.', 'success');
     } catch (error) { showMessage($('staffDirectoryMessage'), error.message, 'error'); }
   });
 }
@@ -197,4 +208,19 @@ function addFundWorkflow() {
   }, true);
 }
 
-try { const user = await new Promise(resolve => { const stop = portalAuth.onAuthStateChanged(currentUser => { stop(); resolve(currentUser); }); }); addStudentTools(); addStaffDirectory(); if (user?.email?.toLowerCase() === 'theilmnexus@gmail.com') { try { await syncBundledStudentCsv(); } catch (error) { if ($('studentSyncStatus')) $('studentSyncStatus').textContent = `Automatic CSV sync failed: ${error.message}. Open the site through your web host, not file://.`; console.warn('Bundled CSV sync unavailable:', error); } } else if ($('studentSyncStatus')) $('studentSyncStatus').textContent = 'Tutor view: showing synchronized Firebase student records.'; addLiveMetrics(); addStaffReplication(); addFundWorkflow(); } catch (error) { console.warn('Admin enhancements unavailable:', error); }
+try {
+  const user = await new Promise(resolve => {
+    const stop = portalAuth.onAuthStateChanged(currentUser => { stop(); resolve(currentUser); });
+  });
+  if (user?.email?.toLowerCase() !== 'theilmnexus@gmail.com') {
+    window.location.href = 'login.html';
+  } else {
+    addStudentTools();
+    addStaffDirectory();
+    addLiveMetrics();
+
+    addFundWorkflow();
+  }
+} catch (error) {
+  console.warn('Admin enhancements unavailable:', error);
+}

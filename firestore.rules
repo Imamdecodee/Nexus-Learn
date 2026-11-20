@@ -141,8 +141,13 @@ service cloud.firestore {
 
     match /users/{userId} {
       allow read: if request.auth != null && (request.auth.uid == userId || isCoordinator() || isInstructor() || isCampusPresident());
-      allow create: if request.auth != null && (request.auth.uid == userId || isAdmin());
-      allow update: if isCoordinator()
+      allow create: if isAdmin()
+        || (request.auth != null
+          && request.auth.uid == userId
+          && request.resource.data.role == 'Student'
+          && (!request.resource.data.keys().hasAny(['approvalStatus'])
+            || request.resource.data.approvalStatus in ['PENDING', 'APPROVED']));
+      allow update: if isAdmin()
         || (request.auth != null
           && request.auth.uid == userId
           && request.resource.data.diff(resource.data).affectedKeys().hasOnly([
@@ -150,6 +155,10 @@ service cloud.firestore {
             'linkedin', 'github', 'portfolio', 'timezone', 'updatedAt'
           ]));
       allow delete: if isAdmin();
+    }
+
+    match /student_imports/{importId} {
+      allow read, create, update, delete: if isAdmin();
     }
 
     match /courses/{courseId} {
